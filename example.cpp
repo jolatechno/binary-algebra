@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdint.h>
+#include <stdio.h>
 
 #include "binary_arithmetic/binary_arithmetic.hpp"
 
