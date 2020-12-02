@@ -1,0 +1,13 @@
+language: c++
+
+git:
+  quiet: true
+  submodules: true
+
+addons:
+  apt:
+    update: true
+    packages:
+      - openmp
+
+script: make all
