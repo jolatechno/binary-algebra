@@ -14,7 +14,7 @@ void Matrice::operator^=(const Matrice mat) {
 }
 
 void Matrice::operator^=(const bool bit) {
-  if (!bit) {
+  if (bit) {
     #pragma omp parallel for
     for (int16_t n = 0; n < height * width; n++)
       blocks[n] = ~blocks[n];
@@ -29,7 +29,7 @@ void Vector::operator^=(const Vector vect) {
 }
 
 void Vector::operator^=(const bool bit) {
-  if (!bit) {
+  if (bit) {
     #pragma omp parallel for
     for (int16_t i = 0; i < height; i++)
       blocks[i] = ~blocks[i];
