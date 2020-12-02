@@ -29,6 +29,45 @@ int main(int argc, char** argv){
 
 
   /*
+  testing initializers
+  */
+
+
+  printf("\ntesting zero initializer with square matrices...\n");
+  for (i = 0; i < i_max; i++)
+    test_zero_initalizer(ref, width, width);
+
+  printf("testing zero initializer with non-square matrices...\n");
+  for (i = 0; i < i_max; i++)
+    test_zero_initalizer(ref, height, width);
+
+  printf("testing zero initializer with vectors...\n");
+  for (i = 0; i < i_max; i++)
+    test_zero_initalizer(ref, width);
+
+  printf("testing random initializer with square matrices...\n");
+  test_random(ref, mat_square_1, i_max);
+
+  printf("testing random initializer with non-square matrices...\n");
+  test_random(ref, mat_nsquare_1, i_max);
+
+  printf("testing random initializer with vectors...\n");
+  test_random(ref, vect_1, i_max);
+
+  printf("\ntesting diag initializer...\n");
+  for (i = 0; i < i_max; i++){
+    mat_square_1.randomize(); mat_square_2.randomize();
+    test_diag_initializer(ref, mat_square_1, mat_square_2);
+  }
+
+  printf("\ntesting diag initializer with a specific diagonal...\n");
+  for (i = 0; i < i_max; i++){
+    mat_square_1.randomize(); mat_square_2.randomize(); vect_1.randomize();
+    test_diag_initializer(ref, mat_square_1, mat_square_2, vect_1);
+  }
+
+
+  /*
   testing comparaisons
   */
 
@@ -62,13 +101,6 @@ int main(int argc, char** argv){
     vect_1 = Vector(width);
     test_equal(ref, vect_1, false); test_equal(ref, vect_1, true);
   }
-
-
-  /*
-  testing initializers
-  */
-
-
 
 
   /*
