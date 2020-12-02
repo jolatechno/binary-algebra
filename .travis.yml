@@ -8,6 +8,7 @@ addons:
   apt:
     update: true
     packages:
-      - openmp
+      - libomp-dev
 
-script: make all
+script:
+  - make all
