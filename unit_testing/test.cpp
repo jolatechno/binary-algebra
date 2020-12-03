@@ -11,7 +11,7 @@
 #include "../binary_arithmetic/binary_arithmetic.hpp"
 
 int main(int argc, char** argv){
-  reference_arithmetic ref;
+  const reference_arithmetic ref;
 
   uint16_t i, i_max = 20;
   uint16_t height = 2;

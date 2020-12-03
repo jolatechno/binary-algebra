@@ -12,7 +12,7 @@ testing zero initializer
 */
 
 
-void test_zero_initalizer(reference_arithmetic ref, int16_t height, int16_t width) {
+void test_zero_initalizer(const reference_arithmetic ref, int16_t height, int16_t width) {
   Matrice stupid_zero(height, width);
   ref.zero(stupid_zero);
   Matrice zero = Matrice(height, width);
@@ -20,7 +20,7 @@ void test_zero_initalizer(reference_arithmetic ref, int16_t height, int16_t widt
   assert(ref.equal(zero, stupid_zero));
 }
 
-void test_zero_initalizer(reference_arithmetic ref, int16_t height) {
+void test_zero_initalizer(const reference_arithmetic ref, int16_t height) {
   Vector stupid_zero(height);
   ref.zero(stupid_zero);
   Vector zero = Vector(height);
@@ -34,7 +34,7 @@ testing diag initializer
 */
 
 
-void test_diag_initializer(reference_arithmetic ref, Matrice& mat1, Matrice mat2) {
+void test_diag_initializer(const reference_arithmetic ref, Matrice& mat1, Matrice& mat2) {
   assert(mat1.height == mat2.height); //sufficient as mat1 and mat2 have to be square
 
   mat1.diag();
@@ -43,7 +43,7 @@ void test_diag_initializer(reference_arithmetic ref, Matrice& mat1, Matrice mat2
   assert(ref.equal(mat1, mat2));
 }
 
-void test_diag_initializer(reference_arithmetic ref, Matrice& mat1, Matrice mat2, Vector diagonal) {
+void test_diag_initializer(const reference_arithmetic ref, Matrice& mat1, Matrice& mat2, Vector diagonal) {
   assert(mat1.height == mat2.height); //sufficient as mat1 and mat2 have to be square
 
   mat1.diag(diagonal);
@@ -58,7 +58,7 @@ testing the random initializer
 */
 
 
-void test_random(reference_arithmetic ref, Matrice& mat, int16_t treshold) {
+void test_random(const reference_arithmetic ref, Matrice& mat, int16_t treshold) {
   bool failed_to_randomize = false;
   Matrice mat_copy(mat.height, mat.width);
 
@@ -72,7 +72,7 @@ void test_random(reference_arithmetic ref, Matrice& mat, int16_t treshold) {
   assert(failed_to_randomize);
 }
 
-void test_random(reference_arithmetic ref, Vector& vect, int16_t treshold) {
+void test_random(const reference_arithmetic ref, Vector& vect, int16_t treshold) {
   bool failed_to_randomize = false;
   Vector vect_copy(vect.height);
 

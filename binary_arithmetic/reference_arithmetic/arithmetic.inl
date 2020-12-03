@@ -37,7 +37,7 @@ Matrice reference_arithmetic::multiplication(const Matrice& mat1, const Matrice&
   return product;
 }
 
-Vector reference_arithmetic::multiplication(const Matrice& mat, const Vector vect) const {
+Vector reference_arithmetic::multiplication(const Matrice& mat, const Vector& vect) const {
   assert(mat.width == vect.height);
 
   Vector product(mat.height);
@@ -55,7 +55,7 @@ Vector reference_arithmetic::multiplication(const Matrice& mat, const Vector vec
   return product;
 }
 
-Matrice reference_arithmetic::multiplication(const Vector& vect1, const Vector vect2) const {
+Matrice reference_arithmetic::multiplication(const Vector& vect1, const Vector& vect2) const {
   Matrice product(vect2.height, vect1.height);
 
   uint16_t i, j;
@@ -98,7 +98,7 @@ Matrice reference_arithmetic::addition(const Matrice& mat, bool bit) const {
   return mat_res;
 }
 
-Vector reference_arithmetic::addition(const Vector& vect1, const Vector vect2) const {
+Vector reference_arithmetic::addition(const Vector& vect1, const Vector& vect2) const {
   assert(vect1.height == vect2.height); //check if dimensions are compatible
 
   Vector vect_res(vect1.height);
@@ -149,7 +149,7 @@ Matrice reference_arithmetic::bitwise_multiplication(const Matrice& mat, bool bi
   return mat_res;
 }
 
-Vector reference_arithmetic::bitwise_multiplication(const Vector& vect1, const Vector vect2) const {
+Vector reference_arithmetic::bitwise_multiplication(const Vector& vect1, const Vector& vect2) const {
   assert(vect1.height == vect2.height); //check if dimensions are compatible
 
   Vector vect_res(vect1.height);
@@ -215,7 +215,7 @@ bool reference_arithmetic::scalar_product(const Matrice& mat1, const Matrice& ma
   return sum;
 }
 
-bool reference_arithmetic::scalar_product(const Vector& vect1, const Vector vect2) const {
+bool reference_arithmetic::scalar_product(const Vector& vect1, const Vector& vect2) const {
   assert(vect1.height == vect2.height); //check if dimensions are compatible
 
   bool sum = 0;
