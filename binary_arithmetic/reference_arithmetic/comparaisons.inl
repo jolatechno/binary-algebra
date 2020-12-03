@@ -3,7 +3,7 @@ defining comparaisons
 */
 
 
-bool reference_arithmetic::equal(const Matrice& mat1, const Matrice& mat2) const {
+bool reference_arithmetic::equal(Matrice const& mat1, Matrice const& mat2) const {
   if ((mat1.width != mat2.width) ||
   (mat1.height != mat2.height)) //check if dimensions are compatible
     return false;
@@ -17,7 +17,7 @@ bool reference_arithmetic::equal(const Matrice& mat1, const Matrice& mat2) const
   return true;
 }
 
-bool reference_arithmetic::equal(const Vector& vect1, const Vector& vect2) const {
+bool reference_arithmetic::equal(Vector const& vect1, Vector const& vect2) const {
   if (vect1.height != vect2.height) return false; //check if dimensions are compatible
 
   for (uint16_t i = 0; i < vect1.height * 8; i++)
@@ -27,15 +27,15 @@ bool reference_arithmetic::equal(const Vector& vect1, const Vector& vect2) const
   return true;
 }
 
-bool reference_arithmetic::nequal(const Matrice& mat1, const Matrice& mat2) const {
+bool reference_arithmetic::nequal(Matrice const& mat1, Matrice const& mat2) const {
   return !(mat1 == mat2);
 }
 
-bool reference_arithmetic::nequal(const Vector& vect1, const Vector& vect2) const {
+bool reference_arithmetic::nequal(Vector const& vect1, Vector const& vect2) const {
   return !(vect1 == vect2);
 }
 
-bool reference_arithmetic::equal(const Matrice& mat1, bool bit) const {
+bool reference_arithmetic::equal(Matrice const& mat1, bool bit) const {
   uint16_t i, j;
   for (i = 0; i < mat1.height * 8; i++)
     for (j = 0; j < mat1.width * 8; j++)
@@ -45,7 +45,7 @@ bool reference_arithmetic::equal(const Matrice& mat1, bool bit) const {
   return true;
 }
 
-bool reference_arithmetic::equal(const Vector& vect, bool bit) const {
+bool reference_arithmetic::equal(Vector const& vect, bool bit) const {
   for (uint16_t i = 0; i < vect.height * 8; i++)
     if (vect[i] != bit)
       return false;

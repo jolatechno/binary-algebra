@@ -39,14 +39,14 @@ copy operators
 */
 
 
-Matrice::Matrice(const Matrice& other) : height(other.height), width(other.width) {
+Matrice::Matrice(Matrice const& other) : height(other.height), width(other.width) {
   blocks = (uint64_t *) calloc(height * width, sizeof(uint64_t)); //initialize empty blocks
   if (blocks == NULL) throw std::bad_alloc();
 
   memcpy(blocks, other.blocks, height * width * sizeof(uint64_t)); //copy blocks
 }
 
-Vector::Vector(const Vector& other) : height(other.height) {
+Vector::Vector(Vector const& other) : height(other.height) {
   blocks = (uint8_t *) calloc(height, sizeof(uint64_t)); //initialize empty blocks
   if (blocks == NULL) throw std::bad_alloc();
 

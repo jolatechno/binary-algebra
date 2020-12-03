@@ -3,7 +3,7 @@ additions
 */
 
 
-void Matrice::operator^=(const Matrice& mat) {
+void Matrice::operator^=(Matrice const& mat) {
   if ((height != mat.height) ||
   (width != mat.width)) //check if dimensions are compatible
     throw;
@@ -20,7 +20,7 @@ void Matrice::operator^=(const bool bit) {
       blocks[n] = ~blocks[n];
   }
 }
-void Vector::operator^=(const Vector& vect) {
+void Vector::operator^=(Vector const& vect) {
   if (height != vect.height) throw; //check if dimensions are compatible
 
   #pragma omp parallel for
@@ -42,7 +42,7 @@ bitwise multiplications
 */
 
 
-void Matrice::operator&=(const Matrice& mat) {
+void Matrice::operator&=(Matrice const& mat) {
   if ((height != mat.height) ||
   (width != mat.width)) //check if dimensions are compatible
     throw;
@@ -57,7 +57,7 @@ void Matrice::operator&=(const bool bit) {
     memset(blocks, 0, height * width * sizeof(uint64_t));
 }
 
-void Vector::operator&=(const Vector& vect) {
+void Vector::operator&=(Vector const& vect) {
   if (height != vect.height) throw; //check if dimensions are compatible
 
   #pragma omp parallel for
@@ -76,7 +76,7 @@ multiplications
 */
 
 
-void Matrice::operator*=(const Matrice& mat) {
+void Matrice::operator*=(Matrice const& mat) {
   if ((height != width) ||
   (mat.height != mat.width)) //check if dimensions are compatible
     throw;
@@ -84,7 +84,7 @@ void Matrice::operator*=(const Matrice& mat) {
   *this = (*this) * mat;
 }
 
-void Vector::operator*=(const Matrice& mat) {
+void Vector::operator*=(Matrice const& mat) {
   if (mat.height != mat.width) throw; //check if dimensions are compatible
 
   *this =  mat * (*this);

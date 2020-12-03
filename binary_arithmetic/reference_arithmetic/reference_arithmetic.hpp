@@ -16,45 +16,45 @@ class reference_arithmetic {
 
   public:
     //transposition
-    Matrice transpose(const Matrice& mat) const;
+    Matrice transpose(Matrice const& mat) const;
 
     //multiplications
-    Matrice multiplication(const Matrice& mat1, const Matrice& mat2) const;
-    Vector multiplication(const Matrice& mat, const Vector& vect) const;
-    Matrice multiplication(const Vector& vect1, const Vector& vect2) const;
+    Matrice multiplication(Matrice const& mat1, Matrice const& mat2) const;
+    Vector multiplication(Matrice const& mat, Vector const& vect) const;
+    Matrice multiplication(Vector const& vect1, Vector const& vect2) const;
 
     //additions
-    Matrice addition(const Matrice& mat1, const Matrice& mat2) const;
-    Matrice addition(const Matrice& mat, bool bit) const;
-    Vector addition(const Vector& vect1, const Vector& vect2) const;
-    Vector addition(const Vector& vect, bool bit) const;
+    Matrice addition(Matrice const& mat1, Matrice const& mat2) const;
+    Matrice addition(Matrice const& mat, bool bit) const;
+    Vector addition(Vector const& vect1, Vector const& vect2) const;
+    Vector addition(Vector const& vect, bool bit) const;
 
     //bitwise multiplication
-    Matrice bitwise_multiplication(const Matrice& mat1, const Matrice& mat2) const;
-    Matrice bitwise_multiplication(const Matrice& mat, bool bit) const;
-    Vector bitwise_multiplication(const Vector& vect1, const Vector& vect2) const;
-    Vector bitwise_multiplication(const Vector& vect, bool bit) const;
+    Matrice bitwise_multiplication(Matrice const& mat1, Matrice const& mat2) const;
+    Matrice bitwise_multiplication(Matrice const& mat, bool bit) const;
+    Vector bitwise_multiplication(Vector const& vect1, Vector const& vect2) const;
+    Vector bitwise_multiplication(Vector const& vect, bool bit) const;
 
     //negation
-    Matrice negate(const Matrice& mat) const;
-    Vector negate(const Vector& vect) const;
+    Matrice negate(Matrice const& mat) const;
+    Vector negate(Vector const& vect) const;
 
 
     //scalar product
-    bool scalar_product(const Matrice& mat1, const Matrice& mat2) const;
-    bool scalar_product(const Vector& vect1, const Vector& vect2) const;
+    bool scalar_product(Matrice const& mat1, Matrice const& mat2) const;
+    bool scalar_product(Vector const& vect1, Vector const& vect2) const;
 
     //comparaisons
-    bool equal(const Matrice& mat1, const Matrice& mat2) const;
-    bool equal(const Vector& mat, const Vector& vect2) const;
-    bool nequal(const Matrice& mat1, const Matrice& mat2) const;
-    bool nequal(const Vector& vect1, const Vector& vect2) const;
-    bool equal(const Matrice& mat1, bool bit) const;
-    bool equal(const Vector& vect, bool bit) const;
+    bool equal(Matrice const& mat1, Matrice const& mat2) const;
+    bool equal(Vector const& vect1, Vector const& vect2) const;
+    bool nequal(Matrice const& mat1, Matrice const& mat2) const;
+    bool nequal(Vector const& vect1, Vector const& vect2) const;
+    bool equal(Matrice const& mat1, bool bit) const;
+    bool equal(Vector const& vect, bool bit) const;
 
     //initializers
     void zero(Matrice& mat) const;
     void zero(Vector& vect) const;
     void diag(Matrice& mat) const;
-    void diag(Matrice& mat, const Vector& diagonal) const;
+    void diag(Matrice& mat, Vector const& diagonal) const;
 };

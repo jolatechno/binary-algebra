@@ -47,39 +47,39 @@ class Matrice {
     ~Matrice();
 
     //print operator
-    friend std::ostream& operator<<(std::ostream& os, const Matrice& mat);
+    friend std::ostream& operator<<(std::ostream& os, Matrice const& mat);
 
     //copy and assignment operators
-    Matrice(const Matrice& other);
-    Matrice& operator=(const Matrice& other);
+    Matrice(Matrice const& other);
+    Matrice& operator=(Matrice const& other);
 
     //initializers
     void randomize();
     void diag();
-    void diag(const Vector& diagonal);
+    void diag(Vector const& diagonal);
 
     //comparaisons
-    bool operator==(const Matrice& vect) const;
-    bool operator!=(const Matrice& vect) const;
+    bool operator==(Matrice const& vect) const;
+    bool operator!=(Matrice const& vect) const;
     bool operator==(const bool bit) const;
 
     //self operators
     Matrice T() const;
-    void operator^=(const Matrice& mat);
+    void operator^=(Matrice const& mat);
     void operator^=(const bool bit);
-    void operator&=(const Matrice& mat);
+    void operator&=(Matrice const& mat);
     void operator&=(const bool bit);
-    void operator*=(const Matrice& mat);
+    void operator*=(Matrice const& mat);
 
     //operators
     Matrice operator~() const;
-    bool operator%(const Matrice& mat) const; //scalar product
-    Matrice operator^(const Matrice& mat) const;
+    bool operator%(Matrice const& mat) const; //scalar product
+    Matrice operator^(Matrice const& mat) const;
     Matrice operator^(const bool bit) const;
-    Matrice operator&(const Matrice& mat) const;
+    Matrice operator&(Matrice const& mat) const;
     Matrice operator&(const bool bit) const;
-    Vector operator*(const Vector& vect) const;
-    Matrice operator*(const Matrice& mat) const;
+    Vector operator*(Vector const& vect) const;
+    Matrice operator*(Matrice const& mat) const;
 };
 
 class Vector {
@@ -112,33 +112,33 @@ class Vector {
     ~Vector();
 
     //print operator
-    friend std::ostream& operator<<(std::ostream& os, const Vector& vect);
+    friend std::ostream& operator<<(std::ostream& os, Vector const& vect);
 
     //copy and assignment operators
-    Vector(const Vector& other);
-    Vector& operator=(const Vector& other);
+    Vector(Vector const& other);
+    Vector& operator=(Vector const& other);
 
     //initializers
     void randomize();
 
     //comparaisons
-    bool operator==(const Vector& vect) const;
-    bool operator!=(const Vector& vect) const;
+    bool operator==(Vector const& vect) const;
+    bool operator!=(Vector const& vect) const;
     bool operator==(const bool bit) const;
 
     //self operators
-    void operator^=(const Vector& vect);
+    void operator^=(Vector const& vect);
     void operator^=(const bool bit);
-    void operator&=(const Vector& vect);
+    void operator&=(Vector const& vect);
     void operator&=(const bool bit);
-    void operator*=(const Matrice& mat);
+    void operator*=(Matrice const& mat);
 
     //operators
     Vector operator~() const;
-    bool operator%(const Vector& vect) const; //scalar product
-    Vector operator^(const Vector& vect) const;
+    bool operator%(Vector const& vect) const; //scalar product
+    Vector operator^(Vector const& vect) const;
     Vector operator^(const bool bit) const;
-    Vector operator&(const Vector& vect) const;
+    Vector operator&(Vector const& vect) const;
     Vector operator&(const bool bit) const;
-    Matrice operator*(const Vector& vect) const;
+    Matrice operator*(Vector const& vect) const;
 };
