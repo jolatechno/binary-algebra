@@ -190,7 +190,7 @@ bool Matrice::operator%(const Matrice mat) const {
   for (int16_t n = 0; n < height * width; n++)
     sum ^= blocks[n] & mat.blocks[n];
 
-  return count_ones_64(sum);
+  return count_ones_64_mod2(sum);
 }
 
 
@@ -203,5 +203,5 @@ bool Vector::operator%(const Vector vect) const {
   for (int16_t i = 0; i < height; i++)
     sum ^= blocks[i] & vect.blocks[i];
 
-  return count_ones_8(sum);
+  return count_ones_8_mod2(sum);
 }

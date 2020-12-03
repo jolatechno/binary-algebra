@@ -64,24 +64,10 @@ block scalar products
 */
 
 
-bool Vector::count_ones_8(uint8_t byte) const {
-  bool sum = 0;
-
-  for (uint8_t i = 0; i < 8; i++)
-    sum = (sum != utils->bit_out_of_byte_reversed(byte, i));
-
-  return sum;
+bool Matrice::count_ones_64_mod2(uint64_t word) const {
+  return utils->count_ones_64(word) % 2;
 }
 
-bool Matrice::count_ones_64(uint64_t word) const {
-  uint8_t sum = 0;
-  bool res = 0;
-
-  for (uint8_t i = 0; i < 8; i++)
-    sum ^= utils->byte_out_of_word_reversed(word, i);
-
-  for (uint8_t i = 0; i < 8; i++)
-    res = (res != utils->bit_out_of_byte_reversed(sum, i));
-
-  return res;
+bool Vector::count_ones_8_mod2(uint8_t byte) const {
+  return utils->count_ones_8(byte) % 2;
 }

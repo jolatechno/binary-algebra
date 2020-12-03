@@ -25,7 +25,7 @@ class Matrice {
     Utils* utils;
 
     //block operations
-    bool count_ones_64(uint64_t word) const;
+    bool count_ones_64_mod2(uint64_t word) const;
     uint64_t transpose_block(uint64_t block) const;
     uint8_t multiply_block_byte(uint64_t block, uint8_t vect) const;
     uint64_t multiply_block_block(uint64_t block_left, uint64_t block_right) const;
@@ -40,23 +40,18 @@ class Matrice {
     const uint16_t width;
 
     //constructors
-    Matrice(uint16_t mat_height, uint16_t mat_width) : height(mat_height), width(mat_width) {
-      blocks = (uint64_t *) calloc(height * width, sizeof(uint64_t));
-      if (blocks == NULL) throw std::bad_alloc();
-    }
-    Matrice(uint16_t size) : height(size), width(size) {
-      blocks = (uint64_t *) calloc(size * size, sizeof(uint64_t));
-      if (blocks == NULL) throw std::bad_alloc();
-    }
+    Matrice(uint16_t mat_height, uint16_t mat_width);
+    Matrice(uint16_t size);
 
     //destructor
-    //~Matrice() { free(blocks); } //todo
+    ~Matrice();
 
     //print operator
     friend std::ostream& operator<<(std::ostream& os, const Matrice& mat);
 
-    //copy operator
-    Matrice& operator=(const Matrice mat);
+    //copy and assignment operators
+    Matrice(const Matrice& other);
+    Matrice& operator=(const Matrice other);
 
     //initializers
     void randomize();
@@ -99,7 +94,7 @@ class Vector {
     Utils* utils;
 
     //block operations
-    bool count_ones_8(uint8_t byte) const;
+    bool count_ones_8_mod2(uint8_t byte) const;
     uint64_t multiply_byte_byte(uint8_t vect_left, uint8_t vect_right) const;
 
     //Stupid way of accessing vector elements, only for testing or debugging !
@@ -111,19 +106,17 @@ class Vector {
     const uint16_t height;
 
     //constructor
-    Vector(uint16_t size): height(size) {
-      blocks = (uint8_t *) calloc(height, sizeof(uint64_t));
-      if (blocks == NULL) throw std::bad_alloc();
-    }
+    Vector(uint16_t size);
 
     //destructor
-    //~Vector() { free(blocks); } //todo
+    ~Vector();
 
     //print operator
     friend std::ostream& operator<<(std::ostream& os, const Vector& vect);
 
-    //copy operator
-    Vector& operator=(const Vector vect);
+    //copy and assignment operators
+    Vector(const Vector& other);
+    Vector& operator=(const Vector other);
 
     //initializers
     void randomize();

@@ -81,13 +81,11 @@ void Matrice::operator*=(const Matrice mat) {
   (mat.height != mat.width)) //check if dimensions are compatible
     throw;
 
-  Matrice mat_res = (*this) * mat;
-  blocks = mat_res.blocks;
+  *this = (*this) * mat;
 }
 
 void Vector::operator*=(const Matrice mat) {
   if (mat.height != mat.width) throw; //check if dimensions are compatible
 
-  Vector vect_res =  mat * (*this);
-  blocks = vect_res.blocks;
+  *this =  mat * (*this);
 }

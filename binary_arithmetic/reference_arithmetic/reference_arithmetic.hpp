@@ -55,6 +55,6 @@ class reference_arithmetic {
     //initializers
     void zero(Matrice mat) const;
     void zero(Vector vect) const;
-    void diag(Matrice mat) const;
-    void diag(Matrice mat, const  Vector diagonal) const;
+    void diag(Matrice& mat) const;
+    void diag(Matrice& mat, const  Vector diagonal) const;
 };

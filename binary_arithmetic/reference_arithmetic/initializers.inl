@@ -21,7 +21,7 @@ diagonal initializers
 */
 
 
-void reference_arithmetic::diag(Matrice mat) const {
+void reference_arithmetic::diag(Matrice& mat) const {
   assert(mat.height == mat.width); //checking dimensions
 
   int16_t i, j;
@@ -34,7 +34,7 @@ void reference_arithmetic::diag(Matrice mat) const {
       }
 }
 
-void reference_arithmetic::diag(Matrice mat, const Vector diagonal) const {
+void reference_arithmetic::diag(Matrice& mat, const Vector diagonal) const {
   assert(mat.height == mat.width); //checking dimensions
   assert(mat.height == diagonal.height);
 

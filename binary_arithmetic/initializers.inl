@@ -23,18 +23,22 @@ assignment operators
 */
 
 
-Matrice& Matrice::operator=(const Matrice mat) {
-  assert(height == mat.height); //check if dimensions are compatible
-  assert(width == mat.width);
+Matrice& Matrice::operator=(const Matrice other) {
+  if(this != &other) {
+    assert(height == other.height); //check if dimensions are compatible
+    assert(width == other.width);
 
-  memcpy(blocks, mat.blocks, height * width * sizeof(uint64_t));
+    memcpy(blocks, other.blocks, height * width * sizeof(uint64_t)); //copy blocks
+  }
   return *this;
 }
 
-Vector& Vector::operator=(const Vector vect) {
-  assert(height == vect.height); //check if dimensions are compatible
+Vector& Vector::operator=(const Vector other) {
+  if(this != &other) {
+    assert(height == other.height); //check if dimensions are compatible
 
-  memcpy(blocks, vect.blocks, height * sizeof(uint8_t));
+    memcpy(blocks, other.blocks, height * sizeof(uint8_t)); //copy blocks
+  }
   return *this;
 }
 
