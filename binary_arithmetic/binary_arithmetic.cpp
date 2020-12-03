@@ -60,9 +60,9 @@ destructors
 
 
 Matrice::~Matrice(){
-  //free(blocks); //todo
+  free(blocks); //todo
 }
 
 Vector::~Vector(){
-  //free(blocks); //todo
+  free(blocks); //todo
 }

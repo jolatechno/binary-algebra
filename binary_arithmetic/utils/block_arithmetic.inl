@@ -9,15 +9,15 @@ block transposition
 
 uint64_t Matrice::transpose_block(uint64_t block) const {
   // stolen from the Hacker's delight, edition 2, chapter 7 part 3
-  block= block& 0xAA55AA55AA55AA55LL |
-  (block& 0x00AA00AA00AA00AALL) << 7 |
-  (block>> 7) & 0x00AA00AA00AA00AALL;
-  block= block& 0xCCCC3333CCCC3333LL |
-  (block& 0x0000CCCC0000CCCCLL) << 14 |
-  (block>> 14) & 0x0000CCCC0000CCCCLL;
-  block= block& 0xF0F0F0F00F0F0F0FLL |
-  (block& 0x00000000F0F0F0F0LL) << 28 |
-  (block>> 28) & 0x00000000F0F0F0F0LL;
+  block = block & 0xAA55AA55AA55AA55LL |
+  (block & 0x00AA00AA00AA00AALL) << 7 |
+  (block >> 7) & 0x00AA00AA00AA00AALL;
+  block = block & 0xCCCC3333CCCC3333LL |
+  (block & 0x0000CCCC0000CCCCLL) << 14 |
+  (block >> 14) & 0x0000CCCC0000CCCCLL;
+  block = block& 0xF0F0F0F00F0F0F0FLL |
+  (block & 0x00000000F0F0F0F0LL) << 28 |
+  (block >> 28) & 0x00000000F0F0F0F0LL;
 
   return block;
 }
