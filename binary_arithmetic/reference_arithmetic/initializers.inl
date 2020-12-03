@@ -3,14 +3,14 @@ zero initializer
 */
 
 
-void reference_arithmetic::zero(Matrice mat) const {
+void reference_arithmetic::zero(Matrice& mat) const {
   int16_t i, j;
   for (i = 0; i < mat.height * 8; i++)
     for (j = 0; j < mat.width * 8; j++)
       mat.write(i, j, false);
 }
 
-void reference_arithmetic::zero(Vector vect) const {
+void reference_arithmetic::zero(Vector& vect) const {
   for (int16_t i = 0; i < vect.height * 8; i++)
     vect.write(i, false);
 }

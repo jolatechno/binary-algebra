@@ -51,35 +51,35 @@ class Matrice {
 
     //copy and assignment operators
     Matrice(const Matrice& other);
-    Matrice& operator=(const Matrice other);
+    Matrice& operator=(const Matrice& other);
 
     //initializers
     void randomize();
     void diag();
-    void diag(const Vector diagonal);
+    void diag(const Vector& diagonal);
 
     //comparaisons
-    bool operator==(const Matrice vect) const;
-    bool operator!=(const Matrice vect) const;
+    bool operator==(const Matrice& vect) const;
+    bool operator!=(const Matrice& vect) const;
     bool operator==(const bool bit) const;
 
     //self operators
     Matrice T() const;
-    void operator^=(const Matrice mat);
+    void operator^=(const Matrice& mat);
     void operator^=(const bool bit);
-    void operator&=(const Matrice mat);
+    void operator&=(const Matrice& mat);
     void operator&=(const bool bit);
-    void operator*=(const Matrice mat);
+    void operator*=(const Matrice& mat);
 
     //operators
     Matrice operator~() const;
-    bool operator%(const Matrice mat) const; //scalar product
-    Matrice operator^(const Matrice mat) const;
+    bool operator%(const Matrice& mat) const; //scalar product
+    Matrice operator^(const Matrice& mat) const;
     Matrice operator^(const bool bit) const;
-    Matrice operator&(const Matrice mat) const;
+    Matrice operator&(const Matrice& mat) const;
     Matrice operator&(const bool bit) const;
-    Vector operator*(const Vector vect) const;
-    Matrice operator*(const Matrice mat) const;
+    Vector operator*(const Vector& vect) const;
+    Matrice operator*(const Matrice& mat) const;
 };
 
 class Vector {
@@ -116,29 +116,29 @@ class Vector {
 
     //copy and assignment operators
     Vector(const Vector& other);
-    Vector& operator=(const Vector other);
+    Vector& operator=(const Vector& other);
 
     //initializers
     void randomize();
 
     //comparaisons
-    bool operator==(const Vector vect) const;
-    bool operator!=(const Vector vect) const;
+    bool operator==(const Vector& vect) const;
+    bool operator!=(const Vector& vect) const;
     bool operator==(const bool bit) const;
 
     //self operators
-    void operator^=(const Vector vect);
+    void operator^=(const Vector& vect);
     void operator^=(const bool bit);
-    void operator&=(const Vector vect);
+    void operator&=(const Vector& vect);
     void operator&=(const bool bit);
-    void operator*=(const Matrice mat);
+    void operator*=(const Matrice& mat);
 
     //operators
     Vector operator~() const;
-    bool operator%(const Vector vect) const; //scalar product
-    Vector operator^(const Vector vect) const;
+    bool operator%(const Vector& vect) const; //scalar product
+    Vector operator^(const Vector& vect) const;
     Vector operator^(const bool bit) const;
-    Vector operator&(const Vector vect) const;
+    Vector operator&(const Vector& vect) const;
     Vector operator&(const bool bit) const;
-    Matrice operator*(const Vector vect) const;
+    Matrice operator*(const Vector& vect) const;
 };

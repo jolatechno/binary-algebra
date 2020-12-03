@@ -46,7 +46,7 @@ additions
 */
 
 
-Matrice Matrice::operator^(const Matrice mat) const {
+Matrice Matrice::operator^(const Matrice& mat) const {
   assert(height == mat.height); //check if dimensions are compatible
   assert(width == mat.width);
 
@@ -63,7 +63,7 @@ Matrice Matrice::operator^(const bool bit) const {
   return bit ? ~(*this) : *this ;
 }
 
-Vector Vector::operator^(const Vector vect) const {
+Vector Vector::operator^(const Vector& vect) const {
   assert(height == vect.height); //check if dimensions are compatible
 
   Vector vect_res(height);
@@ -85,7 +85,7 @@ bitwise multiplications
 */
 
 
-Matrice Matrice::operator&(const Matrice mat) const {
+Matrice Matrice::operator&(const Matrice& mat) const {
   assert(height == mat.height); //check if dimensions are compatible
   assert(width == mat.width);
 
@@ -102,7 +102,7 @@ Matrice Matrice::operator&(const bool bit) const {
   return bit ? *this : Matrice(height, width);
 }
 
-Vector Vector::operator&(const Vector vect) const {
+Vector Vector::operator&(const Vector& vect) const {
   assert(height == vect.height); //check if dimensions are compatible
 
   Vector vect_res(height);
@@ -124,7 +124,7 @@ multiplications
 */
 
 
-Matrice Matrice::operator*(const Matrice mat) const {
+Matrice Matrice::operator*(const Matrice& mat) const {
   assert(width == mat.height); //check if dimensions are compatible
 
   Matrice mat_res(height, mat.width);
@@ -144,7 +144,7 @@ Matrice Matrice::operator*(const Matrice mat) const {
   return mat_res;
 }
 
-Vector Matrice::operator*(const Vector vect) const {
+Vector Matrice::operator*(const Vector& vect) const {
   assert(width == vect.height); //check if dimensions are compatible
 
   Vector vect_res(height);
@@ -163,7 +163,7 @@ Vector Matrice::operator*(const Vector vect) const {
   return vect_res;
 }
 
-Matrice Vector::operator*(const Vector vect) const {
+Matrice Vector::operator*(const Vector& vect) const {
   Matrice mat_res(vect.height, height);
 
   #pragma omp parallel for collapse(2)
@@ -180,7 +180,7 @@ scalar products
 */
 
 
-bool Matrice::operator%(const Matrice mat) const {
+bool Matrice::operator%(const Matrice& mat) const {
   assert(height == mat.height); //check if dimensions are compatible
   assert(width == mat.width);
 
@@ -194,7 +194,7 @@ bool Matrice::operator%(const Matrice mat) const {
 }
 
 
-bool Vector::operator%(const Vector vect) const {
+bool Vector::operator%(const Vector& vect) const {
   assert(height == vect.height); //check if dimensions are compatible
 
   uint8_t sum = 0x00;

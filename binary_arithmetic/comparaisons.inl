@@ -3,7 +3,7 @@ equality between objects
 */
 
 
-bool Matrice::operator==(const Matrice mat) const {
+bool Matrice::operator==(const Matrice& mat) const {
   if ((height != mat.height) ||
   (width != mat.width)) //check if dimensions are compatible
     return false;
@@ -26,7 +26,7 @@ bool Matrice::operator==(const Matrice mat) const {
   return equal_;
 }
 
-bool Vector::operator==(const Vector vect) const {
+bool Vector::operator==(const Vector& vect) const {
   if (height != vect.height) return false; //check if dimensions are compatible
 
   bool equal_ = true;
@@ -53,11 +53,11 @@ inequality between objects
 */
 
 
-bool Matrice::operator!=(const Matrice mat) const {
+bool Matrice::operator!=(const Matrice& mat) const {
   return !(*this == mat);
 }
 
-bool Vector::operator!=(const Vector vect) const {
+bool Vector::operator!=(const Vector& vect) const {
   return !(*this == vect);
 }
 

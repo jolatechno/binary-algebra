@@ -23,7 +23,7 @@ assignment operators
 */
 
 
-Matrice& Matrice::operator=(const Matrice other) {
+Matrice& Matrice::operator=(const Matrice& other) {
   if(this != &other) {
     assert(height == other.height); //check if dimensions are compatible
     assert(width == other.width);
@@ -33,7 +33,7 @@ Matrice& Matrice::operator=(const Matrice other) {
   return *this;
 }
 
-Vector& Vector::operator=(const Vector other) {
+Vector& Vector::operator=(const Vector& other) {
   if(this != &other) {
     assert(height == other.height); //check if dimensions are compatible
 
@@ -61,7 +61,7 @@ void Matrice::diag() {
       }
 }
 
-void Matrice::diag(const Vector diagonal) {
+void Matrice::diag(const Vector& diagonal) {
   assert(height == width); //check if dimensions are compatible
   assert(diagonal.height == height);
 
