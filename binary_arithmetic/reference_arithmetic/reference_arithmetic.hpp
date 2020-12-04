@@ -43,6 +43,8 @@ class reference_arithmetic {
     //scalar product
     bool scalar_product(Matrice const& mat1, Matrice const& mat2) const;
     bool scalar_product(Vector const& vect1, Vector const& vect2) const;
+    int integer_scalar_product(Matrice const& mat1, Matrice const& mat2) const;
+    int integer_scalar_product(Vector const& vect1, Vector const& vect2) const;
 
     //comparaisons
     bool equal(Matrice const& mat1, Matrice const& mat2) const;

@@ -133,3 +133,15 @@ void test_scalar_product(const reference_arithmetic ref, Vector const& vect1, Ve
 
   assert((vect1 % vect2) == stupid_scalar);
 }
+
+void test_integer_scalar_product(const reference_arithmetic ref, Matrice const& mat1, Matrice const& mat2) {
+  int stupid_scalar = ref.integer_scalar_product(mat1, mat2);
+
+  assert(mat1.integer_scalar_product(mat2) == stupid_scalar);
+}
+
+void test_integer_scalar_product(const reference_arithmetic ref, Vector const& vect1, Vector const& vect2) {
+  int stupid_scalar = ref.integer_scalar_product(vect1, vect2);
+
+  assert(vect1.integer_scalar_product(vect2) == stupid_scalar);
+}

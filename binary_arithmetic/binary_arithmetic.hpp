@@ -25,7 +25,6 @@ class Matrice {
     Utils* utils;
 
     //block operations
-    bool count_ones_64_mod2(uint64_t word) const;
     uint64_t transpose_block(uint64_t block) const;
     uint8_t multiply_block_byte(uint64_t block, uint8_t vect) const;
     uint64_t multiply_block_block(uint64_t block_left, uint64_t block_right) const;
@@ -74,6 +73,7 @@ class Matrice {
     //operators
     Matrice operator~() const;
     bool operator%(Matrice const& mat) const; //scalar product
+    int integer_scalar_product(Matrice const& mat) const; //integer scalar product
     Matrice operator^(Matrice const& mat) const;
     Matrice operator^(const bool bit) const;
     Matrice operator&(Matrice const& mat) const;
@@ -94,7 +94,6 @@ class Vector {
     Utils* utils;
 
     //block operations
-    bool count_ones_8_mod2(uint8_t byte) const;
     uint64_t multiply_byte_byte(uint8_t vect_left, uint8_t vect_right) const;
 
     //Stupid way of accessing vector elements, only for testing or debugging !
@@ -136,6 +135,7 @@ class Vector {
     //operators
     Vector operator~() const;
     bool operator%(Vector const& vect) const; //scalar product
+    int integer_scalar_product(Vector const& vect) const; //integer scalar product
     Vector operator^(Vector const& vect) const;
     Vector operator^(const bool bit) const;
     Vector operator&(Vector const& vect) const;

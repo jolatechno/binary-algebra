@@ -190,9 +190,8 @@ bool Matrice::operator%(Matrice const& mat) const {
   for (int16_t n = 0; n < height * width; n++)
     sum ^= blocks[n] & mat.blocks[n];
 
-  return count_ones_64_mod2(sum);
+  return utils->count_ones_64(sum) % 2;
 }
-
 
 bool Vector::operator%(Vector const& vect) const {
   assert(height == vect.height); //check if dimensions are compatible
@@ -203,5 +202,30 @@ bool Vector::operator%(Vector const& vect) const {
   for (int16_t i = 0; i < height; i++)
     sum ^= blocks[i] & vect.blocks[i];
 
-  return count_ones_8_mod2(sum);
+  return utils->count_ones_8(sum) % 2;
+}
+
+int Matrice::integer_scalar_product(Matrice const& mat) const {
+  assert(height == mat.height); //check if dimensions are compatible
+  assert(width == mat.width);
+
+  int sum = 0;
+
+  #pragma omp parallel for reduction(+ : sum)
+  for (int16_t n = 0; n < height * width; n++)
+    sum +=  utils->count_ones_64(blocks[n] & mat.blocks[n]);
+
+  return sum;
+}
+
+int Vector::integer_scalar_product(Vector const& vect) const {
+  assert(height == vect.height); //check if dimensions are compatible
+
+  int sum = 0x00;
+
+  #pragma omp parallel for reduction(+ : sum)
+  for (int16_t i = 0; i < height; i++)
+    sum +=  utils->count_ones_8(blocks[i] & vect.blocks[i]);
+
+  return sum;
 }

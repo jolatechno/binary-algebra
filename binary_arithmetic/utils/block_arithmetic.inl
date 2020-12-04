@@ -57,17 +57,3 @@ uint64_t Vector::multiply_byte_byte(uint8_t vect_left, uint8_t vect_right) const
 
   return res;
 }
-
-
-/*
-block scalar products
-*/
-
-
-bool Matrice::count_ones_64_mod2(uint64_t word) const {
-  return utils->count_ones_64(word) % 2;
-}
-
-bool Vector::count_ones_8_mod2(uint8_t byte) const {
-  return utils->count_ones_8(byte) % 2;
-}

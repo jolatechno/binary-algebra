@@ -225,3 +225,28 @@ bool reference_arithmetic::scalar_product(Vector const& vect1, Vector const& vec
 
   return sum;
 }
+
+int reference_arithmetic::integer_scalar_product(Matrice const& mat1, Matrice const& mat2) const {
+  assert(mat1.height == mat2.height); //check if dimensions are compatible
+  assert(mat1.width == mat2.width);
+
+  int sum = 0;
+
+  int16_t i, j;
+  for (i = 0; i < mat1.height * 8; i++)
+    for (j = 0; j < mat1.width * 8; j++)
+      sum += mat1(i, j) && mat2(i, j);
+
+  return sum;
+}
+
+int reference_arithmetic::integer_scalar_product(Vector const& vect1, Vector const& vect2) const {
+  assert(vect1.height == vect2.height); //check if dimensions are compatible
+
+  int sum = 0;
+
+  for (int16_t i = 0; i < vect1.height * 8; i++)
+    sum += vect1[i] && vect2[i];
+
+  return sum;
+}

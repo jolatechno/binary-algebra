@@ -52,7 +52,7 @@ int main(int argc, char** argv){
   printf("testing random initializer with non-square matrices...\n");
   test_random(ref, mat_nsquare_1, i_max);
 
-  printf("testing zero initializer with Vectors...\n");
+  printf("testing random initializer with Vectors...\n");
   test_random(ref, vect_1, i_max);
 
   printf("testing diag initializer...\n");
@@ -73,7 +73,7 @@ int main(int argc, char** argv){
   */
 
 
-  printf("testing comparaisons between square matrices...\n");
+  printf("\ntesting comparaisons between square matrices...\n");
   for (i = 0; i < i_max; i++) {
     mat_square_1.randomize(); mat_square_2.randomize();
     test_equal(ref, mat_square_1, mat_square_2); test_equal(ref, mat_square_1, mat_square_1);
@@ -93,7 +93,7 @@ int main(int argc, char** argv){
     test_equal(ref, mat_nsquare_1, false); test_equal(ref, mat_nsquare_1, true);
   }
 
-  printf("testing zero initializer with vectors...\n");
+  printf("testing comparaisons between vectors...\n");
   for (i = 0; i < i_max; i++) {
     vect_1.randomize(); vect_2.randomize();
     test_equal(ref, vect_1, vect_2); test_equal(ref, vect_1, vect_1);
@@ -146,13 +146,13 @@ int main(int argc, char** argv){
     test_addition(ref, mat_nsquare_1, false);
   }
 
-  printf("testing zero initializer with vectors...\n");
+  printf("testing additions between vectors...\n");
   for (i = 0; i < i_max; i++) {
     vect_1.randomize(); vect_2.randomize();
     test_addition(ref, vect_1, vect_2);
   }
 
-  printf("testing zero initializer with vectors ans bits...\n");
+  printf("testing additions between vectors ans bits...\n");
   for (i = 0; i < i_max; i++) {
     vect_1.randomize();
     test_addition(ref, vect_1, true);
@@ -184,13 +184,13 @@ int main(int argc, char** argv){
     test_bitwise_multiplication(ref, mat_nsquare_1, false);
   }
 
-  printf("testing zero initializer with vectors...\n");
+  printf("testing bitwise multiplication between vectors...\n");
   for (i = 0; i < i_max; i++) {
     vect_1.randomize(); vect_2.randomize();
     test_bitwise_multiplication(ref, vect_1, vect_2);
   }
 
-  printf("testing zero initializer with vectors ans bits...\n");
+  printf("testing bitwise multiplication between vectors ans bits...\n");
   for (i = 0; i < i_max; i++) {
     vect_1.randomize();
     test_bitwise_multiplication(ref, vect_1, true);
@@ -215,7 +215,7 @@ int main(int argc, char** argv){
     test_negation(ref, mat_nsquare_1);
   }
 
-  printf("testing zero initializer with vectors..\n");
+  printf("testing negation of vectors..\n");
   for (i = 0; i < i_max; i++) {
     vect_1.randomize();
     test_negation(ref, vect_1);
@@ -239,10 +239,28 @@ int main(int argc, char** argv){
     test_scalar_product(ref, mat_nsquare_1, mat_nsquare_2);
   }
 
-  printf("testing zero initializer with vectors...\n");
+  printf("testing scalar product between vectors...\n");
   for (i = 0; i < i_max; i++) {
     vect_1.randomize(); vect_2.randomize();
     test_scalar_product(ref, vect_1, vect_2);
+  }
+
+  printf("testing integer scalar product between square matrices...\n");
+  for (i = 0; i < i_max; i++) {
+    mat_square_1.randomize(); mat_square_2.randomize();
+    test_integer_scalar_product(ref, mat_square_1, mat_square_2);
+  }
+
+  printf("testing integer scalar product between non-square matrices...\n");
+  for (i = 0; i < i_max; i++) {
+    mat_nsquare_1.randomize(); mat_nsquare_2.randomize();
+    test_integer_scalar_product(ref, mat_nsquare_1, mat_nsquare_2);
+  }
+
+  printf("testing integer scalar product between vectors...\n");
+  for (i = 0; i < i_max; i++) {
+    vect_1.randomize(); vect_2.randomize();
+    test_integer_scalar_product(ref, vect_1, vect_2);
   }
 
 
@@ -251,25 +269,25 @@ int main(int argc, char** argv){
   */
 
 
-  printf("testing zero initializer with vectors of similar dimensions...\n");
+  printf("testing multiplication between vectors of similar dimensions...\n");
   for (i = 0; i < i_max; i++) {
     vect_1.randomize(); vect_2.randomize();
     test_multiplication(ref, vect_1, vect_2);
   }
 
-  printf("testing zero initializer with vectors of different dimensions...\n");
+  printf("testing multiplication between vectors of different dimensions...\n");
   for (i = 0; i < i_max; i++) {
     vect_1.randomize(); vect_3.randomize();
     test_multiplication(ref, vect_1, vect_3);
   }
 
-  printf("testing zero initializer with vectors...\n");
+  printf("testing multiplication between square matrices and vectors...\n");
   for (i = 0; i < i_max; i++) {
     mat_square_1.randomize(); vect_1.randomize();
     test_multiplication(ref, mat_square_1, vect_1);
   }
 
-  printf("testing zero initializer with vectors...\n");
+  printf("testing multiplication between non-square matrices and vectors...\n");
   for (i = 0; i < i_max; i++) {
     mat_nsquare_1.randomize(); vect_1.randomize();
     test_multiplication(ref, mat_nsquare_1, vect_1);
@@ -306,13 +324,13 @@ int main(int argc, char** argv){
     test_self_addition(ref, mat_nsquare_1, false);
   }
 
-  printf("testing zero initializer with vectors...\n");
+  printf("testing self additions between vectors...\n");
   for (i = 0; i < i_max; i++) {
     vect_1.randomize(); vect_2.randomize();
     test_self_addition(ref, vect_1, vect_2);
   }
 
-  printf("testing zero initializer with vectors ans bits...\n");
+  printf("testing self additions between vectors ans bits...\n");
   for (i = 0; i < i_max; i++) {
     vect_1.randomize();
     test_self_addition(ref, vect_1, true);
@@ -344,13 +362,13 @@ int main(int argc, char** argv){
     test_self_bitwise_multiplication(ref, mat_nsquare_1, false);
   }
 
-  printf("testing zero initializer with vectors...\n");
+  printf("testing self bitwise multiplication between vectors...\n");
   for (i = 0; i < i_max; i++) {
     vect_1.randomize(); vect_2.randomize();
     test_self_bitwise_multiplication(ref, vect_1, vect_2);
   }
 
-  printf("testing zero initializer with vectors ans bits...\n");
+  printf("testing self bitwise multiplication between vectors ans bits...\n");
   for (i = 0; i < i_max; i++) {
     vect_1.randomize();
     test_self_bitwise_multiplication(ref, vect_1, true);
@@ -361,7 +379,8 @@ int main(int argc, char** argv){
   /*
   testing multiplications
   */
-  printf("testing zero initializer with vectors...\n");
+
+  printf("testing self multiplication between square matrices and vectors...\n");
   for (i = 0; i < i_max; i++) {
     mat_square_1.randomize(); vect_1.randomize();
     test_self_multiplication(ref, mat_square_1, vect_1);
