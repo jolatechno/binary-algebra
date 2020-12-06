@@ -59,8 +59,24 @@ Matrice Matrice::operator^(Matrice const& mat) const {
   return mat_res;
 }
 
+Matrice Matrice::operator+(Matrice const& mat) const {
+  return *this ^ mat;
+}
+
+Matrice Matrice::operator-(Matrice const& mat) const {
+  return *this ^ mat;
+}
+
 Matrice Matrice::operator^(const bool bit) const {
   return bit ? ~(*this) : *this ;
+}
+
+Matrice Matrice::operator+(const bool bit) const {
+  return *this ^ bit;
+}
+
+Matrice Matrice::operator-(const bool bit) const {
+  return *this ^ bit;
 }
 
 Vector Vector::operator^(Vector const& vect) const {
@@ -75,8 +91,24 @@ Vector Vector::operator^(Vector const& vect) const {
   return vect_res;
 }
 
+Vector Vector::operator+(Vector const& vect) const {
+  return *this ^ vect;
+}
+
+Vector Vector::operator-(Vector const& vect) const {
+  return *this ^ vect;
+}
+
 Vector Vector::operator^(const bool bit) const {
   return bit ? ~(*this) : *this ;
+}
+
+Vector Vector::operator+(const bool bit) const {
+  return *this ^ bit;
+}
+
+Vector Vector::operator-(const bool bit) const {
+  return *this ^ bit;
 }
 
 

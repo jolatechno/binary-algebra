@@ -78,6 +78,10 @@ class Matrice {
     Matrice T() const;
     void operator^=(Matrice const& mat);
     void operator^=(const bool bit);
+    void operator+=(Matrice const& mat); //aliases for the two previous
+    void operator+=(const bool bit);
+    void operator-=(Matrice const& mat); //also aliases for the two previous since addition and substraction mod2 are identical
+    void operator-=(const bool bit);
     void operator&=(Matrice const& mat);
     void operator&=(const bool bit);
     void operator*=(Matrice const& mat);
@@ -88,6 +92,10 @@ class Matrice {
     int integer_scalar_product(Matrice const& mat) const; //integer scalar product
     Matrice operator^(Matrice const& mat) const;
     Matrice operator^(const bool bit) const;
+    Matrice operator+(Matrice const& mat) const; //aliases for the two previous
+    Matrice operator+(const bool bit) const;
+    Matrice operator-(Matrice const& mat) const; //also aliases for the two previous since addition and substraction mod2 are identical
+    Matrice operator-(const bool bit) const;
     Matrice operator&(Matrice const& mat) const;
     Matrice operator&(const bool bit) const;
     Vector operator*(Vector const& vect) const;
@@ -152,6 +160,10 @@ class Vector {
     //self operators
     void operator^=(Vector const& vect);
     void operator^=(const bool bit);
+    void operator+=(Vector const& vect); //aliases for the two previous
+    void operator+=(const bool bit);
+    void operator-=(Vector const& vect); //also aliases for the two previous since addition and substraction mod2 are identical
+    void operator-=(const bool bit);
     void operator&=(Vector const& vect);
     void operator&=(const bool bit);
     void operator*=(Matrice const& mat);
@@ -162,6 +174,10 @@ class Vector {
     int integer_scalar_product(Vector const& vect) const; //integer scalar product
     Vector operator^(Vector const& vect) const;
     Vector operator^(const bool bit) const;
+    Vector operator+(Vector const& vect) const; //aliases for the two previous
+    Vector operator+(const bool bit) const;
+    Vector operator-(Vector const& vect) const; //also aliases for the two previous since addition and substraction mod2 are identical
+    Vector operator-(const bool bit) const;
     Vector operator&(Vector const& vect) const;
     Vector operator&(const bool bit) const;
     Matrice operator*(Vector const& vect) const;

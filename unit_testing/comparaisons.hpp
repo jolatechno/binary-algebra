@@ -11,6 +11,7 @@
 testing comparaisons
 */
 
+
 void test_comp(const reference_arithmetic ref, Matrice const& mat1, Matrice const& mat2) {
   assert((mat1 == mat2) == ref.equal(mat1, mat2));
   assert((mat1 != mat2) != ref.equal(mat1, mat2));

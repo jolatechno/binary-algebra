@@ -11,4 +11,4 @@ addons:
       - libomp-dev
 
 script:
-  - make test
+  - make clean test

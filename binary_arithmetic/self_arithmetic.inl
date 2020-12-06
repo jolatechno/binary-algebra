@@ -13,6 +13,14 @@ void Matrice::operator^=(Matrice const& mat) {
     blocks[n] ^= mat.blocks[n];
 }
 
+void Matrice::operator+=(Matrice const& mat) {
+  *this ^= mat;
+}
+
+void Matrice::operator-=(Matrice const& mat) {
+  *this ^= mat;
+}
+
 void Matrice::operator^=(const bool bit) {
   if (bit) {
     #pragma omp parallel for
@@ -20,6 +28,15 @@ void Matrice::operator^=(const bool bit) {
       blocks[n] = ~blocks[n];
   }
 }
+
+void Matrice::operator+=(const bool bit) {
+  *this ^= bit;
+}
+
+void Matrice::operator-=(const bool bit) {
+  *this ^= bit;
+}
+
 void Vector::operator^=(Vector const& vect) {
   if (height != vect.height) throw; //check if dimensions are compatible
 
@@ -28,12 +45,28 @@ void Vector::operator^=(Vector const& vect) {
     blocks[i] ^= vect.blocks[i];
 }
 
+void Vector::operator+=(Vector const& vect) {
+  *this ^= vect;
+}
+
+void Vector::operator-=(Vector const& vect) {
+  *this ^= vect;
+}
+
 void Vector::operator^=(const bool bit) {
   if (bit) {
     #pragma omp parallel for
     for (int16_t i = 0; i < height; i++)
       blocks[i] = ~blocks[i];
   }
+}
+
+void Vector::operator+=(const bool bit) {
+  *this ^= bit;
+}
+
+void Vector::operator-=(const bool bit) {
+  *this ^= bit;
 }
 
 

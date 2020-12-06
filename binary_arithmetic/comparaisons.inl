@@ -109,8 +109,6 @@ int Matrice::difference(Matrice const& mat) const {
   for (int16_t n = 0; n < height * width; n++)
     diff +=  utils->count_ones_64(blocks[n]) - utils->count_ones_64(mat.blocks[n]);
 
-  printf("mat %d\n", diff);
-
   return diff;
 }
 
