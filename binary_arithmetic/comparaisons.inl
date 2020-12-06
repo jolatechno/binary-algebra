@@ -4,47 +4,55 @@ equality between objects
 
 
 bool Matrice::operator==(Matrice const& mat) const {
-  if ((height != mat.height) ||
-  (width != mat.width)) //check if dimensions are compatible
-    return false;
+  if (this != &mat) {
+    if ((height != mat.height) ||
+    (width != mat.width)) //check if dimensions are compatible
+      return false;
 
-  bool equal_ = true;
+    bool equal_ = true;
 
-  #pragma omp parallel
-  {
-    #pragma omp for
-    for (int16_t n = 0; n < height * width; n++) {
-      if (blocks[n] != mat.blocks[n]) {
-        #pragma omp critical
-        equal_ = false;
-        #pragma omp cancel for
+    #pragma omp parallel
+    {
+      #pragma omp for
+      for (int16_t n = 0; n < height * width; n++) {
+        if (blocks[n] != mat.blocks[n]) {
+          #pragma omp critical
+          equal_ = false;
+          #pragma omp cancel for
+        }
+        #pragma omp cancellation point for
       }
-      #pragma omp cancellation point for
     }
+
+    return equal_;
   }
 
-  return equal_;
+  return true;
 }
 
 bool Vector::operator==(Vector const& vect) const {
-  if (height != vect.height) return false; //check if dimensions are compatible
+  if (this != &vect) {
+    if (height != vect.height) return false; //check if dimensions are compatible
 
-  bool equal_ = true;
+    bool equal_ = true;
 
-  #pragma omp parallel
-  {
-    #pragma omp for
-    for (int16_t i = 0; i < height; i++) {
-      if (blocks[i] != vect.blocks[i]) {
-        #pragma omp critical
-        equal_ = false;
-        #pragma omp cancel for
+    #pragma omp parallel
+    {
+      #pragma omp for
+      for (int16_t i = 0; i < height; i++) {
+        if (blocks[i] != vect.blocks[i]) {
+          #pragma omp critical
+          equal_ = false;
+          #pragma omp cancel for
+        }
+        #pragma omp cancellation point for
       }
-      #pragma omp cancellation point for
     }
+
+    return equal_;
   }
 
-  return equal_;
+  return true;
 }
 
 
@@ -100,28 +108,36 @@ smaller than comparaisons
 
 
 int Matrice::difference(Matrice const& mat) const {
-  assert(height == mat.height); //check if dimensions are compatible
-  assert(width == mat.width);
+  if (this != &mat) {
+    assert(height == mat.height); //check if dimensions are compatible
+    assert(width == mat.width);
 
-  int diff = 0;
+    int diff = 0;
 
-  #pragma omp parallel for reduction(+ : diff)
-  for (int16_t n = 0; n < height * width; n++)
-    diff +=  utils->count_ones_64(blocks[n]) - utils->count_ones_64(mat.blocks[n]);
+    #pragma omp parallel for reduction(+ : diff)
+    for (int16_t n = 0; n < height * width; n++)
+      diff +=  utils->count_ones_64(blocks[n]) - utils->count_ones_64(mat.blocks[n]);
 
-  return diff;
+    return diff;
+  }
+
+  return 0;
 }
 
 int Vector::difference(Vector const& vect) const {
-  assert(height == vect.height); //check if dimensions are compatible
+  if (this != &vect) {
+    assert(height == vect.height); //check if dimensions are compatible
 
-  int diff = 0;
+    int diff = 0;
 
-  #pragma omp parallel for reduction(+ : diff)
-  for (int16_t i = 0; i < height; i++)
-    diff +=  utils->count_ones_8(blocks[i]) - utils->count_ones_8(vect.blocks[i]);
+    #pragma omp parallel for reduction(+ : diff)
+    for (int16_t i = 0; i < height; i++)
+      diff +=  utils->count_ones_8(blocks[i]) - utils->count_ones_8(vect.blocks[i]);
 
-  return diff;
+    return diff;
+  }
+
+  return 0;
 }
 
 
