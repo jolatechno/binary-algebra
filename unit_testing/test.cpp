@@ -76,31 +76,28 @@ int main(int argc, char** argv){
   printf("\ntesting comparaisons between square matrices...\n");
   for (i = 0; i < i_max; i++) {
     mat_square_1.randomize(); mat_square_2.randomize();
-    test_equal(ref, mat_square_1, mat_square_2); test_equal(ref, mat_square_1, mat_square_1);
-    test_nequal(ref, mat_square_1, mat_square_2); test_nequal(ref, mat_square_1, mat_square_1);
+    test_comp(ref, mat_square_1, mat_square_2); test_comp(ref, mat_square_1, mat_square_1);
 
     mat_square_1 = Matrice(width);
-    test_equal(ref, mat_square_1, false); test_equal(ref, mat_square_1, true);
+    test_comp(ref, mat_square_1, false); test_comp(ref, mat_square_1, true);
   }
 
   printf("testing comparaisons between non-square matrices...\n");
   for (i = 0; i < i_max; i++) {
     mat_nsquare_1.randomize(); mat_nsquare_2.randomize();
-    test_equal(ref, mat_nsquare_1, mat_nsquare_2); test_equal(ref, mat_nsquare_1, mat_nsquare_1);
-    test_nequal(ref, mat_nsquare_1, mat_nsquare_2); test_nequal(ref, mat_nsquare_1, mat_nsquare_1);
+    test_comp(ref, mat_nsquare_1, mat_nsquare_2); test_comp(ref, mat_nsquare_1, mat_nsquare_1);
 
     mat_nsquare_1 = Matrice(height, width);
-    test_equal(ref, mat_nsquare_1, false); test_equal(ref, mat_nsquare_1, true);
+    test_comp(ref, mat_nsquare_1, false); test_comp(ref, mat_nsquare_1, true);
   }
 
   printf("testing comparaisons between vectors...\n");
   for (i = 0; i < i_max; i++) {
     vect_1.randomize(); vect_2.randomize();
-    test_equal(ref, vect_1, vect_2); test_equal(ref, vect_1, vect_1);
-    test_nequal(ref, vect_1, vect_2); test_nequal(ref, vect_1, vect_1);
+    test_comp(ref, vect_1, vect_2); test_comp(ref, vect_1, vect_1);
 
     vect_1 = Vector(width);
-    test_equal(ref, vect_1, false); test_equal(ref, vect_1, true);
+    test_comp(ref, vect_1, false); test_comp(ref, vect_1, true);
   }
 
 
@@ -269,7 +266,7 @@ int main(int argc, char** argv){
   */
 
 
-  printf("testing multiplication between vectors of similar dimensions...\n");
+  printf("\ntesting multiplication between vectors of similar dimensions...\n");
   for (i = 0; i < i_max; i++) {
     vect_1.randomize(); vect_2.randomize();
     test_multiplication(ref, vect_1, vect_2);

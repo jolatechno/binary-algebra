@@ -49,8 +49,8 @@ class reference_arithmetic {
     //comparaisons
     bool equal(Matrice const& mat1, Matrice const& mat2) const;
     bool equal(Vector const& vect1, Vector const& vect2) const;
-    bool nequal(Matrice const& mat1, Matrice const& mat2) const;
-    bool nequal(Vector const& vect1, Vector const& vect2) const;
+    bool greater(Matrice const& mat1, Matrice const& mat2) const;
+    bool greater(Vector const& vect1, Vector const& vect2) const;
     bool equal(Matrice const& mat1, bool bit) const;
     bool equal(Vector const& vect, bool bit) const;
 

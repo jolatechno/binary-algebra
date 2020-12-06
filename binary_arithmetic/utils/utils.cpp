@@ -3,7 +3,7 @@
 
 #include "utils.hpp"
 
-uint8_t Utils::bit_out_of_byte_reversed(uint8_t byte, uint8_t bit) const {
+bool Utils::bit_out_of_byte_reversed(uint8_t byte, uint8_t bit) const {
   return (byte >> (7 - bit)) & 0x01;
 }
 
@@ -20,12 +20,12 @@ uint64_t Utils::circular_shift_64(uint64_t vect, uint8_t shift) const {
 }
 
 int Utils::count_ones_8(uint8_t byte) const {
-  int sum = 0;
+  static const int NIBBLE_LOOKUP [16] = {
+    0, 1, 1, 2, 1, 2, 2, 3,
+    1, 2, 2, 3, 2, 3, 3, 4
+  };
 
-  for (uint8_t i = 0; i < 8; i++)
-    sum += bit_out_of_byte_reversed(byte, i);
-
-  return sum;
+  return NIBBLE_LOOKUP[byte & 0x0F] + NIBBLE_LOOKUP[byte >> 4];
 }
 
 int Utils::count_ones_64(uint64_t word) const {

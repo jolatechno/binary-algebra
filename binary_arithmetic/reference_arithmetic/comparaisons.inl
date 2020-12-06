@@ -1,5 +1,5 @@
 /*
-defining comparaisons
+equality between objects
 */
 
 
@@ -27,13 +27,11 @@ bool reference_arithmetic::equal(Vector const& vect1, Vector const& vect2) const
   return true;
 }
 
-bool reference_arithmetic::nequal(Matrice const& mat1, Matrice const& mat2) const {
-  return !(mat1 == mat2);
-}
 
-bool reference_arithmetic::nequal(Vector const& vect1, Vector const& vect2) const {
-  return !(vect1 == vect2);
-}
+/*
+equality between objects and bit
+*/
+
 
 bool reference_arithmetic::equal(Matrice const& mat1, bool bit) const {
   uint16_t i, j;
@@ -51,4 +49,17 @@ bool reference_arithmetic::equal(Vector const& vect, bool bit) const {
       return false;
 
   return true;
+}
+
+
+/*
+other comparaisons
+*/
+
+bool reference_arithmetic::greater(Matrice const& mat1, Matrice const& mat2) const {
+  return integer_scalar_product(mat1, mat1) > integer_scalar_product(mat2, mat2);
+}
+
+bool reference_arithmetic::greater(Vector const& vect1, Vector const& vect2) const {
+  return integer_scalar_product(vect1, vect1) > integer_scalar_product(vect2, vect2);
 }

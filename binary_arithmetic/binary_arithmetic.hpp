@@ -29,6 +29,9 @@ class Matrice {
     uint8_t multiply_block_byte(uint64_t block, uint8_t vect) const;
     uint64_t multiply_block_block(uint64_t block_left, uint64_t block_right) const;
 
+    //for comparaisons
+    int difference(Matrice const& mat) const;
+
     //Stupid way of accessing matrice elements, only for testing or debugging !
     bool operator()(uint16_t i, uint16_t j) const;
     void write(uint16_t i, uint16_t j, bool bit);
@@ -58,9 +61,18 @@ class Matrice {
     void diag(Vector const& diagonal);
 
     //comparaisons
-    bool operator==(Matrice const& vect) const;
-    bool operator!=(Matrice const& vect) const;
+    bool operator==(Matrice const& mat) const;
     bool operator==(const bool bit) const;
+    bool operator!=(Matrice const& mat) const;
+    bool operator!=(const bool bit) const;
+    bool operator<(Matrice const& mat) const;
+    bool operator<(const bool bit) const;
+    bool operator>(Matrice const& mat) const;
+    bool operator>(const bool bit) const;
+    bool operator<=(Matrice const& mat) const;
+    bool operator<=(const bool bit) const;
+    bool operator>=(Matrice const& mat) const;
+    bool operator>=(const bool bit) const;
 
     //self operators
     Matrice T() const;
@@ -96,6 +108,9 @@ class Vector {
     //block operations
     uint64_t multiply_byte_byte(uint8_t vect_left, uint8_t vect_right) const;
 
+    //for comparaisons
+    int difference(Vector const& vect) const;
+
     //Stupid way of accessing vector elements, only for testing or debugging !
     bool operator[](uint16_t i) const;
     void write(uint16_t i, bool bit);
@@ -122,8 +137,17 @@ class Vector {
 
     //comparaisons
     bool operator==(Vector const& vect) const;
-    bool operator!=(Vector const& vect) const;
     bool operator==(const bool bit) const;
+    bool operator!=(Vector const& vect) const;
+    bool operator!=(const bool bit) const;
+    bool operator<(Vector const& vect) const;
+    bool operator<(const bool bit) const;
+    bool operator>(Vector const& vect) const;
+    bool operator>(const bool bit) const;
+    bool operator<=(Vector const& vect) const;
+    bool operator<=(const bool bit) const;
+    bool operator>=(Vector const& vect) const;
+    bool operator>=(const bool bit) const;
 
     //self operators
     void operator^=(Vector const& vect);
