@@ -1,4 +1,4 @@
-COMPILER=g++
+COMPILER=g++ -std=c++0x
 LINKER=ar
 LOCALLIBS = $(wildcard binary_arithmetic/*.cpp) $(wildcard binary_arithmetic/**/*.cpp)
 LDLIBS=-fopenmp
