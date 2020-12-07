@@ -1,38 +1,22 @@
-#define INITIALIZER_SQUARE_MATRICE_HEADER \
-  assert(height == width); \
-  auto *this_blocks = blocks; \
-  auto _height = height; \
-  auto _width = width;
-
-#define INITIALIZER_VECTOR_HEADER \
-  auto *this_blocks = blocks; \
-  auto _height = height;
-
-
 /*
 randomizers
 */
 
 
 void Matrice::randomize() {
-  uint8_t *block_8 = (uint8_t *)blocks;
+  uint8_t *block_8 = (uint8_t *)&blocks[0];
 
-  uint16_t _size = height * width * 8;
-
-  int16_t i;
-  #pragma omp parallel for shared(block_8)
-  for (i = 0; i < _size; i++)
+  #pragma omp parallel for
+  for (int16_t i = 0; i < height * width * 8; i++)
     block_8[i] = rand();
 }
 
 void Vector::randomize() {
-  INITIALIZER_VECTOR_HEADER;
-
-  int16_t i;
-  #pragma omp parallel for shared(this_blocks)
-  for (i = 0; i < _height; i++)
-    this_blocks[i] = rand();
+  #pragma omp parallel for
+  for (int16_t i = 0; i < height; i++)
+    blocks[i] = rand();
 }
+
 
 /*
 assignment operators
@@ -65,26 +49,25 @@ diagonal initializers
 
 
 void Matrice::diag() {
-  INITIALIZER_SQUARE_MATRICE_HEADER;
+  assert(height == width);//check if dimensions are compatible
 
-  int16_t i, j;
-  #pragma omp parallel for collapse(2) shared(this_blocks)
-  for (i = 0; i < _height; i++)
-    for (j = 0; j < _width; j++)
+  #pragma omp parallel for collapse(2)
+  for (int16_t i = 0; i < height; i++)
+    for (int16_t j = 0; j < width; j++)
       if(i == j) {
-        this_blocks[i + j*_height] = 0x8040201008040201;
+        blocks[i + j*height] = 0x8040201008040201;
       } else {
-        this_blocks[i + j*_height] = 0;
+        blocks[i + j*height] = 0;
       }
 }
 
 void Matrice::diag(Vector const& diagonal) {
-  INITIALIZER_SQUARE_MATRICE_HEADER;
+  assert(height == width); //check if dimensions are compatible
+  assert(diagonal.height == height);
 
-  int16_t i, j;
-  #pragma omp parallel for collapse(2) shared(this_blocks)
-  for (i = 0; i < _height; i++)
-    for (j = 0; j < _width; j++)
+  #pragma omp parallel for collapse(2)
+  for (int16_t i = 0; i < height; i++)
+    for (int16_t j = 0; j < width; j++)
       if(i == j) {
         uint8_t block = diagonal.blocks[i];
         uint64_t res = 0;
@@ -92,8 +75,8 @@ void Matrice::diag(Vector const& diagonal) {
         for (int16_t k = 7; k >= 0; k--)
           res = (res << 9) | ((block >> k) & 0x01);
 
-          blocks[i + j*_height] = res;
+          blocks[i + j*height] = res;
       } else {
-        blocks[i + j*_height] = 0;
+        blocks[i + j*height] = 0;
       }
 }
