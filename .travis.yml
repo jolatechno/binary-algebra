@@ -9,6 +9,7 @@ addons:
     update: true
     packages:
       - libomp-dev
+      - gcc-offload-nvptx
 
 script:
   - make clean test

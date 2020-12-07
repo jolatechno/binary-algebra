@@ -53,8 +53,9 @@ Matrice Matrice::operator~() const {
 
   uint16_t _size = width * height;
 
+  int16_t n;
   #pragma omp parallel for schedule(static) shared(this_blocks, res_blocks)
-  for (int16_t n = 0; n < _size; n++)
+  for (n = 0; n < _size; n++)
     res_blocks[n] = ~this_blocks[n];
 
   return res;
@@ -68,9 +69,10 @@ Vector Vector::operator~() const {
 
   uint16_t _height = height;
 
-  #pragma omp parallel for
-  for (int16_t n = 0; n < _height; n++)
-    res_blocks[n] = ~this_blocks[n];
+  int16_t i;
+  #pragma omp parallel for schedule(static) shared(this_blocks, res_blocks)
+  for (i = 0; i < _height; i++)
+    res_blocks[i] = ~this_blocks[i];
 
   return res;
 }
@@ -85,8 +87,9 @@ Matrice Matrice::operator^(Matrice const& other) const {
   ARITHMETIC_MATRICE_BITWISE_HEADER;
   ARITHMETIC_VARIABLE_HEADER;
 
+  int16_t n;
   #pragma omp parallel for schedule(static) shared(this_blocks, res_blocks, other_blocks)
-  for (int16_t n = 0; n < _height * _width; n++)
+  for (n = 0; n < _height * _width; n++)
     res_blocks[n] = this_blocks[n] ^ other_blocks[n];
 
   return res;
@@ -116,8 +119,9 @@ Vector Vector::operator^(Vector const& other) const {
   ARITHMETIC_VECTOR_BITWISE_HEADER;
   ARITHMETIC_VARIABLE_HEADER;
 
+  int16_t i;
   #pragma omp parallel for schedule(static) shared(this_blocks, res_blocks, other_blocks)
-  for (int16_t i = 0; i < _height; i++)
+  for (i = 0; i < _height; i++)
     res_blocks[i] = this_blocks[i] ^ other_blocks[i];
 
   return res;
@@ -153,8 +157,9 @@ Matrice Matrice::operator&(Matrice const& other) const {
   ARITHMETIC_MATRICE_BITWISE_HEADER;
   ARITHMETIC_VARIABLE_HEADER;
 
+  int16_t n;
   #pragma omp parallel for shared(this_blocks, res_blocks, other_blocks)
-  for (int16_t n = 0; n < _height * _width; n++)
+  for (n = 0; n < _height * _width; n++)
     res_blocks[n] = this_blocks[n] & other_blocks[n];
 
   return res;
@@ -168,8 +173,9 @@ Vector Vector::operator&(Vector const& other) const {
   ARITHMETIC_VECTOR_BITWISE_HEADER;
   ARITHMETIC_VARIABLE_HEADER;
 
+  int16_t i;
   #pragma omp parallel for shared(this_blocks, res_blocks, other_blocks)
-  for (int16_t i = 0; i < _height; i++)
+  for (i = 0; i < _height; i++)
     res_blocks[i] = this_blocks[i] & other_blocks[i];
 
   return res;
@@ -194,7 +200,7 @@ Matrice Matrice::operator*(Matrice const& other) const {
   int16_t _height = height;
   int16_t _size = other.width;
 
-  ARITHMETIC_VARIABLE_HEADER
+  ARITHMETIC_VARIABLE_HEADER;
 
   int16_t i, j, k;
   #pragma omp parallel for collapse(3) schedule(static) shared(other_blocks, res_blocks, this_blocks)
@@ -216,7 +222,7 @@ Vector Matrice::operator*(Vector const& other) const {
   int16_t _width = width;
   int16_t _height = height;
 
-  ARITHMETIC_VARIABLE_HEADER
+  ARITHMETIC_VARIABLE_HEADER;
 
   int16_t i, k;
   #pragma omp parallel for collapse(2) schedule(static) shared(other_blocks, res_blocks, this_blocks)
@@ -235,7 +241,7 @@ Matrice Vector::operator*(Vector const& other) const {
   int16_t _height = other.height;
   int16_t _width = height;
 
-  ARITHMETIC_VARIABLE_HEADER
+  ARITHMETIC_VARIABLE_HEADER;
 
   int16_t i, j;
   #pragma omp parallel for collapse(2) schedule(static) shared(other_blocks, res_blocks, this_blocks)
