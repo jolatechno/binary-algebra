@@ -3,29 +3,34 @@ additions
 */
 
 
-void Matrice::operator^=(Matrice const& mat) {
-  if ((height != mat.height) ||
-  (width != mat.width)) //check if dimensions are compatible
-    throw;
+void Matrice::operator^=(Matrice const& other) {
+  COMPARAISON_MATRICE_BITWISE_HEADER;
+  COMPARAISON_VARIABLE_HEADER;
 
-  #pragma omp parallel for
-  for (int16_t n = 0; n < height * width; n++)
-    blocks[n] ^= mat.blocks[n];
+  int16_t n;
+  #pragma omp parallel for schedule(static) shared(this_blocks, other_blocks)
+  for (n = 0; n < _height * _width; n++)
+    this_blocks[n] ^= other_blocks[n];
 }
 
-void Matrice::operator+=(Matrice const& mat) {
-  *this ^= mat;
+void Matrice::operator+=(Matrice const& other) {
+  *this ^= other;
 }
 
-void Matrice::operator-=(Matrice const& mat) {
-  *this ^= mat;
+void Matrice::operator-=(Matrice const& other) {
+  *this ^= other;
 }
 
 void Matrice::operator^=(const bool bit) {
   if (bit) {
-    #pragma omp parallel for
-    for (int16_t n = 0; n < height * width; n++)
-      blocks[n] = ~blocks[n];
+    uint64_t *this_blocks = blocks;
+
+    uint16_t _size = height * width;
+
+    int16_t n;
+    #pragma omp parallel for schedule(static) shared(this_blocks)
+    for (n = 0; n < _size; n++)
+      this_blocks[n] = ~this_blocks[n];
   }
 }
 
@@ -37,27 +42,34 @@ void Matrice::operator-=(const bool bit) {
   *this ^= bit;
 }
 
-void Vector::operator^=(Vector const& vect) {
-  if (height != vect.height) throw; //check if dimensions are compatible
+void Vector::operator^=(Vector const& other) {
+  COMPARAISON_VECTOR_BITWISE_HEADER;
+  COMPARAISON_VARIABLE_HEADER;
 
-  #pragma omp parallel for
-  for (int16_t i = 0; i < height; i++)
-    blocks[i] ^= vect.blocks[i];
+  int16_t i;
+  #pragma omp parallel for schedule(static) shared(this_blocks, other_blocks)
+  for (i = 0; i < height; i++)
+    this_blocks[i] ^= other_blocks[i];
 }
 
-void Vector::operator+=(Vector const& vect) {
-  *this ^= vect;
+void Vector::operator+=(Vector const& other) {
+  *this ^= other;
 }
 
-void Vector::operator-=(Vector const& vect) {
-  *this ^= vect;
+void Vector::operator-=(Vector const& other) {
+  *this ^= other;
 }
 
 void Vector::operator^=(const bool bit) {
   if (bit) {
-    #pragma omp parallel for
-    for (int16_t i = 0; i < height; i++)
-      blocks[i] = ~blocks[i];
+    uint8_t *this_blocks = blocks;
+
+    uint16_t _height = height;
+
+    int16_t i;
+    #pragma omp parallel for schedule(static) shared(this_blocks)
+    for (i = 0; i < _height; i++)
+      this_blocks[i] = ~this_blocks[i];
   }
 }
 
@@ -75,14 +87,14 @@ bitwise multiplications
 */
 
 
-void Matrice::operator&=(Matrice const& mat) {
-  if ((height != mat.height) ||
-  (width != mat.width)) //check if dimensions are compatible
-    throw;
+void Matrice::operator&=(Matrice const& other) {
+  COMPARAISON_MATRICE_BITWISE_HEADER;
+  COMPARAISON_VARIABLE_HEADER;
 
-  #pragma omp parallel for
-  for (int16_t n = 0; n < height * width; n++)
-    blocks[n] &= mat.blocks[n];
+  int16_t n;
+  #pragma omp parallel for schedule(static) shared(this_blocks, other_blocks)
+  for (n = 0; n < _height * _width; n++)
+    this_blocks[n] &= other_blocks[n];
 }
 
 void Matrice::operator&=(const bool bit) {
@@ -90,12 +102,14 @@ void Matrice::operator&=(const bool bit) {
     memset(blocks, 0, height * width * sizeof(uint64_t));
 }
 
-void Vector::operator&=(Vector const& vect) {
-  if (height != vect.height) throw; //check if dimensions are compatible
+void Vector::operator&=(Vector const& other) {
+  COMPARAISON_VECTOR_BITWISE_HEADER;
+  COMPARAISON_VARIABLE_HEADER;
 
-  #pragma omp parallel for
-  for (int16_t i = 0; i < height; i++)
-    blocks[i] &= vect.blocks[i];
+  int16_t i;
+  #pragma omp parallel for schedule(static) shared(this_blocks, other_blocks)
+  for (i = 0; i < height; i++)
+    this_blocks[i] &= other_blocks[i];
 }
 
 void Vector::operator&=(const bool bit) {
@@ -109,16 +123,15 @@ multiplications
 */
 
 
-void Matrice::operator*=(Matrice const& mat) {
-  if ((height != width) ||
-  (mat.height != mat.width)) //check if dimensions are compatible
-    throw;
+void Matrice::operator*=(Matrice const& other) {
+  assert(height == width); //check if dimensions are compatible
+  assert(other.height == other.width);
 
-  *this = (*this) * mat;
+  *this = (*this) * other;
 }
 
-void Vector::operator*=(Matrice const& mat) {
-  if (mat.height != mat.width) throw; //check if dimensions are compatible
+void Vector::operator*=(Matrice const& other) {
+  assert(other.height == other.width); //check if dimensions are compatible
 
-  *this =  mat * (*this);
+  *this =  other * (*this);
 }
