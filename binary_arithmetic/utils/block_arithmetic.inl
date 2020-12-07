@@ -28,32 +28,32 @@ block multiplications
 */
 
 
-uint8_t Matrice::multiply_block_byte(uint64_t block, uint8_t vect) const {
+uint8_t Matrice::multiply_block_byte(uint64_t block, uint8_t vect) const { //changed to acomodate the switch in block indices, check the readme
   uint8_t sum = 0x00;
 
-  uint64_t block_t = transpose_block(block);
+  //uint64_t block_t = transpose_block(block);
 
   for (int8_t i = 0; i < 8; i++)
-    sum ^= utils->byte_out_of_word_reversed(block_t, i) * utils->bit_out_of_byte_reversed(vect, i);
+    sum ^= utils->byte_out_of_word_reversed(block, i) * utils->bit_out_of_byte_reversed(vect, i); //utils->byte_out_of_word_reversed(block_t, i) * utils->bit_out_of_byte_reversed(vect, i);
 
   return sum;
 }
 
-uint64_t Matrice::multiply_block_block(uint64_t block_left, uint64_t block_right) const {
+uint64_t Matrice::multiply_block_block(uint64_t block_left, uint64_t block_right) const { //changed to acomodate the switch in block indices, check the readme
   uint64_t res = 0;
-  uint64_t block_right_t = transpose_block(block_right);
+  //uint64_t block_right_t = transpose_block(block_right);
 
   for (int8_t i = 0; i < 8; i++)
-    res = (res << 8) | multiply_block_byte(block_right_t, utils->byte_out_of_word_reversed(block_left, i));
+    res = (res << 8) | multiply_block_byte(block_left, utils->byte_out_of_word_reversed(block_right, i)); //multiply_block_byte(block_right_t, utils->byte_out_of_word_reversed(block_left, i));
 
   return res;
 }
 
-uint64_t Vector::multiply_byte_byte(uint8_t vect_left, uint8_t vect_right) const {
+uint64_t Vector::multiply_byte_byte(uint8_t vect_left, uint8_t vect_right) const { //changed to acomodate the switch in block indices, check the readme
   uint64_t res = 0;
 
   for (int8_t i = 0; i < 8; i++)
-    res = (res << 8) | (vect_left * utils->bit_out_of_byte_reversed(vect_right, i));
+    res = (res << 8) | (vect_right * utils->bit_out_of_byte_reversed(vect_left, i)); //(vect_left * utils->bit_out_of_byte_reversed(vect_right, i));
 
   return res;
 }

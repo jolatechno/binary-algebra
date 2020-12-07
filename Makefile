@@ -7,7 +7,7 @@ TARGETS=unit_testing.out example.out
 
 .PHONY: all test clean
 
-all: unit_testing.out example.out
+all: unit_testing.out example.out performance_testing.out
 
 
 #run directive

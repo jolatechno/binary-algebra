@@ -19,10 +19,18 @@ void timeit(void (*f)(Matrice, Vector), const char* message, int iterations, con
 
     //reading end time
     auto stop = high_resolution_clock::now();
-    double duration = duration_cast<microseconds>(stop - start).count();
+    double duration = duration_cast<microseconds>(stop - start).count()/iterations;
 
     //printing message
-    printf(message, duration/iterations, sizes[size]);
+    if (duration < 1000) {
+      printf(message, duration, "µs/op", sizes[size]);
+    } else if (duration < 1000000) {
+      duration /= 1000;
+      printf(message, duration, "ms/op", sizes[size]);
+    } else {
+      duration /= 1000000;
+      printf(message, duration / 1000,000, "s/op", sizes[size]);
+    }
   }
 }
 
@@ -40,10 +48,19 @@ void timeit(void (*f)(Matrice, Matrice), const char* message, int iterations, co
 
     //reading end time
     auto stop = high_resolution_clock::now();
-    double duration = duration_cast<microseconds>(stop - start).count();
+    double duration = duration_cast<microseconds>(stop - start).count()/iterations;
 
     //printing message
-    printf(message, duration/iterations, sizes[size]);
+    if (duration < 1000) {
+      printf(message, duration, "µs/op", sizes[size]);
+    } else if (duration < 1000000) {
+      duration /= 1000;
+      printf(message, duration, "ms/op", sizes[size]);
+    } else {
+      duration /= 1000000;
+      printf(message, duration, "s/op", sizes[size]);
+    }
+
   }
 }
 
@@ -61,10 +78,18 @@ void timeit(void (*f)(Matrice), const char* message, int iterations, const int s
 
     //reading end time
     auto stop = high_resolution_clock::now();
-    double duration = duration_cast<microseconds>(stop - start).count();
+    double duration = duration_cast<microseconds>(stop - start).count()/iterations;
 
     //printing message
-    printf(message, duration/iterations, sizes[size]);
+    if (duration < 1000) {
+      printf(message, duration, "µs/op", sizes[size]);
+    } else if (duration < 1000000) {
+      duration /= 1000;
+      printf(message, duration, "ms/op", sizes[size]);
+    } else {
+      duration /= 1000000;
+      printf(message, duration, "s/op", sizes[size]);
+    }
   }
 }
 
@@ -82,10 +107,18 @@ void timeit(void (*f)(Vector, Vector), const char* message, int iterations, cons
 
     //reading end time
     auto stop = high_resolution_clock::now();
-    double duration = duration_cast<microseconds>(stop - start).count();
+    double duration = duration_cast<microseconds>(stop - start).count()/iterations;
 
     //printing message
-    printf(message, duration/iterations, sizes[size]);
+    if (duration < 1000) {
+      printf(message, duration, "µs/op", sizes[size]);
+    } else if (duration < 1000000) {
+      duration /= 1000;
+      printf(message, duration, "ms/op", sizes[size]);
+    } else {
+      duration /= 1000000;
+      printf(message, duration, "s/op", sizes[size]);
+    }
   }
 }
 
@@ -103,9 +136,17 @@ void timeit(void (*f)(Vector), const char* message, int iterations, const int si
 
     //reading end time
     auto stop = high_resolution_clock::now();
-    double duration = duration_cast<microseconds>(stop - start).count();
+    double duration = duration_cast<microseconds>(stop - start).count()/iterations;
 
     //printing message
-    printf(message, duration/iterations, sizes[size]);
+    if (duration < 1000) {
+      printf(message, duration, "µs/op", sizes[size]);
+    } else if (duration < 1000000) {
+      duration /= 1000;
+      printf(message, duration, "ms/op", sizes[size]);
+    } else {
+      duration /= 1000000;
+      printf(message, duration, "s/op", sizes[size]);
+    }
   }
 }
