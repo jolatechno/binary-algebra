@@ -196,12 +196,14 @@ Matrice Matrice::operator*(Matrice const& other) const {
 
   ARITHMETIC_VARIABLE_HEADER
 
-  int16_t i, j;
-  #pragma omp parallel for collapse(2) schedule(static) shared(other_blocks, res_blocks, this_blocks)
+  int16_t i, j, k;
+  #pragma omp parallel for collapse(3) schedule(static) shared(other_blocks, res_blocks, this_blocks)
   for (j = 0; j < _size; j++)
-    for (i = 0; i < _height; i++)
-      for (int16_t k = 0; k < _width; k++)
+    for (k = 0; k < _width; k++)
+      for (i = 0; i < _height; i++) {
+        #pragma omp atomic
         res_blocks[j + i*_size] ^= multiply_block_block(this_blocks[k + j*_width], other_blocks[i + k*_size]);
+      }
 
   return res;
 }
@@ -216,11 +218,13 @@ Vector Matrice::operator*(Vector const& other) const {
 
   ARITHMETIC_VARIABLE_HEADER
 
-  int16_t i;
-  #pragma omp parallel for schedule(static) shared(other_blocks, res_blocks, this_blocks)
-  for (i = 0; i < _height; i++)
-    for (int16_t k = 0; k < width; k++)
+  int16_t i, k;
+  #pragma omp parallel for collapse(2) schedule(static) shared(other_blocks, res_blocks, this_blocks)
+  for (k = 0; k < width; k++)
+    for (i = 0; i < _height; i++) {
+      #pragma omp atomic
       res_blocks[i] ^= multiply_block_byte(this_blocks[k + i*_width], other_blocks[k]);
+    }
 
   return res;
 }
