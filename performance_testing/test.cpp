@@ -9,7 +9,7 @@
 int main(int argc, char** argv){
   const int n_iter = 50;
   const int sizes[] = {
-    20, 50, 100, 200,
+    10, 50, 100, 250, 500,
   };
   const int n_sizes = sizeof(sizes)/sizeof(sizes[0]);
 
