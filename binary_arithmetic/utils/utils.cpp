@@ -11,14 +11,6 @@ uint8_t Utils::byte_out_of_word_reversed(uint64_t word, uint8_t byte) {
   return word >> 8*(7 - byte);
 }
 
-uint8_t Utils::circular_shift_8(uint8_t vect, uint8_t shift) {
-  return (vect << shift) | (vect >> 8 - shift);
-}
-
-uint64_t Utils::circular_shift_64(uint64_t vect, uint8_t shift) {
-  return (vect << shift) | (vect >> 64 - shift);
-}
-
 int Utils::count_ones_8(uint8_t byte) {
   static const int NIBBLE_LOOKUP [16] = {
     0, 1, 1, 2, 1, 2, 2, 3,

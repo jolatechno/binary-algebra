@@ -3,7 +3,7 @@ equality between objects
 */
 
 
-bool reference_arithmetic::equal(Matrice const& mat1, Matrice const& mat2) const {
+bool reference_arithmetic::equal(Matrix const& mat1, Matrix const& mat2) const {
   if ((mat1.width != mat2.width) ||
   (mat1.height != mat2.height)) //check if dimensions are compatible
     return false;
@@ -33,7 +33,7 @@ equality between objects and bit
 */
 
 
-bool reference_arithmetic::equal(Matrice const& mat1, bool bit) const {
+bool reference_arithmetic::equal(Matrix const& mat1, bool bit) const {
   uint16_t i, j;
   for (i = 0; i < mat1.height * 8; i++)
     for (j = 0; j < mat1.width * 8; j++)
@@ -56,7 +56,7 @@ bool reference_arithmetic::equal(Vector const& vect, bool bit) const {
 other comparaisons
 */
 
-bool reference_arithmetic::greater(Matrice const& mat1, Matrice const& mat2) const {
+bool reference_arithmetic::greater(Matrix const& mat1, Matrix const& mat2) const {
   return integer_scalar_product(mat1, mat1) > integer_scalar_product(mat2, mat2);
 }
 

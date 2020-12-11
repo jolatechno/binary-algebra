@@ -3,7 +3,7 @@ zero initializer
 */
 
 
-void reference_arithmetic::zero(Matrice& mat) const {
+void reference_arithmetic::zero(Matrix& mat) const {
   int16_t i, j;
   for (i = 0; i < mat.height * 8; i++)
     for (j = 0; j < mat.width * 8; j++)
@@ -21,7 +21,7 @@ diagonal initializers
 */
 
 
-void reference_arithmetic::diag(Matrice& mat) const {
+void reference_arithmetic::diag(Matrix& mat) const {
   assert(mat.height == mat.width); //checking dimensions
 
   int16_t i, j;
@@ -34,7 +34,7 @@ void reference_arithmetic::diag(Matrice& mat) const {
       }
 }
 
-void reference_arithmetic::diag(Matrice& mat, Vector const& diagonal) const {
+void reference_arithmetic::diag(Matrix& mat, Vector const& diagonal) const {
   assert(mat.height == mat.width); //checking dimensions
   assert(mat.height == diagonal.height);
 

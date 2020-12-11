@@ -5,11 +5,11 @@
 #include "../binary_arithmetic/binary_arithmetic.hpp"
 
 int main(int argc, char** argv){
-  Matrice mat(2, 2);
+  Matrix mat(2, 2);
 
   mat.randomize();
 
-  Matrice mat_t = mat.T();
+  Matrix mat_t = mat.T();
 
   std::cout << mat << "\n" << mat_t << "\n";
   std:: cout << mat * mat_t << "\n";

@@ -5,10 +5,10 @@
 
 using namespace std::chrono;
 
-void timeit(void (*f)(Matrice, Vector), const char* message, int iterations, const int sizes[], int n_sizes) {
+void timeit(void (*f)(Matrix, Vector), const char* message, int iterations, const int sizes[], int n_sizes) {
   for (int size = 0; size < n_sizes; size++) {
     //initializing matrices
-    Matrice mat(sizes[size], sizes[size]); Vector vect(sizes[size]);
+    Matrix mat(sizes[size], sizes[size]); Vector vect(sizes[size]);
     mat.randomize(); vect.randomize();
 
     //reading initial time
@@ -37,10 +37,10 @@ void timeit(void (*f)(Matrice, Vector), const char* message, int iterations, con
   }
 }
 
-void timeit(void (*f)(Matrice, Matrice), const char* message, int iterations, const int sizes[], int n_sizes) {
+void timeit(void (*f)(Matrix, Matrix), const char* message, int iterations, const int sizes[], int n_sizes) {
   for (int size = 0; size < n_sizes; size++) {
     //initializing matrices
-    Matrice mat1(sizes[size], sizes[size]); Matrice mat2(sizes[size], sizes[size]);
+    Matrix mat1(sizes[size], sizes[size]); Matrix mat2(sizes[size], sizes[size]);
     mat1.randomize(); mat2.randomize();
 
     //reading initial time
@@ -70,10 +70,10 @@ void timeit(void (*f)(Matrice, Matrice), const char* message, int iterations, co
   }
 }
 
-void timeit(void (*f)(Matrice), const char* message, int iterations, const int sizes[], int n_sizes) {
+void timeit(void (*f)(Matrix), const char* message, int iterations, const int sizes[], int n_sizes) {
   for (int size = 0; size < n_sizes; size++) {
     //initializing matrices
-    Matrice mat(sizes[size], sizes[size]);
+    Matrix mat(sizes[size], sizes[size]);
     mat.randomize();
 
     //reading initial time

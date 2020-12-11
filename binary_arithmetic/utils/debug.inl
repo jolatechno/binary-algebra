@@ -7,7 +7,7 @@ std::ostream& operator<<(std::ostream& os, Vector const& vect) {
   return os << "\n";
 }
 
-std::ostream& operator<<(std::ostream& os, Matrice const& mat) {
+std::ostream& operator<<(std::ostream& os, Matrix const& mat) {
   int16_t i, k, j;
   for (i = 0; i < mat.height * 8; i++) {
     for (j = 0; j < mat.width * 8; j++)

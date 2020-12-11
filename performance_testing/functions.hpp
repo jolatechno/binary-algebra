@@ -1,38 +1,38 @@
 #include "../binary_arithmetic/binary_arithmetic.hpp"
 
-void multiplication_mat_vect(Matrice mat, Vector vect) {
+void multiplication_mat_vect(Matrix mat, Vector vect) {
   mat * vect;
 }
 
-void equal_mat(Matrice mat1, Matrice mat2) {
+void equal_mat(Matrix mat1, Matrix mat2) {
   mat1 == mat1;
 }
 
-void comparaisons_mat(Matrice mat1, Matrice mat2) {
+void comparaisons_mat(Matrix mat1, Matrix mat2) {
   mat1 < mat1;
 }
 
-void additions_mat(Matrice mat1, Matrice mat2) {
+void additions_mat(Matrix mat1, Matrix mat2) {
   mat1 + mat2;
 }
 
-void multiplication_mat(Matrice mat1, Matrice mat2) {
+void multiplication_mat(Matrix mat1, Matrix mat2) {
   mat1 * mat2;
 }
 
-void scalar_product_mat(Matrice mat1, Matrice mat2) {
+void scalar_product_mat(Matrix mat1, Matrix mat2) {
   mat1 % mat2;
 }
 
-void integer_scalar_product_mat(Matrice mat1, Matrice mat2) {
+void integer_scalar_product_mat(Matrix mat1, Matrix mat2) {
   mat1.integer_scalar_product(mat2);
 }
 
-void negation_mat(Matrice mat) {
+void negation_mat(Matrix mat) {
   ~mat;
 }
 
-void transposition(Matrice mat) {
+void transposition(Matrix mat) {
   mat.T();
 }
 
