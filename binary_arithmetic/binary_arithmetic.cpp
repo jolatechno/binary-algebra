@@ -8,7 +8,7 @@
 #include "utils/debug.inl"
 #include "utils/block_arithmetic.inl"
 
-#include "comparaisons.inl"
+#include "comparisons.inl"
 #include "initializers.inl"
 #include "arithmetic.inl"
 #include "self_arithmetic.inl"
