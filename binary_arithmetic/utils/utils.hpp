@@ -7,7 +7,7 @@ typedef class Utils Utils;
 
 class Utils {
   friend class Vector;
-  friend class Matrice;
+  friend class Matrix;
 
   private:
     static bool bit_out_of_byte_reversed(uint8_t byte, uint8_t bit);

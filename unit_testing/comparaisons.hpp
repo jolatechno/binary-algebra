@@ -12,7 +12,7 @@ testing comparaisons
 */
 
 
-void test_comp(const reference_arithmetic ref, Matrice const& mat1, Matrice const& mat2) {
+void test_comp(const reference_arithmetic ref, Matrix const& mat1, Matrix const& mat2) {
   assert((mat1 == mat2) == ref.equal(mat1, mat2));
   assert((mat1 != mat2) != ref.equal(mat1, mat2));
 
@@ -34,7 +34,7 @@ void test_comp(const reference_arithmetic ref, Vector const& vect1, Vector const
   assert((vect1 >= vect2) != ref.greater(vect2, vect1));
 }
 
-void test_comp(const reference_arithmetic ref, Matrice const& mat, bool bit) {
+void test_comp(const reference_arithmetic ref, Matrix const& mat, bool bit) {
   assert((mat == bit) == ref.equal(mat, bit));
   assert((mat != bit) != ref.equal(mat, bit));
 }

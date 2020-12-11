@@ -1,4 +1,4 @@
-#define INITIALIZER_SQUARE_MATRICE_HEADER \
+#define INITIALIZER_SQUARE_Matrix_HEADER \
   assert(height == width); \
   auto *this_blocks = blocks; \
   auto _height = height; \
@@ -14,7 +14,7 @@ randomizers
 */
 
 
-void Matrice::randomize() {
+void Matrix::randomize() {
   uint8_t *block_8 = (uint8_t *)blocks;
 
   uint16_t _size = height * width * 8;
@@ -39,7 +39,7 @@ assignment operators
 */
 
 
-Matrice& Matrice::operator=(Matrice const& other) {
+Matrix& Matrix::operator=(Matrix const& other) {
   if(this != &other) {
     assert(height == other.height); //check if dimensions are compatible
     assert(width == other.width);
@@ -64,8 +64,8 @@ diagonal initializers
 */
 
 
-void Matrice::diag() {
-  INITIALIZER_SQUARE_MATRICE_HEADER;
+void Matrix::diag() {
+  INITIALIZER_SQUARE_Matrix_HEADER;
 
   int16_t i, j;
   #pragma omp parallel for collapse(2) shared(this_blocks)
@@ -78,8 +78,8 @@ void Matrice::diag() {
       }
 }
 
-void Matrice::diag(Vector const& diagonal) {
-  INITIALIZER_SQUARE_MATRICE_HEADER;
+void Matrix::diag(Vector const& diagonal) {
+  INITIALIZER_SQUARE_Matrix_HEADER;
 
   int16_t i, j;
   #pragma omp parallel for collapse(2) shared(this_blocks)

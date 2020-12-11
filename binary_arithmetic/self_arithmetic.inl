@@ -3,8 +3,8 @@ additions
 */
 
 
-void Matrice::operator^=(Matrice const& other) {
-  COMPARAISON_MATRICE_BITWISE_HEADER;
+void Matrix::operator^=(Matrix const& other) {
+  COMPARAISON_Matrix_BITWISE_HEADER;
   COMPARAISON_VARIABLE_HEADER;
 
   int16_t n;
@@ -13,15 +13,15 @@ void Matrice::operator^=(Matrice const& other) {
     this_blocks[n] ^= other_blocks[n];
 }
 
-void Matrice::operator+=(Matrice const& other) {
+void Matrix::operator+=(Matrix const& other) {
   *this ^= other;
 }
 
-void Matrice::operator-=(Matrice const& other) {
+void Matrix::operator-=(Matrix const& other) {
   *this ^= other;
 }
 
-void Matrice::operator^=(const bool bit) {
+void Matrix::operator^=(const bool bit) {
   if (bit) {
     uint64_t *this_blocks = blocks;
 
@@ -34,11 +34,11 @@ void Matrice::operator^=(const bool bit) {
   }
 }
 
-void Matrice::operator+=(const bool bit) {
+void Matrix::operator+=(const bool bit) {
   *this ^= bit;
 }
 
-void Matrice::operator-=(const bool bit) {
+void Matrix::operator-=(const bool bit) {
   *this ^= bit;
 }
 
@@ -87,8 +87,8 @@ bitwise multiplications
 */
 
 
-void Matrice::operator&=(Matrice const& other) {
-  COMPARAISON_MATRICE_BITWISE_HEADER;
+void Matrix::operator&=(Matrix const& other) {
+  COMPARAISON_Matrix_BITWISE_HEADER;
   COMPARAISON_VARIABLE_HEADER;
 
   int16_t n;
@@ -97,7 +97,7 @@ void Matrice::operator&=(Matrice const& other) {
     this_blocks[n] &= other_blocks[n];
 }
 
-void Matrice::operator&=(const bool bit) {
+void Matrix::operator&=(const bool bit) {
   if (!bit)
     memset(blocks, 0, height * width * sizeof(uint64_t));
 }
@@ -123,14 +123,14 @@ multiplications
 */
 
 
-void Matrice::operator*=(Matrice const& other) {
+void Matrix::operator*=(Matrix const& other) {
   assert(height == width); //check if dimensions are compatible
   assert(other.height == other.width);
 
   *this = (*this) * other;
 }
 
-void Vector::operator*=(Matrice const& other) {
+void Vector::operator*=(Matrix const& other) {
   assert(other.height == other.width); //check if dimensions are compatible
 
   *this =  other * (*this);

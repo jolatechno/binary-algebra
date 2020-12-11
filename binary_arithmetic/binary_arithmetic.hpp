@@ -10,10 +10,10 @@
 
 #include "utils/utils.hpp"
 
-typedef class Matrice Matrice;
+typedef class Matrix Matrix;
 typedef class Vector Vector;
 
-class Matrice {
+class Matrix {
   friend Vector;
   friend class reference_arithmetic;
 
@@ -30,9 +30,9 @@ class Matrice {
     uint64_t multiply_block_block(uint64_t block_left, uint64_t block_right) const;
 
     //for comparaisons
-    int difference(Matrice const& mat) const;
+    int difference(Matrix const& mat) const;
 
-    //Stupid way of accessing matrice elements, only for testing or debugging !
+    //Stupid way of accessing Matrix elements, only for testing or debugging !
     bool operator()(uint16_t i, uint16_t j) const;
     void write(uint16_t i, uint16_t j, bool bit);
 
@@ -42,18 +42,18 @@ class Matrice {
     const uint16_t width;
 
     //constructors
-    Matrice(uint16_t mat_height, uint16_t mat_width);
-    Matrice(uint16_t size);
+    Matrix(uint16_t mat_height, uint16_t mat_width);
+    Matrix(uint16_t size);
 
     //destructor
-    ~Matrice();
+    ~Matrix();
 
     //print operator
-    friend std::ostream& operator<<(std::ostream& os, Matrice const& mat);
+    friend std::ostream& operator<<(std::ostream& os, Matrix const& mat);
 
     //copy and assignment operators
-    Matrice(Matrice const& other);
-    Matrice& operator=(Matrice const& other);
+    Matrix(Matrix const& other);
+    Matrix& operator=(Matrix const& other);
 
     //initializers
     void randomize();
@@ -61,49 +61,49 @@ class Matrice {
     void diag(Vector const& diagonal);
 
     //comparaisons
-    bool operator==(Matrice const& mat) const;
+    bool operator==(Matrix const& mat) const;
     bool operator==(const bool bit) const;
-    bool operator!=(Matrice const& mat) const;
+    bool operator!=(Matrix const& mat) const;
     bool operator!=(const bool bit) const;
-    bool operator<(Matrice const& mat) const;
+    bool operator<(Matrix const& mat) const;
     bool operator<(const bool bit) const;
-    bool operator>(Matrice const& mat) const;
+    bool operator>(Matrix const& mat) const;
     bool operator>(const bool bit) const;
-    bool operator<=(Matrice const& mat) const;
+    bool operator<=(Matrix const& mat) const;
     bool operator<=(const bool bit) const;
-    bool operator>=(Matrice const& mat) const;
+    bool operator>=(Matrix const& mat) const;
     bool operator>=(const bool bit) const;
 
     //self operators
-    Matrice T() const;
-    void operator^=(Matrice const& mat);
+    Matrix T() const;
+    void operator^=(Matrix const& mat);
     void operator^=(const bool bit);
-    void operator+=(Matrice const& mat); //aliases for the two previous
+    void operator+=(Matrix const& mat); //aliases for the two previous
     void operator+=(const bool bit);
-    void operator-=(Matrice const& mat); //also aliases for the two previous since addition and substraction mod2 are identical
+    void operator-=(Matrix const& mat); //also aliases for the two previous since addition and substraction mod2 are identical
     void operator-=(const bool bit);
-    void operator&=(Matrice const& mat);
+    void operator&=(Matrix const& mat);
     void operator&=(const bool bit);
-    void operator*=(Matrice const& mat);
+    void operator*=(Matrix const& mat);
 
     //operators
-    Matrice operator~() const;
-    bool operator%(Matrice const& mat) const; //scalar product
-    int integer_scalar_product(Matrice const& mat) const; //integer scalar product
-    Matrice operator^(Matrice const& mat) const;
-    Matrice operator^(const bool bit) const;
-    Matrice operator+(Matrice const& mat) const; //aliases for the two previous
-    Matrice operator+(const bool bit) const;
-    Matrice operator-(Matrice const& mat) const; //also aliases for the two previous since addition and substraction mod2 are identical
-    Matrice operator-(const bool bit) const;
-    Matrice operator&(Matrice const& mat) const;
-    Matrice operator&(const bool bit) const;
+    Matrix operator~() const;
+    bool operator%(Matrix const& mat) const; //scalar product
+    int integer_scalar_product(Matrix const& mat) const; //integer scalar product
+    Matrix operator^(Matrix const& mat) const;
+    Matrix operator^(const bool bit) const;
+    Matrix operator+(Matrix const& mat) const; //aliases for the two previous
+    Matrix operator+(const bool bit) const;
+    Matrix operator-(Matrix const& mat) const; //also aliases for the two previous since addition and substraction mod2 are identical
+    Matrix operator-(const bool bit) const;
+    Matrix operator&(Matrix const& mat) const;
+    Matrix operator&(const bool bit) const;
     Vector operator*(Vector const& vect) const;
-    Matrice operator*(Matrice const& mat) const;
+    Matrix operator*(Matrix const& mat) const;
 };
 
 class Vector {
-  friend Matrice;
+  friend Matrix;
   friend class reference_arithmetic;
 
   private:
@@ -166,7 +166,7 @@ class Vector {
     void operator-=(const bool bit);
     void operator&=(Vector const& vect);
     void operator&=(const bool bit);
-    void operator*=(Matrice const& mat);
+    void operator*=(Matrix const& mat);
 
     //operators
     Vector operator~() const;
@@ -180,5 +180,5 @@ class Vector {
     Vector operator-(const bool bit) const;
     Vector operator&(Vector const& vect) const;
     Vector operator&(const bool bit) const;
-    Matrice operator*(Vector const& vect) const;
+    Matrix operator*(Vector const& vect) const;
 };

@@ -3,7 +3,7 @@ read operators
 */
 
 
-bool Matrice::operator()(uint16_t i, uint16_t j) const { //changed to acomodate the switch in block indices, check the readme
+bool Matrix::operator()(uint16_t i, uint16_t j) const { //changed to acomodate the switch in block indices, check the readme
   assert(i < height * 8);  //check if indices are in range
   assert(j < width * 8);
 
@@ -25,7 +25,7 @@ write operators
 */
 
 
-void Matrice::write(uint16_t i, uint16_t j, bool bit) { //changed to acomodate the switch in block indices, check the readme
+void Matrix::write(uint16_t i, uint16_t j, bool bit) { //changed to acomodate the switch in block indices, check the readme
   assert(i < height * 8);  //check if indices are in range
   assert(j < width * 8);
 

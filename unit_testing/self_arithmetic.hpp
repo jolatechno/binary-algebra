@@ -10,14 +10,14 @@ multiplications
 */
 
 
-void test_self_multiplication(const reference_arithmetic ref, Matrice& mat1, Matrice const& mat2) {
-  Matrice stupid_product = ref.multiplication(mat1, mat2);
+void test_self_multiplication(const reference_arithmetic ref, Matrix& mat1, Matrix const& mat2) {
+  Matrix stupid_product = ref.multiplication(mat1, mat2);
   mat1 *= mat2;
 
   assert(ref.equal(mat1, stupid_product));
 }
 
-void test_self_multiplication(const reference_arithmetic ref, Matrice& mat, Vector& vect) {
+void test_self_multiplication(const reference_arithmetic ref, Matrix& mat, Vector& vect) {
   Vector stupid_product = ref.multiplication(mat, vect);
   vect *= mat;
 
@@ -30,15 +30,15 @@ additions
 */
 
 
-void test_self_addition(const reference_arithmetic ref, Matrice& mat1, Matrice const& mat2) {
-  Matrice stupid_add = ref.addition(mat1, mat2);
+void test_self_addition(const reference_arithmetic ref, Matrix& mat1, Matrix const& mat2) {
+  Matrix stupid_add = ref.addition(mat1, mat2);
   mat1 ^= mat2;
 
   assert(ref.equal(mat1, stupid_add));
 }
 
-void test_self_addition(const reference_arithmetic ref, Matrice& mat, bool bit) {
-  Matrice stupid_add = ref.addition(mat, bit);
+void test_self_addition(const reference_arithmetic ref, Matrix& mat, bool bit) {
+  Matrix stupid_add = ref.addition(mat, bit);
   mat ^= bit;
 
   assert(ref.equal(mat, stupid_add));
@@ -64,15 +64,15 @@ bitwise multiplication
 */
 
 
-void test_self_bitwise_multiplication(const reference_arithmetic ref, Matrice& mat1, Matrice const& mat2) {
-  Matrice stupid_mul = ref.bitwise_multiplication(mat1, mat2);
+void test_self_bitwise_multiplication(const reference_arithmetic ref, Matrix& mat1, Matrix const& mat2) {
+  Matrix stupid_mul = ref.bitwise_multiplication(mat1, mat2);
   mat1 &= mat2;
 
   assert(ref.equal(mat1, stupid_mul));
 }
 
-void test_self_bitwise_multiplication(const reference_arithmetic ref, Matrice& mat, bool bit) {
-  Matrice stupid_mul = ref.bitwise_multiplication(mat, bit);
+void test_self_bitwise_multiplication(const reference_arithmetic ref, Matrix& mat, bool bit) {
+  Matrix stupid_mul = ref.bitwise_multiplication(mat, bit);
   mat &= bit;
 
   assert(ref.equal(mat, stupid_mul));

@@ -2,7 +2,7 @@
   auto *other_blocks = other.blocks; \
   auto *this_blocks = blocks;
 
-#define COMPARAISON_MATRICE_BITWISE_HEADER \
+#define COMPARAISON_Matrix_BITWISE_HEADER \
   assert(height == other.height); \
   assert(width == other.width); \
   auto _width = width; \
@@ -18,9 +18,9 @@ equality between objects
 */
 
 
-bool Matrice::operator==(Matrice const& other) const {
+bool Matrix::operator==(Matrix const& other) const {
   if (this != &other) {
-    COMPARAISON_MATRICE_BITWISE_HEADER
+    COMPARAISON_Matrix_BITWISE_HEADER
     COMPARAISON_VARIABLE_HEADER
 
     bool equal_ = true;
@@ -74,7 +74,7 @@ equality with bits
 */
 
 
-bool Matrice::operator==(const bool bit) const {
+bool Matrix::operator==(const bool bit) const {
   bool equal_ = true;
   uint64_t target = bit ? 0xFFFFFFFFFFFFFFFF : 0;
 
@@ -124,9 +124,9 @@ smaller than comparaisons
 */
 
 
-int Matrice::difference(Matrice const& other) const {
+int Matrix::difference(Matrix const& other) const {
   if (this != &other) {
-    COMPARAISON_MATRICE_BITWISE_HEADER
+    COMPARAISON_Matrix_BITWISE_HEADER
     COMPARAISON_VARIABLE_HEADER
 
     int diff = 0;
@@ -166,7 +166,7 @@ other comparaison obtained from all the above
 */
 
 
-bool Matrice::operator!=(Matrice const& other) const {
+bool Matrix::operator!=(Matrix const& other) const {
   return !(*this == other);
 }
 
@@ -174,7 +174,7 @@ bool Vector::operator!=(Vector const& other) const {
   return !(*this == other);
 }
 
-bool Matrice::operator!=(const bool bit) const {
+bool Matrix::operator!=(const bool bit) const {
   return !(*this == bit);
 }
 
@@ -182,7 +182,7 @@ bool Vector::operator!=(const bool bit) const {
   return !(*this == bit);
 }
 
-bool Matrice::operator<(Matrice const& other) const {
+bool Matrix::operator<(Matrix const& other) const {
   return this->difference(other) < 0;
 }
 
@@ -190,7 +190,7 @@ bool Vector::operator<(Vector const& other) const {
   return this->difference(other) < 0;
 }
 
-bool Matrice::operator<(const bool bit) const {
+bool Matrix::operator<(const bool bit) const {
   if (bit)
     return !(*this == true);
   return true;
@@ -202,7 +202,7 @@ bool Vector::operator<(const bool bit) const {
   return true;
 }
 
-bool Matrice::operator>(Matrice const& other) const {
+bool Matrix::operator>(Matrix const& other) const {
   return this->difference(other) > 0;
 }
 
@@ -210,7 +210,7 @@ bool Vector::operator>(Vector const& other) const {
   return this->difference(other) > 0;
 }
 
-bool Matrice::operator>(const bool bit) const {
+bool Matrix::operator>(const bool bit) const {
   if (bit)
     return false;
   return !(*this == false);
@@ -222,7 +222,7 @@ bool Vector::operator>(const bool bit) const {
   return !(*this == false);
 }
 
-bool Matrice::operator<=(Matrice const& other) const {
+bool Matrix::operator<=(Matrix const& other) const {
   return this->difference(other) <= 0;
 }
 
@@ -230,7 +230,7 @@ bool Vector::operator<=(Vector const& other) const {
   return this->difference(other) <= 0;
 }
 
-bool Matrice::operator<=(const bool bit) const {
+bool Matrix::operator<=(const bool bit) const {
   return bit;
 }
 
@@ -238,7 +238,7 @@ bool Vector::operator<=(const bool bit) const {
   return bit;
 }
 
-bool Matrice::operator>=(Matrice const& other) const {
+bool Matrix::operator>=(Matrix const& other) const {
   return this->difference(other) >= 0;
 }
 
@@ -247,7 +247,7 @@ bool Vector::operator>=(Vector const& other) const {
 }
 
 
-bool Matrice::operator>=(const bool bit) const {
+bool Matrix::operator>=(const bool bit) const {
   if (bit)
     return *this == true;
   return true;

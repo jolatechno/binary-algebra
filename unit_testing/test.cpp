@@ -17,11 +17,11 @@ int main(int argc, char** argv){
   uint16_t height = 2;
   uint16_t width = 1;
 
-  Matrice mat_square_1(width);
-  Matrice mat_square_2(width);
+  Matrix mat_square_1(width);
+  Matrix mat_square_2(width);
 
-  Matrice mat_nsquare_1(height, width);
-  Matrice mat_nsquare_2(height, width);
+  Matrix mat_nsquare_1(height, width);
+  Matrix mat_nsquare_2(height, width);
 
   Vector vect_1(width);
   Vector vect_2(width);
@@ -78,7 +78,7 @@ int main(int argc, char** argv){
     mat_square_1.randomize(); mat_square_2.randomize();
     test_comp(ref, mat_square_1, mat_square_2); test_comp(ref, mat_square_1, mat_square_1);
 
-    mat_square_1 = Matrice(width);
+    mat_square_1 = Matrix(width);
     test_comp(ref, mat_square_1, false); test_comp(ref, mat_square_1, true);
   }
 
@@ -87,7 +87,7 @@ int main(int argc, char** argv){
     mat_nsquare_1.randomize(); mat_nsquare_2.randomize();
     test_comp(ref, mat_nsquare_1, mat_nsquare_2); test_comp(ref, mat_nsquare_1, mat_nsquare_1);
 
-    mat_nsquare_1 = Matrice(height, width);
+    mat_nsquare_1 = Matrix(height, width);
     test_comp(ref, mat_nsquare_1, false); test_comp(ref, mat_nsquare_1, true);
   }
 

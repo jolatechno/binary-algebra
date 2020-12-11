@@ -13,9 +13,9 @@ testing zero initializer
 
 
 void test_zero_initalizer(const reference_arithmetic ref, int16_t height, int16_t width) {
-  Matrice stupid_zero(height, width);
+  Matrix stupid_zero(height, width);
   ref.zero(stupid_zero);
-  Matrice zero = Matrice(height, width);
+  Matrix zero = Matrix(height, width);
 
   assert(ref.equal(zero, stupid_zero));
 }
@@ -34,7 +34,7 @@ testing diag initializer
 */
 
 
-void test_diag_initializer(const reference_arithmetic ref, Matrice& mat1, Matrice& mat2) {
+void test_diag_initializer(const reference_arithmetic ref, Matrix& mat1, Matrix& mat2) {
   assert(mat1.height == mat2.height); //sufficient as mat1 and mat2 have to be square
 
   mat1.diag();
@@ -43,7 +43,7 @@ void test_diag_initializer(const reference_arithmetic ref, Matrice& mat1, Matric
   assert(ref.equal(mat1, mat2));
 }
 
-void test_diag_initializer(const reference_arithmetic ref, Matrice& mat1, Matrice& mat2, Vector diagonal) {
+void test_diag_initializer(const reference_arithmetic ref, Matrix& mat1, Matrix& mat2, Vector diagonal) {
   assert(mat1.height == mat2.height); //sufficient as mat1 and mat2 have to be square
 
   mat1.diag(diagonal);
@@ -58,9 +58,9 @@ testing the random initializer
 */
 
 
-void test_random(const reference_arithmetic ref, Matrice& mat, int16_t treshold) {
+void test_random(const reference_arithmetic ref, Matrix& mat, int16_t treshold) {
   bool failed_to_randomize = false;
-  Matrice mat_copy(mat.height, mat.width);
+  Matrix mat_copy(mat.height, mat.width);
 
   for (int16_t i = 0; i < treshold; i++) {
     mat_copy = mat;

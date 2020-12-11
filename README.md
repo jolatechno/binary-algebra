@@ -20,14 +20,14 @@ This simplify some of the blocks operations (see [./binary_arithmetic/utils/bloc
 
 ## Printing
 
-You can "print" a `Vector` or `Matrice` using the following code :
+You can "print" a `Vector` or a `Matrix` using the following code :
 
 ```cpp
 //binary_arithmetic included earlier
 #include <iostream>
 
 int main(int argc, char** argv){
-  Matrice mat(2, 2);
+  Matrix mat(2, 2);
   Vector vect(2);
   std::cout << mat << "\n" << vect;
 }
