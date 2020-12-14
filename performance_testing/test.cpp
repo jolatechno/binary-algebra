@@ -40,10 +40,10 @@ int main(int argc, char** argv){
 
 
   printf("\n\n");
-  timeit(comparaisons_mat, "Matrix Comparaison: %f %s for size=%dbit\n", n_iter, sizes, n_sizes);
+  timeit(comparaisons_mat, "Matrix comparison: %f %s for size=%dbit\n", n_iter, sizes, n_sizes);
 
   printf("\n");
-  timeit(comparaisons_vect, "Vector Comparaison: %f %s for size=%dbit\n", n_iter, sizes, n_sizes);
+  timeit(comparaisons_vect, "Vector comparison: %f %s for size=%dbit\n", n_iter, sizes, n_sizes);
 
 
   /*

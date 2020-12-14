@@ -16,6 +16,88 @@ This now has changed, blocks are now store "transposed", which can be seen as re
 
 This simplify some of the blocks operations (see [./binary_arithmetic/utils/block_arithmetic.inl](./binary_arithmetic/utils/block_arithmetic.inl)).
 
+# Unit testing
+
+Unit testing is supported by the `make test` directive, and compares result from the main arithmetic of this library, with the `reference_arithmetic` which uses trivial but slow algorithms.
+
+"Typical" performance (on my average ryzen 3500u laptop, without killing any background task) is the following:
+
+```console
+joseph@pop-os:~/binary_algebra$ make clean performance_testing
+rm -f **/*.out lib/*.a lib/*.o
+g++ -std=c++0x -c binary_arithmetic/binary_arithmetic.cpp -o lib/binary_arithmetic.o -fopenmp
+g++ -std=c++0x -c binary_arithmetic/utils/utils.cpp -o lib/utils.o -fopenmp
+g++ -std=c++0x -c binary_arithmetic/reference_arithmetic/reference_arithmetic.cpp -o lib/reference_arithmetic.o -fopenmp
+ar -crs lib/lib.a lib/binary_arithmetic.o lib/utils.o lib/reference_arithmetic.o
+g++ -std=c++0x performance_testing/test.cpp lib/lib.a -o performance_testing/test.out -fopenmp
+./performance_testing/test.out
+
+Matrix transposition: 97.217000 µs/op for size=80bit
+Matrix transposition: 240.617000 µs/op for size=800bit
+Matrix transposition: 7.286927 ms/op for size=8000bit
+
+
+Matrix equality: 253.000000 ns/op for size=80bit
+Matrix equality: 13.219000 µs/op for size=800bit
+Matrix equality: 8.186333 ms/op for size=8000bit
+
+Vector equality: 412.000000 ns/op for size=80bit
+Vector equality: 1.431000 µs/op for size=800bit
+Vector equality: 55.040000 µs/op for size=8000bit
+
+
+Matrix comparison: 287.000000 ns/op for size=80bit
+Matrix comparison: 20.526000 µs/op for size=800bit
+Matrix comparison: 7.725332 ms/op for size=8000bit
+
+Vector comparison: 544.444000 µs/op for size=80bit
+Vector comparison: 2.180000 µs/op for size=800bit
+Vector comparison: 5.309000 µs/op for size=8000bit
+
+
+Matrix addition: 2.324000 µs/op for size=80bit
+Matrix addition: 181.582000 µs/op for size=800bit
+Matrix addition: 8.776433 ms/op for size=8000bit
+
+Vector addition: 247.311000 µs/op for size=80bit
+Vector addition: 2.029000 µs/op for size=800bit
+Vector addition: 2.979000 µs/op for size=8000bit
+
+
+Matrix scalar product: 2.025000 µs/op for size=80bit
+Matrix scalar product: 222.827000 µs/op for size=800bit
+Matrix scalar product: 9.896874 ms/op for size=8000bit
+
+Vector scalar product: 2.418000 µs/op for size=80bit
+Vector scalar product: 1.812000 µs/op for size=800bit
+Vector scalar product: 3.577000 µs/op for size=8000bit
+
+Matrix integer scalar product: 34.306000 µs/op for size=80bit
+Matrix integer scalar product: 1.375046 ms/op for size=800bit
+Matrix integer scalar product: 10.946432 ms/op for size=8000bit
+
+Vector integer scalar product: 418.199000 µs/op for size=80bit
+Vector integer scalar product: 15.392000 µs/op for size=800bit
+Vector integer scalar product: 2.157392 ms/op for size=8000bit
+
+
+Vector multiplication with vector: 3.082737 ms/op for size=80bit
+Vector multiplication with vector: 3.589747 ms/op for size=800bit
+Vector multiplication with vector: 5.119671 ms/op for size=8000bit
+
+Matrix multiplication with vector: 3.414911 ms/op for size=80bit
+Matrix multiplication with vector: 3.230782 ms/op for size=800bit
+Matrix multiplication with vector: 6.761850 ms/op for size=8000bit
+
+Matrix multiplication with Matrix  342.376000 µs/op for size=80bit
+Matrix multiplication with Matrix  7.791398 ms/op for size=800bit
+Matrix multiplication with Matrix  24.690089 ms/op for size=8000bit
+```
+
+# Performance
+
+Performance testing is supported by the
+
 # Supported operations
 
 ## Printing

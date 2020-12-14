@@ -3,7 +3,7 @@
   auto *other_blocks = other.blocks; \
   auto *this_blocks = blocks;
 
-#define ARITHMETIC_Matrix_BITWISE_HEADER \
+#define ARITHMETIC_MATRIX_BITWISE_HEADER \
   assert(height == other.height); \
   assert(width == other.width); \
   Matrix res(height, width); \
@@ -13,7 +13,10 @@
 #define ARITHMETIC_VECTOR_BITWISE_HEADER \
   assert(height == other.height); \
   Vector res(height); \
-  auto _height = height;
+  auto _height = height; \
+  uint64_t *res_blocks = (uint64_t *)&res.blocks[0]; \
+  uint64_t *other_blocks = (uint64_t *)&other.blocks[0]; \
+  uint64_t *this_blocks = (uint64_t *)&blocks[0];
 
 
 /*
@@ -64,15 +67,18 @@ Matrix Matrix::operator~() const {
 Vector Vector::operator~() const {
   Vector res(height);
 
-  uint8_t *this_blocks = blocks;
-  uint8_t *res_blocks = res.blocks;
+  uint64_t *this_blocks = (uint64_t *)&blocks[0];
+  uint64_t *res_blocks = (uint64_t *)&res.blocks[0];
 
   uint16_t _height = height;
 
   int16_t i;
   #pragma omp parallel for schedule(static) shared(this_blocks, res_blocks)
-  for (i = 0; i < _height; i++)
+  for (i = 0; i < _height/8; i++)
     res_blocks[i] = ~this_blocks[i];
+
+  for (i = height - height%8; i < _height; i++)
+    res.blocks[i] = ~blocks[i];
 
   return res;
 }
@@ -84,7 +90,7 @@ additions
 
 
 Matrix Matrix::operator^(Matrix const& other) const {
-  ARITHMETIC_Matrix_BITWISE_HEADER;
+  ARITHMETIC_MATRIX_BITWISE_HEADER;
   ARITHMETIC_VARIABLE_HEADER;
 
   int16_t n;
@@ -117,12 +123,14 @@ Matrix Matrix::operator-(const bool bit) const {
 
 Vector Vector::operator^(Vector const& other) const {
   ARITHMETIC_VECTOR_BITWISE_HEADER;
-  ARITHMETIC_VARIABLE_HEADER;
 
   int16_t i;
   #pragma omp parallel for schedule(static) shared(this_blocks, res_blocks, other_blocks)
-  for (i = 0; i < _height; i++)
+  for (i = 0; i < _height/8; i++)
     res_blocks[i] = this_blocks[i] ^ other_blocks[i];
+
+  for (i = _height - _height%8; i < _height; i++)
+    res.blocks[i] = blocks[i] ^ other.blocks[i];
 
   return res;
 }
@@ -154,7 +162,7 @@ bitwise multiplications
 
 
 Matrix Matrix::operator&(Matrix const& other) const {
-  ARITHMETIC_Matrix_BITWISE_HEADER;
+  ARITHMETIC_MATRIX_BITWISE_HEADER;
   ARITHMETIC_VARIABLE_HEADER;
 
   int16_t n;
@@ -171,12 +179,14 @@ Matrix Matrix::operator&(const bool bit) const {
 
 Vector Vector::operator&(Vector const& other) const {
   ARITHMETIC_VECTOR_BITWISE_HEADER;
-  ARITHMETIC_VARIABLE_HEADER;
 
   int16_t i;
   #pragma omp parallel for shared(this_blocks, res_blocks, other_blocks)
-  for (i = 0; i < _height; i++)
+  for (i = 0; i < _height/8; i++)
     res_blocks[i] = this_blocks[i] & other_blocks[i];
+
+  for (i = _height - _height%8; i < _height; i++)
+    res.blocks[i] = blocks[i] & other.blocks[i];
 
   return res;
 }
