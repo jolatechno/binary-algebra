@@ -23,16 +23,16 @@ void timeit(void (*f)(Matrix, Vector), const char* message, int iterations, cons
 
     //printing message
     if (duration < 1000) {
-      printf(message, duration, "ns/op", sizes[size]);
+      printf(message, duration, "ns/op", 8*sizes[size]);
     } else if (duration < 1000000) {
       duration /= 1000;
-      printf(message, duration, "µs/op", sizes[size]);
+      printf(message, duration, "µs/op", 8*sizes[size]);
     } else if (duration < 1000000000) {
       duration /= 1000000;
-      printf(message, duration, "ms/op", sizes[size]);
+      printf(message, duration, "ms/op", 8*sizes[size]);
     } else {
       duration /= 1000000000;
-      printf(message, duration, "s/op", sizes[size]);
+      printf(message, duration, "s/op", 8*sizes[size]);
     }
   }
 }
@@ -55,16 +55,16 @@ void timeit(void (*f)(Matrix, Matrix), const char* message, int iterations, cons
 
     //printing message
     if (duration < 1000) {
-      printf(message, duration, "ns/op", sizes[size]);
+      printf(message, duration, "ns/op", 8*sizes[size]);
     } else if (duration < 1000000) {
       duration /= 1000;
-      printf(message, duration, "µs/op", sizes[size]);
+      printf(message, duration, "µs/op", 8*sizes[size]);
     } else if (duration < 1000000000) {
       duration /= 1000000;
-      printf(message, duration, "ms/op", sizes[size]);
+      printf(message, duration, "ms/op", 8*sizes[size]);
     } else {
       duration /= 1000000000;
-      printf(message, duration, "s/op", sizes[size]);
+      printf(message, duration, "s/op", 8*sizes[size]);
     }
 
   }
@@ -88,16 +88,16 @@ void timeit(void (*f)(Matrix), const char* message, int iterations, const int si
 
     //printing message
     if (duration < 1000) {
-      printf(message, duration, "ns/op", sizes[size]);
+      printf(message, duration, "ns/op", 8*sizes[size]);
     } else if (duration < 1000000) {
       duration /= 1000;
-      printf(message, duration, "µs/op", sizes[size]);
+      printf(message, duration, "µs/op", 8*sizes[size]);
     } else if (duration < 1000000000) {
       duration /= 1000000;
-      printf(message, duration, "ms/op", sizes[size]);
+      printf(message, duration, "ms/op", 8*sizes[size]);
     } else {
       duration /= 1000000000;
-      printf(message, duration, "s/op", sizes[size]);
+      printf(message, duration, "s/op", 8*sizes[size]);
     }
   }
 }
@@ -120,16 +120,16 @@ void timeit(void (*f)(Vector, Vector), const char* message, int iterations, cons
 
     //printing message
     if (duration < 1000) {
-      printf(message, duration, "ns/op", sizes[size]);
+      printf(message, duration, "ns/op", 8*sizes[size]);
     } else if (duration < 1000000) {
       duration /= 1000;
-      printf(message, duration, "µs/op", sizes[size]);
+      printf(message, duration, "µs/op", 8*sizes[size]);
     } else if (duration < 1000000000) {
       duration /= 1000000;
-      printf(message, duration, "ms/op", sizes[size]);
+      printf(message, duration, "ms/op", 8*sizes[size]);
     } else {
       duration /= 1000000000;
-      printf(message, duration, "s/op", sizes[size]);
+      printf(message, duration, "s/op", 8*sizes[size]);
     }
   }
 }
@@ -152,16 +152,16 @@ void timeit(void (*f)(Vector), const char* message, int iterations, const int si
 
     //printing message
     if (duration < 1000) {
-      printf(message, duration, "ns/op", sizes[size]);
+      printf(message, duration, "ns/op", 8*sizes[size]);
     } else if (duration < 1000000) {
       duration /= 1000;
-      printf(message, duration, "µs/op", sizes[size]);
+      printf(message, duration, "µs/op", 8*sizes[size]);
     } else if (duration < 1000000000) {
       duration /= 1000000;
-      printf(message, duration, "ms/op", sizes[size]);
+      printf(message, duration, "ms/op", 8*sizes[size]);
     } else {
       duration /= 1000000000;
-      printf(message, duration, "s/op", sizes[size]);
+      printf(message, duration, "s/op", 8*sizes[size]);
     }
   }
 }
