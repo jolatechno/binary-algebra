@@ -18,9 +18,13 @@ This simplify some of the blocks operations (see [./binary_arithmetic/utils/bloc
 
 # Unit testing
 
-Unit testing is supported by the `make test` directive, and compares result from the main arithmetic of this library, with the `reference_arithmetic` which uses trivial but slow algorithms.
+Unit testing is supported by the `make test` directive which compares result from the main arithmetic of this library, with the `reference_arithmetic` which uses trivial but slow algorithms.
 
-"Typical" performance (on my average ryzen 3500u laptop, without killing any background task) is the following:
+# Performance
+
+Performance testing is supported by the `make performance_testing` directive which meusure the average time taken to apply some operation to varying size `Vectors` and `Matrices`.
+
+"Typical" performances (on my average ryzen 3500u laptop, without killing any background task) are the following:
 
 ```console
 joseph@pop-os:~/binary_algebra$ make clean performance_testing
@@ -93,10 +97,6 @@ Matrix multiplication with Matrix  342.376000 µs/op for size=80bit
 Matrix multiplication with Matrix  7.791398 ms/op for size=800bit
 Matrix multiplication with Matrix  24.690089 ms/op for size=8000bit
 ```
-
-# Performance
-
-Performance testing is supported by the
 
 # Supported operations
 
