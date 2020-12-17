@@ -25,9 +25,9 @@ class Matrix {
     Utils* utils;
 
     //block operations
-    uint64_t transpose_block(uint64_t block) const;
-    uint8_t multiply_block_byte(uint64_t block, uint8_t vect) const;
-    uint64_t multiply_block_block(uint64_t block_left, uint64_t block_right) const;
+    inline uint64_t transpose_block(uint64_t block) const;
+    inline uint8_t multiply_block_byte(uint64_t block, uint8_t vect) const;
+    inline uint64_t multiply_block_block(uint64_t block_left, uint64_t block_right) const;
 
     //for comparaisons
     int difference(Matrix const& mat) const;
@@ -114,7 +114,7 @@ class Vector {
     Utils* utils;
 
     //block operations
-    uint64_t multiply_byte_byte(uint8_t vect_left, uint8_t vect_right) const;
+    inline uint64_t multiply_byte_byte(uint8_t vect_left, uint8_t vect_right) const;
 
     //for comparaisons
     int difference(Vector const& vect) const;
