@@ -7,7 +7,7 @@ block transposition
 */
 
 
-inline uint64_t Matrix::transpose_block(uint64_t block) const {
+uint64_t Matrix::transpose_block(uint64_t block) const {
   // stolen from the Hacker's delight, edition 2, chapter 7 part 3
   block = block & 0xAA55AA55AA55AA55LL |
   (block & 0x00AA00AA00AA00AALL) << 7 |
@@ -28,7 +28,7 @@ block multiplications
 */
 
 
-inline  uint8_t Matrix::multiply_block_byte(uint64_t block, uint8_t vect) const { //changed to acomodate the switch in block indices, check the readme
+uint8_t Matrix::multiply_block_byte(uint64_t block, uint8_t vect) const { //changed to acomodate the switch in block indices, check the readme
   uint8_t sum = 0x00;
 
   //uint64_t block_t = transpose_block(block);
@@ -39,7 +39,7 @@ inline  uint8_t Matrix::multiply_block_byte(uint64_t block, uint8_t vect) const 
   return sum;
 }
 
-inline  uint64_t Matrix::multiply_block_block(uint64_t block_left, uint64_t block_right) const { //changed to acomodate the switch in block indices, check the readme
+uint64_t Matrix::multiply_block_block(uint64_t block_left, uint64_t block_right) const { //changed to acomodate the switch in block indices, check the readme
   uint64_t res = 0;
   //uint64_t block_right_t = transpose_block(block_right);
 
@@ -49,7 +49,7 @@ inline  uint64_t Matrix::multiply_block_block(uint64_t block_left, uint64_t bloc
   return res;
 }
 
-inline  uint64_t Vector::multiply_byte_byte(uint8_t vect_left, uint8_t vect_right) const { //changed to acomodate the switch in block indices, check the readme
+uint64_t Vector::multiply_byte_byte(uint8_t vect_left, uint8_t vect_right) const { //changed to acomodate the switch in block indices, check the readme
   uint64_t res = 0;
 
   for (int8_t i = 0; i < 8; i++)
