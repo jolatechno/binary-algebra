@@ -1,5 +1,9 @@
 #include <new>
 
+#if defined(_OPENMP)
+  #include <omp.h>
+#endif
+
 #include "binary_arithmetic.hpp"
 #include "reference_arithmetic/reference_arithmetic.hpp"
 

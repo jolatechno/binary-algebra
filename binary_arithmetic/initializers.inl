@@ -1,4 +1,4 @@
-#define INITIALIZER_SQUARE_Matrix_HEADER \
+#define INITIALIZER_SQUARE_MATRIX_HEADER \
   assert(height == width); \
   auto *this_blocks = blocks; \
   auto _height = height; \
@@ -20,7 +20,9 @@ void Matrix::randomize() {
   uint16_t _size = height * width * 8;
 
   int16_t i;
-  #pragma omp parallel for shared(block_8)
+  #if defined(_OPENMP)
+    #pragma omp parallel for shared(block_8)
+  #endif
   for (i = 0; i < _size; i++)
     block_8[i] = rand();
 }
@@ -29,7 +31,9 @@ void Vector::randomize() {
   INITIALIZER_VECTOR_HEADER;
 
   int16_t i;
-  #pragma omp parallel for shared(this_blocks)
+  #if defined(_OPENMP)
+    #pragma omp parallel for shared(this_blocks)
+  #endif
   for (i = 0; i < _height; i++)
     this_blocks[i] = rand();
 }
@@ -65,10 +69,12 @@ diagonal initializers
 
 
 void Matrix::diag() {
-  INITIALIZER_SQUARE_Matrix_HEADER;
+  INITIALIZER_SQUARE_MATRIX_HEADER;
 
   int16_t i, j;
-  #pragma omp parallel for collapse(2) shared(this_blocks)
+  #if defined(_OPENMP)
+    #pragma omp parallel for collapse(2) shared(this_blocks)
+  #endif
   for (i = 0; i < _height; i++)
     for (j = 0; j < _width; j++)
       if(i == j) {
@@ -79,10 +85,12 @@ void Matrix::diag() {
 }
 
 void Matrix::diag(Vector const& diagonal) {
-  INITIALIZER_SQUARE_Matrix_HEADER;
+  INITIALIZER_SQUARE_MATRIX_HEADER;
 
   int16_t i, j;
-  #pragma omp parallel for collapse(2) shared(this_blocks)
+  #if defined(_OPENMP)
+    #pragma omp parallel for collapse(2) shared(this_blocks)
+  #endif
   for (i = 0; i < _height; i++)
     for (j = 0; j < _width; j++)
       if(i == j) {

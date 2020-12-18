@@ -1,5 +1,15 @@
 # binary algebra
 
+## Requirement
+
+This library is design for Linux only _for now_. For the best result, you should install __Openmp__, and compile the library using it.
+
+## Compilation
+
+To compile this library without __Openmp__ simply use `make lib.a`, and you will find the `lib.a` library file in the [./lib](./lib) folder.
+
+To compile it with __Openmp__, you need to pass the flag `"-fopenmp"` to the c++ compiler, suing the flag `LDLIBS`. You can use the command `make --environment-overrides LDLIBS=-fopenmp lib.a` (or just `make LDLIBS=-fopenmp lib.a` depending on your make version).
+
 ## What is "binary algebra" ?
 
 Here what we mean by "binary algebra" is binary linear algebra - i.e. linear algebra inside of GF(2)^n (the [Galois field](https://en.wikipedia.org/wiki/GF(2)) of two elements - {0, 1}). In this space, we define the addition by the __xor__ operation, and the multiplication by the __and__ operation.
