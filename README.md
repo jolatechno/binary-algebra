@@ -8,7 +8,7 @@ This library is design for Linux only _for now_. For the best result, you should
 
 To compile this library without __Openmp__ simply use `make lib.a`, and you will find the `lib.a` library file in the [./lib](./lib) folder.
 
-To compile it with __Openmp__, you need to pass the flag `"-fopenmp"` to the c++ compiler, suing the flag `LDLIBS`. You can use the command `make LDLIBS=-fopenmp lib.a`.
+To compile it with __Openmp__, you need to pass the flag `"-fopenmp"` to the c++ compiler, suing the flag `LDLIBS`. You can use the command `make --environment-overrides LDLIBS=-fopenmp lib.a` (or just `make LDLIBS=-fopenmp lib.a` depending on your make version).
 
 ## What is "binary algebra" ?
 
