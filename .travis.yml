@@ -12,3 +12,4 @@ addons:
 
 script:
   - make clean test
+  - make LDLIBS=-fopnemp clean test

@@ -8,9 +8,16 @@
 
 int main(int argc, char** argv){
   const int n_iter = 50;
-  const int sizes[] = {
-    10, 100, 1000,
-  };
+  #if defined(_OPENMP)
+    const int sizes[] = {
+      10, 100, 1000,
+    };
+  #else
+    const int sizes[] = {
+      10, 50, 100,
+    };
+  #endif
+
   const int n_sizes = sizeof(sizes)/sizeof(sizes[0]);
 
   /*

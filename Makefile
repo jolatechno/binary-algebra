@@ -1,14 +1,13 @@
 COMPILER=g++ -std=c++0x
 LINKER=ar
 LOCALLIBS = $(wildcard binary_arithmetic/*.cpp) $(wildcard binary_arithmetic/**/*.cpp)
-LDLIBS=-fopenmp
+LDLIBS=
 
 TARGETS=unit_testing.out example.out
 
 .PHONY: all test clean
 
 all: unit_testing.out example.out performance_testing.out
-
 
 #run directive
 

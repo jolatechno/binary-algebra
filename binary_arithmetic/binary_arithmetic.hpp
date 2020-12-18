@@ -3,7 +3,6 @@
 #include <ostream>
 #include <stdint.h>
 #include <stdlib.h>
-#include <omp.h>
 #include <string.h>
 #include <cassert>
 #include <stdbool.h>

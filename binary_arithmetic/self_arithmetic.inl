@@ -4,11 +4,13 @@ additions
 
 
 void Matrix::operator^=(Matrix const& other) {
-  COMPARAISON_Matrix_BITWISE_HEADER;
+  COMPARAISON_MATRIX_BITWISE_HEADER;
   COMPARAISON_VARIABLE_HEADER;
 
   int16_t n;
-  #pragma omp parallel for schedule(static) shared(this_blocks, other_blocks)
+  #if defined(_OPENMP)
+    #pragma omp parallel for schedule(static) shared(this_blocks, other_blocks)
+  #endif
   for (n = 0; n < _height * _width; n++)
     this_blocks[n] ^= other_blocks[n];
 }
@@ -28,7 +30,9 @@ void Matrix::operator^=(const bool bit) {
     uint16_t _size = height * width;
 
     int16_t n;
-    #pragma omp parallel for schedule(static) shared(this_blocks)
+    #if defined(_OPENMP)
+      #pragma omp parallel for schedule(static) shared(this_blocks)
+    #endif
     for (n = 0; n < _size; n++)
       this_blocks[n] = ~this_blocks[n];
   }
@@ -47,7 +51,9 @@ void Vector::operator^=(Vector const& other) {
   COMPARAISON_VARIABLE_HEADER;
 
   int16_t i;
-  #pragma omp parallel for schedule(static) shared(this_blocks, other_blocks)
+  #if defined(_OPENMP)
+    #pragma omp parallel for schedule(static) shared(this_blocks, other_blocks)
+  #endif
   for (i = 0; i < height; i++)
     this_blocks[i] ^= other_blocks[i];
 }
@@ -67,7 +73,9 @@ void Vector::operator^=(const bool bit) {
     uint16_t _height = height;
 
     int16_t i;
-    #pragma omp parallel for schedule(static) shared(this_blocks)
+    #if defined(_OPENMP)
+      #pragma omp parallel for schedule(static) shared(this_blocks)
+    #endif
     for (i = 0; i < _height; i++)
       this_blocks[i] = ~this_blocks[i];
   }
@@ -88,11 +96,13 @@ bitwise multiplications
 
 
 void Matrix::operator&=(Matrix const& other) {
-  COMPARAISON_Matrix_BITWISE_HEADER;
+  COMPARAISON_MATRIX_BITWISE_HEADER;
   COMPARAISON_VARIABLE_HEADER;
 
   int16_t n;
-  #pragma omp parallel for schedule(static) shared(this_blocks, other_blocks)
+  #if defined(_OPENMP)
+    #pragma omp parallel for schedule(static) shared(this_blocks, other_blocks)
+  #endif
   for (n = 0; n < _height * _width; n++)
     this_blocks[n] &= other_blocks[n];
 }
@@ -107,7 +117,9 @@ void Vector::operator&=(Vector const& other) {
   COMPARAISON_VARIABLE_HEADER;
 
   int16_t i;
-  #pragma omp parallel for schedule(static) shared(this_blocks, other_blocks)
+  #if defined(_OPENMP)
+    #pragma omp parallel for schedule(static) shared(this_blocks, other_blocks)
+  #endif
   for (i = 0; i < height; i++)
     this_blocks[i] &= other_blocks[i];
 }
