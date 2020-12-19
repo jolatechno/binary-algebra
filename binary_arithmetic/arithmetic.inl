@@ -8,7 +8,8 @@
   assert(width == other.width); \
   Matrix res(height, width); \
   auto _width = width; \
-  auto _height = height;
+  auto _height = height; \
+  auto _size = height * width;
 
 #define ARITHMETIC_VECTOR_BITWISE_HEADER \
   assert(height == other.height); \
@@ -48,7 +49,6 @@ Matrix Matrix::T() const {
 /*
 negation
 */
-#include <stdio.h>
 
 
 Matrix Matrix::operator~() const {
@@ -62,7 +62,7 @@ Matrix Matrix::operator~() const {
   int16_t n;
   #if defined(_OPENMP)
     #if defined(TARGET)
-      #pragma omp target teams distribute parallel for map(to:this_blocks) map(from:res_blocks)
+      #pragma omp target teams distribute parallel for map(to:this_blocks[:_size]) map(from:res_blocks[:_size])
     #else
       #pragma omp parallel for schedule(static) shared(this_blocks, res_blocks)
     #endif
@@ -84,7 +84,7 @@ Vector Vector::operator~() const {
   int16_t i;
   #if defined(_OPENMP)
     #if defined(TARGET)
-      #pragma omp target teams distribute parallel for map(to:this_blocks) map(from:res_blocks)
+      #pragma omp target teams distribute parallel for map(to:this_blocks[:_height]) map(from:res_blocks[:_height])
     #else
       #pragma omp parallel for schedule(static) shared(this_blocks, res_blocks)
     #endif
@@ -111,7 +111,7 @@ Matrix Matrix::operator^(Matrix const& other) const {
   int16_t n;
   #if defined(_OPENMP)
     #if defined(TARGET)
-      #pragma omp target teams distribute parallel for map(to:this_blocks, other_blocks) map(from:res_blocks)
+      #pragma omp target teams distribute parallel for map(to:this_blocks[:_size], other_blocks[:_size]) map(from:res_blocks[:_size])
     #else
       #pragma omp parallel for schedule(static) shared(this_blocks, res_blocks, other_blocks)
     #endif
@@ -148,7 +148,7 @@ Vector Vector::operator^(Vector const& other) const {
   int16_t i;
   #if defined(_OPENMP)
     #if defined(TARGET)
-      #pragma omp target teams distribute parallel for map(to:this_blocks, other_blocks) map(from:res_blocks)
+      #pragma omp target teams distribute parallel for map(to:this_blocks[:_height], other_blocks[:_height]) map(from:res_blocks[:_height])
     #else
       #pragma omp parallel for schedule(static) shared(this_blocks, res_blocks, other_blocks)
     #endif
@@ -195,7 +195,7 @@ Matrix Matrix::operator&(Matrix const& other) const {
   int16_t n;
   #if defined(_OPENMP)
     #if defined(TARGET)
-      #pragma omp target teams distribute parallel for map(to:this_blocks, other_blocks) map(from:res_blocks)
+      #pragma omp target teams distribute parallel for map(to:this_blocks[:_size], other_blocks[:_size]) map(from:res_blocks[:_size])
     #else
       #pragma omp parallel for schedule(static) shared(this_blocks, res_blocks, other_blocks)
     #endif
@@ -216,7 +216,7 @@ Vector Vector::operator&(Vector const& other) const {
   int16_t i;
   #if defined(_OPENMP)
     #if defined(TARGET)
-      #pragma omp target teams distribute parallel for map(to:this_blocks, other_blocks) map(from:res_blocks)
+      #pragma omp target teams distribute parallel for map(to:this_blocks[:_height], other_blocks[:_height]) map(from:res_blocks[:_height])
     #else
       #pragma omp parallel for schedule(static) shared(this_blocks, res_blocks, other_blocks)
     #endif
