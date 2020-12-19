@@ -9,7 +9,11 @@ void Matrix::operator^=(Matrix const& other) {
 
   int16_t n;
   #if defined(_OPENMP)
-    #pragma omp parallel for schedule(static) shared(this_blocks, other_blocks)
+    #if defined(TARGET)
+      #pragma omp target teams distribute parallel for map(tofrom:this_blocks) map(to:other_blocks)
+    #else
+      #pragma omp parallel for schedule(static) shared(this_blocks, other_blocks)
+    #endif
   #endif
   for (n = 0; n < _height * _width; n++)
     this_blocks[n] ^= other_blocks[n];
@@ -31,7 +35,11 @@ void Matrix::operator^=(const bool bit) {
 
     int16_t n;
     #if defined(_OPENMP)
-      #pragma omp parallel for schedule(static) shared(this_blocks)
+      #if defined(TARGET)
+        #pragma omp target teams distribute parallel for map(tofrom:this_blocks)
+      #else
+        #pragma omp parallel for schedule(static) shared(this_blocks)
+      #endif
     #endif
     for (n = 0; n < _size; n++)
       this_blocks[n] = ~this_blocks[n];
@@ -52,7 +60,11 @@ void Vector::operator^=(Vector const& other) {
 
   int16_t i;
   #if defined(_OPENMP)
-    #pragma omp parallel for schedule(static) shared(this_blocks, other_blocks)
+    #if defined(TARGET)
+      #pragma omp target teams distribute parallel for map(tofrom:this_blocks) map(to:other_blocks)
+    #else
+      #pragma omp parallel for schedule(static) shared(this_blocks, other_blocks)
+    #endif
   #endif
   for (i = 0; i < height; i++)
     this_blocks[i] ^= other_blocks[i];
@@ -74,7 +86,11 @@ void Vector::operator^=(const bool bit) {
 
     int16_t i;
     #if defined(_OPENMP)
-      #pragma omp parallel for schedule(static) shared(this_blocks)
+      #if defined(TARGET)
+        #pragma omp target teams distribute parallel for map(tofrom:this_blocks)
+      #else
+        #pragma omp parallel for schedule(static) shared(this_blocks)
+      #endif
     #endif
     for (i = 0; i < _height; i++)
       this_blocks[i] = ~this_blocks[i];
@@ -101,7 +117,11 @@ void Matrix::operator&=(Matrix const& other) {
 
   int16_t n;
   #if defined(_OPENMP)
-    #pragma omp parallel for schedule(static) shared(this_blocks, other_blocks)
+    #if defined(TARGET)
+      #pragma omp target teams distribute parallel for map(tofrom:this_blocks) map(to:other_blocks)
+    #else
+      #pragma omp parallel for schedule(static) shared(this_blocks, other_blocks)
+    #endif
   #endif
   for (n = 0; n < _height * _width; n++)
     this_blocks[n] &= other_blocks[n];
@@ -118,7 +138,11 @@ void Vector::operator&=(Vector const& other) {
 
   int16_t i;
   #if defined(_OPENMP)
-    #pragma omp parallel for schedule(static) shared(this_blocks, other_blocks)
+    #if defined(TARGET)
+      #pragma omp target teams distribute parallel for map(tofrom:this_blocks) map(to:other_blocks)
+    #else
+      #pragma omp parallel for schedule(static) shared(this_blocks, other_blocks)
+    #endif
   #endif
   for (i = 0; i < height; i++)
     this_blocks[i] &= other_blocks[i];

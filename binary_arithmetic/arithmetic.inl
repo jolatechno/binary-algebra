@@ -48,6 +48,7 @@ Matrix Matrix::T() const {
 /*
 negation
 */
+#include <stdio.h>
 
 
 Matrix Matrix::operator~() const {
@@ -60,7 +61,11 @@ Matrix Matrix::operator~() const {
 
   int16_t n;
   #if defined(_OPENMP)
-    #pragma omp parallel for schedule(static) shared(this_blocks, res_blocks)
+    #if defined(TARGET)
+      #pragma omp target teams distribute parallel for map(to:this_blocks) map(from:res_blocks)
+    #else
+      #pragma omp parallel for schedule(static) shared(this_blocks, res_blocks)
+    #endif
   #endif
   for (n = 0; n < _size; n++)
     res_blocks[n] = ~this_blocks[n];
@@ -78,7 +83,11 @@ Vector Vector::operator~() const {
 
   int16_t i;
   #if defined(_OPENMP)
-    #pragma omp parallel for schedule(static) shared(this_blocks, res_blocks)
+    #if defined(TARGET)
+      #pragma omp target teams distribute parallel for map(to:this_blocks) map(from:res_blocks)
+    #else
+      #pragma omp parallel for schedule(static) shared(this_blocks, res_blocks)
+    #endif
   #endif
   for (i = 0; i < _height/8; i++)
     res_blocks[i] = ~this_blocks[i];
@@ -101,7 +110,11 @@ Matrix Matrix::operator^(Matrix const& other) const {
 
   int16_t n;
   #if defined(_OPENMP)
-    #pragma omp parallel for schedule(static) shared(this_blocks, res_blocks, other_blocks)
+    #if defined(TARGET)
+      #pragma omp target teams distribute parallel for map(to:this_blocks, other_blocks) map(from:res_blocks)
+    #else
+      #pragma omp parallel for schedule(static) shared(this_blocks, res_blocks, other_blocks)
+    #endif
   #endif
   for (n = 0; n < _height * _width; n++)
     res_blocks[n] = this_blocks[n] ^ other_blocks[n];
@@ -134,7 +147,11 @@ Vector Vector::operator^(Vector const& other) const {
 
   int16_t i;
   #if defined(_OPENMP)
-    #pragma omp parallel for schedule(static) shared(this_blocks, res_blocks, other_blocks)
+    #if defined(TARGET)
+      #pragma omp target teams distribute parallel for map(to:this_blocks, other_blocks) map(from:res_blocks)
+    #else
+      #pragma omp parallel for schedule(static) shared(this_blocks, res_blocks, other_blocks)
+    #endif
   #endif
   for (i = 0; i < _height/8; i++)
     res_blocks[i] = this_blocks[i] ^ other_blocks[i];
@@ -177,7 +194,11 @@ Matrix Matrix::operator&(Matrix const& other) const {
 
   int16_t n;
   #if defined(_OPENMP)
-    #pragma omp parallel for schedule(static) shared(this_blocks, res_blocks, other_blocks)
+    #if defined(TARGET)
+      #pragma omp target teams distribute parallel for map(to:this_blocks, other_blocks) map(from:res_blocks)
+    #else
+      #pragma omp parallel for schedule(static) shared(this_blocks, res_blocks, other_blocks)
+    #endif
   #endif
   for (n = 0; n < _height * _width; n++)
     res_blocks[n] = this_blocks[n] & other_blocks[n];
@@ -194,7 +215,11 @@ Vector Vector::operator&(Vector const& other) const {
 
   int16_t i;
   #if defined(_OPENMP)
-    #pragma omp parallel for schedule(static) shared(this_blocks, res_blocks, other_blocks)
+    #if defined(TARGET)
+      #pragma omp target teams distribute parallel for map(to:this_blocks, other_blocks) map(from:res_blocks)
+    #else
+      #pragma omp parallel for schedule(static) shared(this_blocks, res_blocks, other_blocks)
+    #endif
   #endif
   for (i = 0; i < _height/8; i++)
     res_blocks[i] = this_blocks[i] & other_blocks[i];

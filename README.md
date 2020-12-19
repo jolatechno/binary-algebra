@@ -1,6 +1,6 @@
 # binary algebra
 
-## Requirement
+## Requirements
 
 This library is design for Linux only _for now_. For the best result, you should install __Openmp__, and compile the library using it.
 
