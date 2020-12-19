@@ -42,7 +42,7 @@ Performance testing is supported by the `make performance_testing` directive whi
 | Vectors-800bit<br>Matrix-800bit | +, -, &, ^ | 1.9 µs/op<br>69 µs/op | 216 ns/op<br>63 µs/op |
 | Vectors-800bit<br>Matrix-800bit | ==, != | 1.3 µs/op<br>10 µs/op |  115 ns/op<br>14 µs/op |
 | Vectors-800bit<br>Matrix-800bit | <, >, <=, >= | 2.3 µs/op<br>9.8 µs/op | 1.4 µs/op<br>14 µs/op |
-| Vectors-800bit<br>Matrix-800bit | .integer_scalar_product() | | 842 ns/op<br>816 µs/op |
+| Vectors-800bit<br>Matrix-800bit | .integer_scalar_product() | 2 µs/op<br>310 µs/op | 842 ns/op<br>816 µs/op |
 | Vectors-800bit<br>Matrix-800bit | & | 12 µs/op<br>39 µs/op | 410 ns/op<br>44 µs/op |
 | Vectors-800bit | * | 149 µs/op | 346 µs/op |
 | Matrix-800bit Vectors-800bit | * | 222 µs/op | 679 µs/op |

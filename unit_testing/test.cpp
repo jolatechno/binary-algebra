@@ -14,8 +14,8 @@ int main(int argc, char** argv){
   const reference_arithmetic ref;
 
   uint16_t i, i_max = 20;
-  uint16_t height = 2;
-  uint16_t width = 1;
+  uint16_t height = 20;
+  uint16_t width = 10;
 
   Matrix mat_square_1(width);
   Matrix mat_square_2(width);
