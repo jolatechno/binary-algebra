@@ -7,10 +7,10 @@
 #include "functions.hpp"
 
 int main(int argc, char** argv){
-  const int n_iter = 50;
+  const int n_iter = 100;
   #if defined(_OPENMP)
     const int sizes[] = {
-      10, 100, 1000,
+      10, 100, 500,
     };
   #else
     const int sizes[] = {

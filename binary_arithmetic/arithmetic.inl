@@ -236,7 +236,7 @@ Matrix Matrix::operator*(Matrix const& other) const {
         #if defined(_OPENMP)
           #pragma omp atomic
         #endif
-        res_blocks[j + i*_size] ^= multiply_block_block(this_blocks[k + j*_width], other_blocks[i + k*_size]);
+        res_blocks[i + j*_height] ^= multiply_block_block(this_blocks[k + j*_width], other_blocks[i + k*_size]);
       }
 
   return res;

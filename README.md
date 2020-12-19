@@ -34,78 +34,23 @@ Unit testing is supported by the `make test` directive which compares result fro
 
 Performance testing is supported by the `make performance_testing` directive which meusure the average time taken to apply some operation to varying size `Vectors` and `Matrices`.
 
-"Typical" performances (on my average ryzen 3500u laptop, without killing any background task) are the following:
+"Typical" performances are the following:
 
-```console
-joseph@pop-os:~/binary_algebra$ make clean performance_testing
-g++ -std=c++0x -c binary_arithmetic/binary_arithmetic.cpp -o lib/binary_arithmetic.o -fopenmp
-g++ -std=c++0x -c binary_arithmetic/utils/utils.cpp -o lib/utils.o -fopenmp
-g++ -std=c++0x -c binary_arithmetic/reference_arithmetic/reference_arithmetic.cpp -o lib/reference_arithmetic.o -fopenmp
-ar -crs lib/lib.a lib/binary_arithmetic.o lib/utils.o lib/reference_arithmetic.o
-g++ -std=c++0x performance_testing/test.cpp lib/lib.a -o performance_testing/test.out -fopenmp
-./performance_testing/test.out
+| Objects | Operation | Time (ryzen 3550U)<br>With Openmp | Time (ryzen 3550U)<br>Without Openmp |
+| ------- | --------- | --------------------------------- | ------------------------------------ |
+| Matrix-800bit | .T() | 225 µs/op | 201 µs/op |
+| Vectors-800bit<br>Matrix-800bit | +, -, &, ^ | 1.9 µs/op<br>69 µs/op | 216 ns/op<br>63 µs/op |
+| Vectors-800bit<br>Matrix-800bit | ==, != | 1.3 µs/op<br>10 µs/op |  115 ns/op<br>14 µs/op |
+| Vectors-800bit<br>Matrix-800bit | <, >, <=, >= | 2.3 µs/op<br>9.8 µs/op | 1.4 µs/op<br>14 µs/op |
+| Vectors-800bit<br>Matrix-800bit | .integer_scalar_product() | 2 µs/op<br>310 µs/op | 842 ns/op<br>816 µs/op |
+| Vectors-800bit<br>Matrix-800bit | & | 12 µs/op<br>39 µs/op | 410 ns/op<br>44 µs/op |
+| Vectors-800bit | * | 149 µs/op | 346 µs/op |
+| Matrix-800bit Vectors-800bit | * | 222 µs/op | 679 µs/op |
+| Matrix-800bit | * | 2 ms/op | 556 ms/op |
 
-Matrix transposition: 3.627000 µs/op for size=80bit
-Matrix transposition: 297.302000 µs/op for size=800bit
-Matrix transposition: 4.632472 ms/op for size=8000bit
+We can see that the __Openmp__ version is much faster for multiplication, and mostly similar with other operations. This behavior would also be seen for almost all other operation with size greater than 2000bit. Some optimization might be due on the __Openmp__ version of comparisons, as stopping the kernel seems to be inefficient.
 
-
-Matrix equality: 234.000000 ns/op for size=80bit
-Matrix equality: 10.006000 µs/op for size=800bit
-Matrix equality: 6.671043 ms/op for size=8000bit
-
-Vector equality: 278.000000 ns/op for size=80bit
-Vector equality: 1.385000 µs/op for size=800bit
-Vector equality: 12.190000 µs/op for size=8000bit
-
-
-Matrix comparison: 245.000000 ns/op for size=80bit
-Matrix comparison: 10.165000 µs/op for size=800bit
-Matrix comparison: 6.558593 ms/op for size=8000bit
-
-Vector comparison: 1.653000 µs/op for size=80bit
-Vector comparison: 2.691000 µs/op for size=800bit
-Vector comparison: 11.420000 µs/op for size=8000bit
-
-
-Matrix addition: 3.394000 µs/op for size=80bit
-Matrix addition: 283.475000 µs/op for size=800bit
-Matrix addition: 5.718697 ms/op for size=8000bit
-
-Vector addition: 1.357000 µs/op for size=80bit
-Vector addition: 1.671000 µs/op for size=800bit
-Vector addition: 2.708000 µs/op for size=8000bit
-
-
-Matrix scalar product: 2.144000 µs/op for size=80bit
-Matrix scalar product: 34.079000 µs/op for size=800bit
-Matrix scalar product: 7.165217 ms/op for size=8000bit
-
-Vector scalar product: 1.603000 µs/op for size=80bit
-Vector scalar product: 1.898000 µs/op for size=800bit
-Vector scalar product: 3.790000 µs/op for size=8000bit
-
-Matrix integer scalar product: 6.331000 µs/op for size=80bit
-Matrix integer scalar product: 547.217000 µs/op for size=800bit
-Matrix integer scalar product: 7.975569 ms/op for size=8000bit
-
-Vector integer scalar product: 1.674000 µs/op for size=80bit
-Vector integer scalar product: 2.205000 µs/op for size=800bit
-Vector integer scalar product: 6.421000 µs/op for size=8000bit
-
-
-Vector multiplication with vector: 4.015000 µs/op for size=80bit
-Vector multiplication with vector: 306.866000 µs/op for size=800bit
-Vector multiplication with vector: 1.796962 ms/op for size=8000bit
-
-Matrix multiplication with vector: 3.910000 µs/op for size=80bit
-Matrix multiplication with vector: 166.233000 µs/op for size=800bit
-Matrix multiplication with vector: 3.269260 ms/op for size=8000bit
-
-Matrix multiplication with Matrix  389.901000 µs/op for size=80bit
-Matrix multiplication with Matrix  3.172075 ms/op for size=800bit
-Matrix multiplication with Matrix  19.388963 ms/op for size=8000bit
-```
+Support for GPU through __Openmp__ is planned, and a third row with performances on a __Nvidia gtx1060 6Gb__ will be added.
 
 # Supported operations
 
