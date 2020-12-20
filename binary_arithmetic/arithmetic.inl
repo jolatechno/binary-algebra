@@ -36,7 +36,11 @@ Matrix Matrix::T() const {
 
   int16_t i, j;
   #if defined(_OPENMP)
-    #pragma omp parallel for collapse(2) schedule(static) shared(this_blocks, res_blocks)
+    #if defined(TARGET)
+      #pragma omp target teams distribute parallel for collapse(2) map(to:this_blocks[:_width * _height]) map(from:res_blocks[:_width * _height])
+    #else
+      #pragma omp parallel for schedule(static) collapse(2) shared(this_blocks, res_blocks)
+    #endif
   #endif
   for (i = 0; i < _height; i++)
     for (j = 0; j < _width; j++)
@@ -252,6 +256,7 @@ Matrix Matrix::operator*(Matrix const& other) const {
   ARITHMETIC_VARIABLE_HEADER;
 
   int16_t i, j, k;
+  //#pragma omp target teams distribute parallel for collapse(3) map(to:this_blocks[:_width * _height], other_blocks[:_width * _size]) map(from:res_blocks[:_height * _size])
   #if defined(_OPENMP)
     #pragma omp parallel for collapse(3) schedule(static) shared(other_blocks, res_blocks, this_blocks)
   #endif
@@ -278,10 +283,11 @@ Vector Matrix::operator*(Vector const& other) const {
   ARITHMETIC_VARIABLE_HEADER;
 
   int16_t i, k;
+  //#pragma omp target teams distribute parallel for collapse(2) map(to:this_blocks[:_width * _height], other_blocks[:_width]) map(from:res_blocks[:_height])
   #if defined(_OPENMP)
     #pragma omp parallel for collapse(2) schedule(static) shared(other_blocks, res_blocks, this_blocks)
   #endif
-  for (k = 0; k < width; k++)
+  for (k = 0; k < _width; k++)
     for (i = 0; i < _height; i++) {
       #if defined(_OPENMP)
         #pragma omp atomic
@@ -301,6 +307,7 @@ Matrix Vector::operator*(Vector const& other) const {
   ARITHMETIC_VARIABLE_HEADER;
 
   int16_t i, j;
+  //#pragma omp target teams distribute parallel for collapse(3) map(to:this_blocks[:_width], other_blocks[:_height]) map(from:res_blocks[:_height * _width])
   #if defined(_OPENMP)
     #pragma omp parallel for collapse(2) schedule(static) shared(other_blocks, res_blocks, this_blocks)
   #endif

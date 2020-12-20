@@ -1,7 +1,10 @@
 #include <new>
+#include <stdlib.h>
+#include <cassert>
 
 #if defined(_OPENMP)
   #include <omp.h>
+  #include <atomic>
 #endif
 
 #include "binary_arithmetic.hpp"

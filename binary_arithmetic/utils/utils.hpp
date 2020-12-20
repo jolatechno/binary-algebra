@@ -10,10 +10,16 @@ class Utils {
   friend class Matrix;
 
   private:
+    #if defined(_OPENMP) &&  defined(TARGET)
+      #pragma omp declare target
+    #endif
     inline bool bit_out_of_byte_reversed(uint8_t byte, uint8_t bit);
     inline uint8_t byte_out_of_word_reversed(uint64_t word, uint8_t byte);
     inline int count_ones_8(uint8_t byte);
     inline int count_ones_64(uint64_t word);
+    #if defined(_OPENMP) &&  defined(TARGET)
+      #pragma omp end declare target
+    #endif
 };
 
 inline bool Utils::bit_out_of_byte_reversed(uint8_t byte, uint8_t bit) {
