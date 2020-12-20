@@ -9,7 +9,7 @@
   Matrix res(height, width); \
   auto _width = width; \
   auto _height = height; \
-  auto _size = height * width;
+  auto _size = _height * _width;
 
 #define ARITHMETIC_VECTOR_BITWISE_HEADER \
   assert(height == other.height); \
@@ -368,9 +368,13 @@ int Matrix::integer_scalar_product(Matrix const& other) const {
 
   int16_t n;
   #if defined(_OPENMP)
-    #pragma omp parallel for reduction(+ : sum) schedule(static) shared(this_blocks, other_blocks)
+    #if defined(TARGET)
+      #pragma omp target teams distribute parallel for reduction(+ : sum) map(tofrom:sum) map(to:this_blocks[:_size], other_blocks[:_size])
+    #else
+      #pragma omp parallel for reduction(+ : sum) schedule(static) shared(this_blocks, other_blocks)
+    #endif
   #endif
-  for (n = 0; n < _height * _width; n++)
+  for (n = 0; n < _size; n++)
     sum += utils->count_ones_64(this_blocks[n] & other_blocks[n]);
 
   return sum;
@@ -384,7 +388,11 @@ int Vector::integer_scalar_product(Vector const& other) const {
 
   int16_t i;
   #if defined(_OPENMP)
-    #pragma omp parallel for reduction(+ : sum) schedule(static) shared(this_blocks, other_blocks)
+    #if defined(TARGET)
+      #pragma omp target teams distribute parallel for reduction(+ : sum) map(tofrom:sum) map(to:this_blocks[:_height], other_blocks[:_height])
+    #else
+      #pragma omp parallel for reduction(+ : sum) schedule(static) shared(this_blocks, other_blocks)
+    #endif
   #endif
   for (i = 0; i < _height; i++)
     sum += utils->count_ones_8(this_blocks[i] & other_blocks[i]);

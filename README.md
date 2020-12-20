@@ -34,7 +34,7 @@ Up until now matrices were represented by block, with the indexing being similar
 
 This now has changed, blocks are now store "transposed", which can be seen as reversing of the indexing of bit inside of blocks compared to the indexing of blocks inside of matrices.
 
-This simplify some of the blocks operations (see [./binary_arithmetic/utils/block_arithmetic.inl](./binary_arithmetic/utils/block_arithmetic.inl)).
+This simplify some of the blocks operations (see [./src/utils/block_arithmetic.inl](./src/utils/block_arithmetic.inl)).
 
 # Unit testing
 
@@ -53,7 +53,7 @@ Performance testing is supported by the `make performance_testing` directive whi
 | Vectors-800bit<br>Matrix-800bit | ==, != | 1.3 µs/op<br>10 µs/op |  115 ns/op<br>14 µs/op |
 | Vectors-800bit<br>Matrix-800bit | <, >, <=, >= | 2.3 µs/op<br>9.8 µs/op | 1.4 µs/op<br>14 µs/op |
 | Vectors-800bit<br>Matrix-800bit | .integer_scalar_product() | 2 µs/op<br>310 µs/op | 842 ns/op<br>816 µs/op |
-| Vectors-800bit<br>Matrix-800bit | & | 12 µs/op<br>39 µs/op | 410 ns/op<br>44 µs/op |
+| Vectors-800bit<br>Matrix-800bit | % | 12 µs/op<br>39 µs/op | 410 ns/op<br>44 µs/op |
 | Vectors-800bit | * | 149 µs/op | 346 µs/op |
 | Matrix-800bit Vectors-800bit | * | 222 µs/op | 679 µs/op |
 | Matrix-800bit | * | 2 ms/op | 556 ms/op |
