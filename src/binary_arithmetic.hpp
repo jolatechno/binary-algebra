@@ -92,7 +92,7 @@ class Matrix {
     //operators
     Matrix operator~() const;
     bool operator%(Matrix const& mat) const; //scalar product
-    int integer_scalar_product(Matrix const& mat) const; //integer scalar product
+    int operator/(Matrix const& mat) const; //integer scalar product
     Matrix operator^(Matrix const& mat) const;
     Matrix operator^(const bool bit) const;
     Matrix operator+(Matrix const& mat) const; //aliases for the two previous
@@ -180,7 +180,7 @@ class Vector {
     //operators
     Vector operator~() const;
     bool operator%(Vector const& vect) const; //scalar product
-    int integer_scalar_product(Vector const& vect) const; //integer scalar product
+    int operator/(Vector const& vect) const; //integer scalar product
     Vector operator^(Vector const& vect) const;
     Vector operator^(const bool bit) const;
     Vector operator+(Vector const& vect) const; //aliases for the two previous

@@ -18,7 +18,7 @@ To compile it with __Openmp__, you need to pass the flag `"-fopenmp"` to the c++
 
 To compile it with __Openmp__ and enable Offlowding to GPUs, you will need to pass the flag `"-fno-stack-protector -fcf-protection=none"` to enable GPU support, and enable target offloading (as it is in development for now) using the flag `"-DTARGET=1"`. The command become `make --environment-overrides LDLIBS="-fopenmp -fno-stack-protector -fcf-protection=none -DTARGET=1" lib.a`.
 
-Operations supported on GPUs are currently the following : `.T(), +, -, ^, &`.
+Operations supported on GPUs are currently the following : `.T(), +, -, ^, &, /,`, the following comparisons : ` <=, >=, <, >`. and the self-operators : `+=, &=, -=, ^=`.
 
 ## What is "binary algebra" ?
 
@@ -52,7 +52,7 @@ Performance testing is supported by the `make performance_testing` directive whi
 | Vectors-800bit<br>Matrix-800bit | +, -, &, ^ | 1.9 µs/op<br>69 µs/op | 216 ns/op<br>63 µs/op |
 | Vectors-800bit<br>Matrix-800bit | ==, != | 1.3 µs/op<br>10 µs/op |  115 ns/op<br>14 µs/op |
 | Vectors-800bit<br>Matrix-800bit | <, >, <=, >= | 2.3 µs/op<br>9.8 µs/op | 1.4 µs/op<br>14 µs/op |
-| Vectors-800bit<br>Matrix-800bit | .integer_scalar_product() | 2 µs/op<br>310 µs/op | 842 ns/op<br>816 µs/op |
+| Vectors-800bit<br>Matrix-800bit | / | 2 µs/op<br>310 µs/op | 842 ns/op<br>816 µs/op |
 | Vectors-800bit<br>Matrix-800bit | % | 12 µs/op<br>39 µs/op | 410 ns/op<br>44 µs/op |
 | Vectors-800bit | * | 149 µs/op | 346 µs/op |
 | Matrix-800bit Vectors-800bit | * | 222 µs/op | 679 µs/op |
@@ -107,8 +107,7 @@ Mod-2 usual scalar product is supported between `Vectors` or `Matrices` of simil
 
 ### Integer scalar product
 
-The usual scalar product is supported between `Vectors` or `Matrices` of similar size, and returns the number of ones in the bitwise multiplication between the two `Vectors` or `Matrices`. This scalar product is called by the function `X.integer_scalar_product(other)`.
-
+The usual scalar product is supported between `Vectors` or `Matrices` of similar size, and is noted `/`. It returns the number of ones in the bitwise multiplication between the two `Vectors` or `Matrices`.
 
 ## Comparisons
 

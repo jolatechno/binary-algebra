@@ -360,7 +360,7 @@ bool Vector::operator%(Vector const& other) const {
   return utils->count_ones_8(sum) % 2;
 }
 
-int Matrix::integer_scalar_product(Matrix const& other) const {
+int Matrix::operator/(Matrix const& other) const {
   COMPARAISON_MATRIX_BITWISE_HEADER;
   COMPARAISON_VARIABLE_HEADER;
 
@@ -380,7 +380,7 @@ int Matrix::integer_scalar_product(Matrix const& other) const {
   return sum;
 }
 
-int Vector::integer_scalar_product(Vector const& other) const {
+int Vector::operator/(Vector const& other) const {
   COMPARAISON_VECTOR_BITWISE_HEADER;
   COMPARAISON_VARIABLE_HEADER;
 
