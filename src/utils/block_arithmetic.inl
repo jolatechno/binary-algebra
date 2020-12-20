@@ -15,7 +15,7 @@ inline uint64_t Matrix::transpose_block(uint64_t block) const {
   block = block & 0xCCCC3333CCCC3333LL |
   (block & 0x0000CCCC0000CCCCLL) << 14 |
   (block >> 14) & 0x0000CCCC0000CCCCLL;
-  block = block& 0xF0F0F0F00F0F0F0FLL |
+  block = block & 0xF0F0F0F00F0F0F0FLL |
   (block & 0x00000000F0F0F0F0LL) << 28 |
   (block >> 28) & 0x00000000F0F0F0F0LL;
 

@@ -1,6 +1,6 @@
 COMPILER=g++ -std=c++0x
 LINKER=ar
-LOCALLIBS = $(wildcard binary_arithmetic/*.cpp) $(wildcard binary_arithmetic/**/*.cpp)
+LOCALLIBS = $(wildcard src/*.cpp) $(wildcard src/**/*.cpp)
 LDLIBS=
 
 TARGETS=unit_testing.out example.out
@@ -43,13 +43,13 @@ lib.a: binary_arithmetic.o utils.o reference_arithmetic.o
 
 
 binary_arithmetic.o:
-	$(COMPILER) -c binary_arithmetic/binary_arithmetic.cpp -o lib/binary_arithmetic.o $(LDLIBS)
+	$(COMPILER) -c src/binary_arithmetic.cpp -o lib/binary_arithmetic.o $(LDLIBS)
 
 utils.o:
-	$(COMPILER) -c binary_arithmetic/utils/utils.cpp -o lib/utils.o $(LDLIBS)
+	$(COMPILER) -c src/utils/utils.cpp -o lib/utils.o $(LDLIBS)
 
 reference_arithmetic.o:
-	$(COMPILER) -c binary_arithmetic/reference_arithmetic/reference_arithmetic.cpp -o lib/reference_arithmetic.o $(LDLIBS)
+	$(COMPILER) -c src/reference_arithmetic/reference_arithmetic.cpp -o lib/reference_arithmetic.o $(LDLIBS)
 
 
 #clean

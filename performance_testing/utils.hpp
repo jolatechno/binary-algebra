@@ -1,7 +1,7 @@
 #include <chrono>
 #include <stdio.h>
 
-#include "../binary_arithmetic/binary_arithmetic.hpp"
+#include "../src/binary_arithmetic.hpp"
 
 using namespace std::chrono;
 

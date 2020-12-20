@@ -1,4 +1,6 @@
 #include <new>
+#include <stdlib.h>
+#include <cassert>
 
 #if defined(_OPENMP)
   #include <omp.h>

@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#include "../binary_arithmetic/binary_arithmetic.hpp"
+#include "../src/binary_arithmetic.hpp"
 
 int main(int argc, char** argv){
   Matrix mat(2, 2);

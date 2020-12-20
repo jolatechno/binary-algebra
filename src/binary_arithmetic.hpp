@@ -2,9 +2,7 @@
 
 #include <ostream>
 #include <stdint.h>
-#include <stdlib.h>
 #include <string.h>
-#include <cassert>
 #include <stdbool.h>
 
 #include "utils/utils.hpp"
@@ -24,9 +22,15 @@ class Matrix {
     Utils* utils;
 
     //block operations
+    #if defined(_OPENMP) &&  defined(TARGET)
+      #pragma omp declare target
+    #endif
     inline uint64_t transpose_block(uint64_t block) const;
     inline uint8_t multiply_block_byte(uint64_t block, uint8_t vect) const;
     inline uint64_t multiply_block_block(uint64_t block_left, uint64_t block_right) const;
+    #if defined(_OPENMP) &&  defined(TARGET)
+      #pragma omp end declare target
+    #endif
 
     //for comparaisons
     int difference(Matrix const& mat) const;
@@ -113,7 +117,13 @@ class Vector {
     Utils* utils;
 
     //block operations
+    #if defined(_OPENMP) &&  defined(TARGET)
+      #pragma omp declare target
+    #endif
     inline uint64_t multiply_byte_byte(uint8_t vect_left, uint8_t vect_right) const;
+    #if defined(_OPENMP) &&  defined(TARGET)
+      #pragma omp end declare target
+    #endif
 
     //for comparaisons
     int difference(Vector const& vect) const;

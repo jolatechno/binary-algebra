@@ -7,8 +7,8 @@
 #include "comparaisons.hpp"
 #include "initializers.hpp"
 
-#include "../binary_arithmetic/reference_arithmetic/reference_arithmetic.hpp"
-#include "../binary_arithmetic/binary_arithmetic.hpp"
+#include "../src/reference_arithmetic/reference_arithmetic.hpp"
+#include "../src/binary_arithmetic.hpp"
 
 int main(int argc, char** argv){
   const reference_arithmetic ref;

@@ -1,4 +1,4 @@
-#include "../binary_arithmetic/binary_arithmetic.hpp"
+#include "../src/binary_arithmetic.hpp"
 
 void multiplication_mat_vect(Matrix mat, Vector vect) {
   mat * vect;
