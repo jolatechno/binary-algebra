@@ -25,7 +25,7 @@ void scalar_product_mat(Matrix mat1, Matrix mat2) {
 }
 
 void integer_scalar_product_mat(Matrix mat1, Matrix mat2) {
-  mat1.integer_scalar_product(mat2);
+  mat1 / mat2;
 }
 
 void negation_mat(Matrix mat) {
@@ -57,7 +57,7 @@ void scalar_product_vect(Vector vect1, Vector vect2) {
 }
 
 void integer_scalar_product_vect(Vector vect1, Vector vect2) {
-  vect1.integer_scalar_product(vect2);
+  vect1 / vect2;
 }
 
 void negation_vect(Vector vect) {
