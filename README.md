@@ -18,7 +18,7 @@ To compile it with __Openmp__, you need to pass the flag `"-fopenmp"` to the c++
 
 To compile it with __Openmp__ and enable Offlowding to GPUs, you will need to pass the flag `"-fno-stack-protector -fcf-protection=none"` to enable GPU support, and enable target offloading (as it is in development for now) using the flag `"-DTARGET=1"`. The command become `make --environment-overrides LDLIBS="-fopenmp -fno-stack-protector -fcf-protection=none -DTARGET=1" lib.a`.
 
-Operations supported on GPUs are currently the following : `.T(), +, -, ^, &, /,`, the following comparisons : ` <=, >=, <, >`. and the self-operators : `+=, &=, -=, ^=`.
+Operations supported on GPUs are currently the following : `.T(), +, -, ^, &, /,`, the following comparisons : ` <=, >=, <, >`, and the self-operators : `+=, &=, -=, ^=`. You can refer to the [issue #1](https://github.com/jolatechno/binary_algebra/issues/1) to understand why matrix multiplication and standard scalar product can't be offloaded to GPUs for now.
 
 ## What is "binary algebra" ?
 
