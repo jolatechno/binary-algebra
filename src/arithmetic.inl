@@ -19,6 +19,10 @@
   uint64_t *other_blocks = (uint64_t *)&other.blocks[0]; \
   uint64_t *this_blocks = (uint64_t *)&blocks[0];
 
+#define GPU_LIMIT_2D 500;
+#define CPU_LIMIT_2D 100
+
+
 
 /*
 transposition

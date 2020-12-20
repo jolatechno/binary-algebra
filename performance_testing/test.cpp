@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#include "../binary_arithmetic/binary_arithmetic.hpp"
+#include "../src/binary_arithmetic.hpp"
 
 #include "utils.hpp"
 #include "functions.hpp"

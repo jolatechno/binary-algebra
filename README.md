@@ -18,6 +18,8 @@ To compile it with __Openmp__, you need to pass the flag `"-fopenmp"` to the c++
 
 To compile it with __Openmp__ and enable Offlowding to GPUs, you will need to pass the flag `"-fno-stack-protector -fcf-protection=none"` to enable GPU support, and enable target offloading (as it is in development for now) using the flag `"-DTARGET=1"`. The command become `make --environment-overrides LDLIBS="-fopenmp -fno-stack-protector -fcf-protection=none -DTARGET=1" lib.a`.
 
+Operations supported on GPUs are currently the following : `.T(), +, -, ^, &`.
+
 ## What is "binary algebra" ?
 
 Here what we mean by "binary algebra" is binary linear algebra - i.e. linear algebra inside of GF(2)^n (the [Galois field](https://en.wikipedia.org/wiki/GF(2)) of two elements - {0, 1}). In this space, we define the addition by the __xor__ operation, and the multiplication by the __and__ operation.
