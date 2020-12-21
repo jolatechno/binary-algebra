@@ -178,7 +178,7 @@ Matrix Matrix::operator&(Matrix const& other) const {
   int16_t n;
   _OPENMP_GPU_PRAGMA("omp parallel for schedule(static) shared(this_blocks, res_blocks, other_blocks)", \
     "omp target teams distribute parallel for map(to:this_blocks[:_size], other_blocks[:_size]) map(from:res_blocks[:_size])")
-  for (n = 0; n < _height * _width; n++)
+  for (n = 0; n < _size; n++)
     res_blocks[n] = this_blocks[n] & other_blocks[n];
 
   return res;
@@ -288,7 +288,7 @@ bool Matrix::operator%(Matrix const& other) const {
   int16_t n;
   _OPENMP_GPU_PRAGMA("omp parallel for reduction(^ : sum) schedule(static) shared(this_blocks, other_blocks)", \
     "omp target teams distribute parallel for map(tofrom:sum) map(to:this_blocks[:_size], other_blocks[:_size])")
-  for (n = 0; n < _height * _width; n++)
+  for (n = 0; n < _size; n++)
     utils->_atomic_xor_fetch_64(sum, this_blocks[n] & other_blocks[n]);
 
   return utils->count_ones_64(sum) % 2;
@@ -313,11 +313,11 @@ int Matrix::operator/(Matrix const& other) const {
   COMPARAISON_MATRIX_BITWISE_HEADER;
   COMPARAISON_VARIABLE_HEADER;
 
-  uint64_t sum = 0;
+  int sum = 0;
 
   int16_t n;
   _OPENMP_GPU_PRAGMA("omp parallel for reduction(+ : sum) schedule(static) shared(this_blocks, other_blocks)", \
-    "omp target teams distribute parallel for reduction(+ : sum) map(tofrom:sum) map(to:this_blocks[:_size], other_blocks[:_size])")
+    "omp target teams distribute parallel for  map(tofrom:sum) reduction(+ : sum) map(to:this_blocks[:_size], other_blocks[:_size])")
   for (n = 0; n < _size; n++)
     sum += utils->count_ones_64(this_blocks[n] & other_blocks[n]);
 
@@ -332,7 +332,7 @@ int Vector::operator/(Vector const& other) const {
 
   int16_t i;
   _OPENMP_GPU_PRAGMA("omp parallel for reduction(+ : sum) schedule(static) shared(this_blocks, other_blocks)", \
-    "omp target teams distribute parallel for reduction(+ : sum) map(tofrom:sum) map(to:this_blocks[:_height], other_blocks[:_height])")
+    "omp target teams distribute parallel for  map(tofrom:sum) reduction(+ : sum) map(to:this_blocks[:_height], other_blocks[:_height])")
   for (i = 0; i < _height; i++)
     sum += utils->count_ones_8(this_blocks[i] & other_blocks[i]);
 

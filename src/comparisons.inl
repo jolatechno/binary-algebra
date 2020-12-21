@@ -158,8 +158,8 @@ int Matrix::difference(Matrix const& other) const {
 
     int16_t n;
     _OPENMP_GPU_PRAGMA("omp parallel for reduction(+ : diff) schedule(static) shared(this_blocks, other_blocks)", \
-      "omp target teams distribute parallel for reduction(+ : diff) map(tofrom:diff) map(to:this_blocks[:_size], other_blocks[:_size])")
-    for (n = 0; n < _height * _width; n++)
+      "omp target teams distribute parallel for map(tofrom:diff) reduction(+ : diff) map(to:this_blocks[:_size], other_blocks[:_size])")
+    for (n = 0; n < _size; n++)
       diff +=  utils->count_ones_64(this_blocks[n]) - utils->count_ones_64(other_blocks[n]);
 
     return diff;
@@ -171,15 +171,17 @@ int Matrix::difference(Matrix const& other) const {
 int Vector::difference(Vector const& other) const {
   if (this != &other) {
     COMPARAISON_VECTOR_BITWISE_HEADER;
-    COMPARAISON_VARIABLE_HEADER;
+
+    uint64_t *other_blocks = (uint64_t *)&other.blocks[0]; \
+    uint64_t *this_blocks = (uint64_t *)&blocks[0];
 
     int diff = 0;
 
     int16_t i;
     _OPENMP_GPU_PRAGMA("omp parallel for reduction(+ : diff) schedule(static) shared(this_blocks, other_blocks)", \
-      "omp target teams distribute parallel for reduction(+ : diff) map(tofrom:diff) map(to:this_blocks[:_height], other_blocks[:_height])")
+      "omp target teams distribute parallel for map(tofrom:diff) reduction(+ : diff) map(to:this_blocks[:_height], other_blocks[:_height])")
     for (i = 0; i < _height; i++)
-      diff +=  utils->count_ones_8(this_blocks[i]) - utils->count_ones_8(other_blocks[i]);
+      diff += utils->count_ones_8(this_blocks[i]) - utils->count_ones_8(other_blocks[i]);
 
     return diff;
   }

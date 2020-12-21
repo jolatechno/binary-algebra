@@ -15,13 +15,13 @@ class Utils {
     #if defined(_OPENMP) &&  defined(TARGET)
       #pragma omp declare target
     #endif
-    inline bool bit_out_of_byte_reversed(uint8_t byte, uint8_t bit);
-    inline uint8_t byte_out_of_word_reversed(uint64_t word, uint8_t byte);
-    inline int count_ones_8(uint8_t byte);
-    inline int count_ones_64(uint64_t word);
+    static inline bool bit_out_of_byte_reversed(uint8_t byte, uint8_t bit);
+    static inline uint8_t byte_out_of_word_reversed(uint64_t word, uint8_t byte);
+    static inline int count_ones_8(uint8_t byte);
+    static inline int count_ones_64(uint64_t word);
 
-    inline void _atomic_xor_fetch_8(uint8_t &x1, uint8_t x2); //because openmp dosen't implement it on GPUs
-    inline void _atomic_xor_fetch_64(uint64_t &x1, uint64_t x2);
+    static inline void _atomic_xor_fetch_8(uint8_t &x1, uint8_t x2); //because openmp dosen't implement it on GPUs
+    static inline void _atomic_xor_fetch_64(uint64_t &x1, uint64_t x2);
     #if defined(_OPENMP) &&  defined(TARGET)
       #pragma omp end declare target
     #endif
