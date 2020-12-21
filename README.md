@@ -12,11 +12,11 @@ To compile this library without __Openmp__ simply use `make lib.a`, and you will
 
 ### Openmp
 
-To compile it with __Openmp__, you need to pass the flag `"-fopenmp"` to the c++ compiler, suing the flag `LDLIBS`. You can use the command `make --environment-overrides LDLIBS=-fopenmp lib.a` (or just `make LDLIBS=-fopenmp lib.a` depending on your make version).
+To compile it with __Openmp__, you need to use the `"gpu"` directive before all other targets, which will modify the `LDLIBS` variable in the [Makefile](./Makefile).
 
 ### Offloading to GPUs
 
-To compile it with __Openmp__ and enable Offlowding to GPUs, you will need to pass the flag `"-fno-stack-protector -fcf-protection=none"` to enable GPU support, and enable target offloading (as it is in development for now) using the flag `"-DTARGET=1"`. The command become `make --environment-overrides LDLIBS="-fopenmp -fno-stack-protector -fcf-protection=none -DTARGET=1" lib.a`.
+To compile it with __Openmp__ and enable Offlowding to GPUs, you will need to use the `"gpu"` directive before all other targets, which will modify the `CCFLAGS` and `LDLIBS` variable in the [Makefile](./Makefile).
 
 All arithmetic operations, self-operators, and comparisons excluding `==, !=` (for performance reasons) are now supported on GPUs.
 
