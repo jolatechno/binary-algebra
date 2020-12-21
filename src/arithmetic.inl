@@ -260,18 +260,17 @@ Matrix Matrix::operator*(Matrix const& other) const {
   ARITHMETIC_VARIABLE_HEADER;
 
   int16_t i, j, k;
-  //#pragma omp target teams distribute parallel for collapse(3) map(to:this_blocks[:_width * _height], other_blocks[:_width * _size]) map(from:res_blocks[:_height * _size])
   #if defined(_OPENMP)
-    #pragma omp parallel for collapse(3) schedule(static) shared(other_blocks, res_blocks, this_blocks)
+    #if defined(TARGET)
+      #pragma omp target teams distribute parallel for collapse(3) map(to:this_blocks[:_width * _height], other_blocks[:_width * _size]) map(from:res_blocks[:_height * _size])
+    #else
+      #pragma omp parallel for collapse(3) schedule(static) shared(other_blocks, res_blocks, this_blocks)
+    #endif
   #endif
   for (j = 0; j < _size; j++)
     for (k = 0; k < _width; k++)
-      for (i = 0; i < _height; i++) {
-        #if defined(_OPENMP)
-          #pragma omp atomic
-        #endif
-        res_blocks[i + j*_height] ^= multiply_block_block(this_blocks[k + j*_width], other_blocks[i + k*_size]);
-      }
+      for (i = 0; i < _height; i++)
+        utils->_atomic_xor_fetch_64(res_blocks[i + j*_height], multiply_block_block(this_blocks[k + j*_width], other_blocks[i + k*_size]));
 
   return res;
 }
@@ -292,12 +291,8 @@ Vector Matrix::operator*(Vector const& other) const {
     #pragma omp parallel for collapse(2) schedule(static) shared(other_blocks, res_blocks, this_blocks)
   #endif
   for (k = 0; k < _width; k++)
-    for (i = 0; i < _height; i++) {
-      #if defined(_OPENMP)
-        #pragma omp atomic
-      #endif
-      res_blocks[i] ^= multiply_block_byte(this_blocks[k + i*_width], other_blocks[k]);
-    }
+    for (i = 0; i < _height; i++)
+      utils->_atomic_xor_fetch_8(res_blocks[i], multiply_block_byte(this_blocks[k + i*_width], other_blocks[k]));
 
   return res;
 }
@@ -311,13 +306,16 @@ Matrix Vector::operator*(Vector const& other) const {
   ARITHMETIC_VARIABLE_HEADER;
 
   int16_t i, j;
-  //#pragma omp target teams distribute parallel for collapse(3) map(to:this_blocks[:_width], other_blocks[:_height]) map(from:res_blocks[:_height * _width])
   #if defined(_OPENMP)
-    #pragma omp parallel for collapse(2) schedule(static) shared(other_blocks, res_blocks, this_blocks)
+    #if defined(TARGET)
+      #pragma omp target teams distribute parallel for collapse(2) map(to:this_blocks[:_width], other_blocks[:_height]) map(from:res_blocks[:_height * _width])
+    #else
+      #pragma omp parallel for collapse(2) schedule(static) shared(other_blocks, res_blocks, this_blocks)
+    #endif
   #endif
   for (j = 0; j < _width; j++)
     for (i = 0; i < _height; i++)
-      res_blocks[j + i*_width] = multiply_byte_byte(this_blocks[j], other_blocks[i]);
+      utils->_atomic_xor_fetch_64(res_blocks[j + i*_width], multiply_byte_byte(this_blocks[j], other_blocks[i]));
 
   return res;
 }
@@ -336,10 +334,14 @@ bool Matrix::operator%(Matrix const& other) const {
 
   int16_t n;
   #if defined(_OPENMP)
-    #pragma omp parallel for reduction(^ : sum) schedule(static) shared(this_blocks, other_blocks)
+    #if defined(TARGET)
+      #pragma omp target teams distribute parallel for map(tofrom:sum) map(to:this_blocks[:_size], other_blocks[:_size])
+    #else
+      #pragma omp parallel for reduction(^ : sum) schedule(static) shared(this_blocks, other_blocks)
+    #endif
   #endif
   for (n = 0; n < _height * _width; n++)
-    sum ^= this_blocks[n] & other_blocks[n];
+    utils->_atomic_xor_fetch_64(sum, this_blocks[n] & other_blocks[n]);
 
   return utils->count_ones_64(sum) % 2;
 }
@@ -352,10 +354,14 @@ bool Vector::operator%(Vector const& other) const {
 
   int16_t i;
   #if defined(_OPENMP)
-    #pragma omp parallel for reduction(^ : sum) schedule(static) shared(this_blocks, other_blocks)
+    #if defined(TARGET)
+      #pragma omp target teams distribute parallel for map(tofrom:sum) map(to:this_blocks[:_height], other_blocks[:_height])
+    #else
+      #pragma omp parallel for reduction(^ : sum) schedule(static) shared(this_blocks, other_blocks)
+    #endif
   #endif
   for (i = 0; i < _height; i++)
-    sum ^= this_blocks[i] & other_blocks[i];
+    utils->_atomic_xor_fetch_8(sum, this_blocks[i] & other_blocks[i]);
 
   return utils->count_ones_8(sum) % 2;
 }

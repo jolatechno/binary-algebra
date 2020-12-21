@@ -18,7 +18,11 @@ To compile it with __Openmp__, you need to pass the flag `"-fopenmp"` to the c++
 
 To compile it with __Openmp__ and enable Offlowding to GPUs, you will need to pass the flag `"-fno-stack-protector -fcf-protection=none"` to enable GPU support, and enable target offloading (as it is in development for now) using the flag `"-DTARGET=1"`. The command become `make --environment-overrides LDLIBS="-fopenmp -fno-stack-protector -fcf-protection=none -DTARGET=1" lib.a`.
 
-Operations supported on GPUs are currently the following : `.T(), +, -, ^, &, /,`, the following comparisons : ` <=, >=, <, >`, and the self-operators : `+=, &=, -=, ^=`. You can refer to the [issue #1](https://github.com/jolatechno/binary_algebra/issues/1) to understand why matrix multiplication and standard scalar product can't be offloaded to GPUs for now.
+All arithmetic operations, self-operators, and comparisons excluding `==, !=` (for performance reasons) are now supported on GPUs.
+
+Operation requiring xor reduction (Matrix multiplication and standard scalar products) have a performance disadvantage on GPUs because atomic xor is not supported by Openmp on GPU (see [issue #1](https://github.com/jolatechno/binary_algebra/issues/1)), and so the use of `omp critical` was required which is a huge performance hit compared to `omp atomic`.
+
+I will implement threshold for which will redirect operation to the CPU without Opnemp, the CPU with Openmp, or GPUs; according to the size of the `Matrix` or `Vector`.
 
 ## What is "binary algebra" ?
 
