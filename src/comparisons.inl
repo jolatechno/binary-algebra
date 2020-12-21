@@ -171,9 +171,7 @@ int Matrix::difference(Matrix const& other) const {
 int Vector::difference(Vector const& other) const {
   if (this != &other) {
     COMPARAISON_VECTOR_BITWISE_HEADER;
-
-    uint64_t *other_blocks = (uint64_t *)&other.blocks[0]; \
-    uint64_t *this_blocks = (uint64_t *)&blocks[0];
+    COMPARAISON_VARIABLE_HEADER;
 
     int diff = 0;
 
