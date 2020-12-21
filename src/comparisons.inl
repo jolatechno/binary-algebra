@@ -27,10 +27,8 @@ bool Matrix::operator==(Matrix const& other) const {
     bool equal_ = true;
 
     int16_t n;
-    #if defined(_OPENMP)
-      #pragma omp parralel shared(this_blocks, other_blocks, _equal)
-      #pragma omp for
-    #endif
+    _OPENMP_PRAGMA("omp parralel shared(this_blocks, other_blocks, _equal)")
+    _OPENMP_PRAGMA("omp for")
     for (n = 0; n < _height * _width; n++) {
       if (this_blocks[n] != other_blocks[n]) {
         #if defined(_OPENMP)
@@ -61,10 +59,8 @@ bool Vector::operator==(Vector const& other) const {
     bool equal_ = true;
 
     int16_t i;
-    #if defined(_OPENMP)
-      #pragma omp parralel shared(this_blocks, other_blocks, _equal)
-      #pragma omp for
-    #endif
+    _OPENMP_PRAGMA("omp parralel shared(this_blocks, other_blocks, _equal)")
+    _OPENMP_PRAGMA("omp for")
     for (i = 0; i < _height; i++) {
       if (this_blocks[i] != other_blocks[i]) {
         #if defined(_OPENMP)
@@ -101,10 +97,8 @@ bool Matrix::operator==(const bool bit) const {
   auto _size = height * width;
 
   int16_t n;
-  #if defined(_OPENMP)
-    #pragma omp parralel shared(this_blocks, other_blocks, _equal)
-    #pragma omp for
-  #endif
+  _OPENMP_PRAGMA("omp parralel shared(this_blocks, _equal)")
+  _OPENMP_PRAGMA("omp for")
   for (n = 0; n < _size; n++) {
     if (this_blocks[n] != target) {
       #if defined(_OPENMP)
@@ -116,9 +110,7 @@ bool Matrix::operator==(const bool bit) const {
       #endif
 
     }
-    #if defined(_OPENMP)
-      #pragma omp cancellation point for
-    #endif
+    _OPENMP_PRAGMA("omp cancellation point for")
   }
 
   return equal_;
@@ -132,10 +124,8 @@ bool Vector::operator==(const bool bit) const {
   auto _height = height;
 
   int16_t i;
-  #if defined(_OPENMP)
-    #pragma omp parralel shared(this_blocks, other_blocks, _equal)
-    #pragma omp for
-  #endif
+  _OPENMP_PRAGMA("omp parralel shared(this_blocks, _equal)")
+  _OPENMP_PRAGMA("omp for")
   for (i = 0; i < _height; i++) {
     if (this_blocks[i] != target) {
       #if defined(_OPENMP)
@@ -147,9 +137,7 @@ bool Vector::operator==(const bool bit) const {
       #endif
 
     }
-    #if defined(_OPENMP)
-      #pragma omp cancellation point for
-    #endif
+    _OPENMP_PRAGMA("omp cancellation point for")
   }
 
   return equal_;
@@ -169,13 +157,8 @@ int Matrix::difference(Matrix const& other) const {
     int diff = 0;
 
     int16_t n;
-    #if defined(_OPENMP)
-      #if defined(TARGET)
-        #pragma omp target teams distribute parallel for reduction(+ : diff) map(tofrom:diff) map(to:this_blocks[:_size], other_blocks[:_size])
-      #else
-        #pragma omp parallel for reduction(+ : diff) schedule(static) shared(this_blocks, other_blocks)
-      #endif
-    #endif
+    _OPENMP_GPU_PRAGMA("omp parallel for reduction(+ : diff) schedule(static) shared(this_blocks, other_blocks)", \
+      "omp target teams distribute parallel for reduction(+ : diff) map(tofrom:diff) map(to:this_blocks[:_size], other_blocks[:_size])")
     for (n = 0; n < _height * _width; n++)
       diff +=  utils->count_ones_64(this_blocks[n]) - utils->count_ones_64(other_blocks[n]);
 
@@ -193,13 +176,8 @@ int Vector::difference(Vector const& other) const {
     int diff = 0;
 
     int16_t i;
-    #if defined(_OPENMP)
-      #if defined(TARGET)
-        #pragma omp target teams distribute parallel for reduction(+ : diff) map(tofrom:diff) map(to:this_blocks[:_height], other_blocks[:_height])
-      #else
-        #pragma omp parallel for reduction(+ : diff) schedule(static) shared(this_blocks, other_blocks)
-      #endif
-    #endif
+    _OPENMP_GPU_PRAGMA("omp parallel for reduction(+ : diff) schedule(static) shared(this_blocks, other_blocks)", \
+      "omp target teams distribute parallel for reduction(+ : diff) map(tofrom:diff) map(to:this_blocks[:_height], other_blocks[:_height])")
     for (i = 0; i < height; i++)
       diff +=  utils->count_ones_8(this_blocks[i]) - utils->count_ones_8(other_blocks[i]);
 

@@ -3,6 +3,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "../openmp.hpp"
+
 typedef class Utils Utils;
 
 class Utils {
@@ -52,29 +54,11 @@ inline int Utils::count_ones_64(uint64_t word) {
 }
 
 inline void Utils::_atomic_xor_fetch_8(uint8_t &x1, uint8_t x2) {
-  #if defined(_OPENMP)
-    #if defined(TARGET)
-      #pragma omp critical
-      x1 ^= x2;
-    #else
-      #pragma omp atomic
-      x1 ^= x2;
-    #endif
-  #else
-    x1 ^= x2;
-  #endif
+  _OPENMP_GPU_PRAGMA("omp atomic", "omp critical")
+  x1 ^= x2;
 }
 
 inline void Utils::_atomic_xor_fetch_64(uint64_t &x1, uint64_t x2) {
-  #if defined(_OPENMP)
-    #if defined(TARGET)
-      #pragma omp critical
-      x1 ^= x2;
-    #else
-      #pragma omp atomic
-      x1 ^= x2;
-    #endif
-  #else
-    x1 ^= x2;
-  #endif
+  _OPENMP_GPU_PRAGMA("omp atomic", "omp critical")
+  x1 ^= x2;
 }
