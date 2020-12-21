@@ -178,7 +178,7 @@ int Vector::difference(Vector const& other) const {
     int16_t i;
     _OPENMP_GPU_PRAGMA("omp parallel for reduction(+ : diff) schedule(static) shared(this_blocks, other_blocks)", \
       "omp target teams distribute parallel for reduction(+ : diff) map(tofrom:diff) map(to:this_blocks[:_height], other_blocks[:_height])")
-    for (i = 0; i < height; i++)
+    for (i = 0; i < _height; i++)
       diff +=  utils->count_ones_8(this_blocks[i]) - utils->count_ones_8(other_blocks[i]);
 
     return diff;

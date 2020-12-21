@@ -9,7 +9,10 @@ addons:
     update: true
     packages:
       - libomp-dev
+      - nvptx-tools
+      - gcc-offload-nvptx
 
 script:
   - make clean test
   - make openmp clean test
+  - make gpu clean test
