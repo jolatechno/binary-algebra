@@ -12,7 +12,7 @@ To compile this library without __Openmp__ simply use `make lib.a`, and you will
 
 ### Openmp
 
-To compile it with __Openmp__, you need to use the `"gpu"` directive before all other targets, which will modify the `LDLIBS` variable in the [Makefile](./Makefile).
+To compile it with __Openmp__, you need to use the `"openmp"` directive before all other targets, which will modify the `LDLIBS` variable in the [Makefile](./Makefile).
 
 ### Offloading to GPUs
 
