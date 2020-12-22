@@ -20,9 +20,9 @@ To compile it with __Openmp__ and enable Offlowding to GPUs, you will need to us
 
 All arithmetic operations, self-operators, and comparisons excluding `==, !=` (for performance reasons) are now supported on GPUs.
 
-Operation requiring xor reduction on single bytes (currently only __multiplication between a `Matrix` and a `Vector`__) have a performance disadvantage on GPUs because atomic xor for type `uint8_t` is not supported by Openmp on GPU (see [issue #1](https://github.com/jolatechno/binary_algebra/issues/1)), and so the use of `omp critical` was required which is a huge performance hit compared to `omp atomic`.
+Atomic operations for type `uint8_t` are not supported by __Openmp__ on GPU (see [issue #1](https://github.com/jolatechno/binary_algebra/issues/1)). I finally found a work around for every operation, either by converting types, or by grouping operations together to only apply atomic operations on `long unsigned int`.
 
-I will implement threshold for which will redirect operation to the CPU without Opnemp, the CPU with Openmp, or GPUs; according to the size of the `Matrix` or `Vector`.
+I will implement threshold for which will redirect operation to the CPU without __Openmp__, the CPU with __Openmp__, or GPUs; according to the size of the `Matrix` or `Vector`.
 
 ## What is "binary algebra" ?
 

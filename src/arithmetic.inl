@@ -232,7 +232,7 @@ Matrix Matrix::operator*(Matrix const& other) const {
   for (j = 0; j < _size; j++)
     for (k = 0; k < _width; k++)
       for (i = 0; i < _height; i++) {
-        #pragma omp atomic
+        _OPENMP_PRAGMA("omp atomic")
         res_blocks[i + j*_height] ^= multiply_block_block(this_blocks[k + j*_width], other_blocks[i + k*_size]);
       }
 
@@ -244,17 +244,27 @@ Vector Matrix::operator*(Vector const& other) const {
 
   Vector res(height);
 
-  int16_t _width = width;
-  int16_t _height = height;
+  auto _width = width;
+  auto _height = height;
 
-  ARITHMETIC_VARIABLE_HEADER;
+  long unsigned int *res_blocks = (long unsigned int*)res.blocks;
+  uint8_t *other_blocks = other.blocks;
+  uint64_t *this_blocks = blocks;
 
   int16_t i, k;
   _OPENMP_GPU_PRAGMA("omp parallel for collapse(2) schedule(static) shared(other_blocks, res_blocks, this_blocks)", \
     "omp target teams distribute parallel for collapse(2) map(to:this_blocks[:_width * _height], other_blocks[:_width]) map(from:res_blocks[:_height])")
   for (k = 0; k < _width; k++)
-    for (i = 0; i < _height; i++)
-      utils->_atomic_xor_fetch_8(res_blocks[i], multiply_block_byte(this_blocks[k + i*_width], other_blocks[k]));
+    for (i = 0; i < _height/8; i++) {
+      _OPENMP_PRAGMA("omp atomic")
+      res_blocks[i] ^= multiply_block_word(this_blocks[k + 8*i*_width], this_blocks[k + (8*i + 1)*_width], this_blocks[k + (8*i + 2)*_width], this_blocks[k + (8*i + 3)*_width], \
+        this_blocks[k + (8*i + 4)*_width], this_blocks[k + (8*i + 5)*_width], this_blocks[k + (8*i + 6)*_width], this_blocks[k + (8*i + 7)*_width], \
+        other_blocks[k]);
+    }
+
+  for (k = 0; k < _width; k++)
+    for (i = _height - _height%8; i < _height; i++)
+      res.blocks[i] ^= multiply_block_byte(this_blocks[k + i*_width], other_blocks[k]);
 
   return res;
 }

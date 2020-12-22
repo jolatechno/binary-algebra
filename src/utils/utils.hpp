@@ -12,18 +12,12 @@ class Utils {
   friend class Matrix;
 
   private:
-    #if defined(_OPENMP) &&  defined(TARGET)
-      #pragma omp declare target
-    #endif
+    _OPENMP_GPU("omp declare target")
     static inline bool bit_out_of_byte_reversed(uint8_t byte, uint8_t bit);
     static inline uint8_t byte_out_of_word_reversed(uint64_t word, uint8_t byte);
     static inline int count_ones_8(uint8_t byte);
     static inline int count_ones_64(uint64_t word);
-
-    static inline void _atomic_xor_fetch_8(uint8_t &x1, uint8_t x2); //because openmp dosen't implement it on GPUs
-    #if defined(_OPENMP) &&  defined(TARGET)
-      #pragma omp end declare target
-    #endif
+    _OPENMP_GPU("omp end declare target")
 };
 
 inline bool Utils::bit_out_of_byte_reversed(uint8_t byte, uint8_t bit) {
@@ -50,9 +44,4 @@ inline int Utils::count_ones_64(uint64_t word) {
     sum += count_ones_8(byte_out_of_word_reversed(word, i));
 
   return sum;
-}
-
-inline void Utils::_atomic_xor_fetch_8(uint8_t &x1, uint8_t x2) {
-  _OPENMP_GPU_PRAGMA("omp atomic", "omp critical")
-  x1 ^= x2;
 }
