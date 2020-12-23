@@ -87,7 +87,7 @@ int main(int argc, char** argv){
   mat(1,0) = true; //write
 
   vect[0] = mat(1, 1); //read and write
-  mat(0, 0) = vect(1); //read and write
+  mat(0, 0) = vect[1]; //read and write
 }
 ```
 
