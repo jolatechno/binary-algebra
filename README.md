@@ -68,17 +68,32 @@ Support for GPU through __Openmp__ is planned, and a third row with performances
 
 # Supported operations
 
+## Initializing
+
+### Zero
+
+You can initialize a `Vector` of size `n` filled with zeros by using `Vector(n)`, and a `Matrix` of size `n x m` using `Matrix(n, m)`.
+
+### Diagonal
+
+You can use `mat.diag()` on a square `Matrix` to make it into the identity matrix (ones on the diagonal and zeros elsewhere).
+
+You can also use `mat.diag(vect)` on a suqare `Matrix` of size `n`, with `vect` being a `Vector` of size `n`, to fill the diagonal of `mat` with the elements of `vect`, and make all non-diagonal elements null.
+
+### Randomize
+
+You can use the function `.randomize()` on a `Vector` or a `Matrix` to randomize it using the `rand()` function.
+
 ## Reading and writing
 
 You can read and write to a `Vector` or a `Matrix` at a specific index using using the following code :
 
 ```cpp
 //binary_arithmetic included earlier
-#include <iostream>
 
 int main(int argc, char** argv){
-  Matrix mat(2, 2);
-  Vector vect(2);
+  Matrix mat(2, 2); //initializing
+  Vector vect(2); //initializing
 
   bool b1 = mat(0,1); //read
   bool b2 = vect[0]; //read
@@ -102,10 +117,10 @@ You can "print" a `Vector` or a `Matrix` using the following code :
 #include <iostream>
 
 int main(int argc, char** argv){
-  Matrix mat(2, 2);
-  Vector vect(2);
+  Matrix mat(2, 2); //initializing
+  Vector vect(2); //initializing
 
-  std::cout << mat << "\n" << vect;
+  std::cout << mat << "\n" << vect; //printing mat, then a new-line, then vect
 }
 ```
 
