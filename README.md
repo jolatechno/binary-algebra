@@ -38,7 +38,7 @@ Up until now matrices were represented by block, with the indexing being similar
 
 This now has changed, blocks are now store "transposed", which can be seen as reversing of the indexing of bit inside of blocks compared to the indexing of blocks inside of matrices.
 
-This simplify some of the blocks operations (see [./src/utils/block_arithmetic.inl](./src/utils/block_arithmetic.inl)).
+This simplify some of the blocks operations (see [./src/member/block_arithmetic.inl](./src/member/block_arithmetic.inl)).
 
 # Unit testing
 
@@ -68,6 +68,31 @@ Support for GPU through __Openmp__ is planned, and a third row with performances
 
 # Supported operations
 
+## Reading and writing
+
+You can read and write to a `Vector` or a `Matrix` at a specific index using using the following code :
+
+```cpp
+//binary_arithmetic included earlier
+#include <iostream>
+
+int main(int argc, char** argv){
+  Matrix mat(2, 2);
+  Vector vect(2);
+
+  bool b1 = mat(0,1); //read
+  bool b2 = vect[0]; //read
+
+  vect[1] = false; //write
+  mat(1,0) = true; //write
+
+  vect(0) = mat(1, 1); //read and write
+  mat(0, 0) = vect(1); //read and write
+}
+```
+
+This uses a intermediary `struct` that passes assignment to `bool` to writing to a specific `bit` of the `Vector` or `Matrix`, and support casting to `bool`.
+
 ## Printing
 
 You can "print" a `Vector` or a `Matrix` using the following code :
@@ -79,6 +104,7 @@ You can "print" a `Vector` or a `Matrix` using the following code :
 int main(int argc, char** argv){
   Matrix mat(2, 2);
   Vector vect(2);
+
   std::cout << mat << "\n" << vect;
 }
 ```

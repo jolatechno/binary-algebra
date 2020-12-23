@@ -10,9 +10,56 @@
 typedef class Matrix Matrix;
 typedef class Vector Vector;
 
+
+/*
+assignment struct
+*/
+
+
+struct bool_from_byte {
+  uint8_t *byte;
+  uint16_t i;
+
+  //util operations
+  Utils* utils;
+
+  //constructor
+  bool_from_byte(int16_t _i, uint8_t *_byte) : i(_i), byte(_byte) {}
+
+  operator bool() const; //implicite comvertion
+  bool_from_byte& operator=(bool value); //assignment operators
+  bool_from_byte& operator=(bool_from_byte value) {
+    *this = (bool)value;
+    return *this;
+  }
+};
+
+struct bool_from_word {
+  uint64_t *word;
+  uint16_t i, j;
+
+  //util operations
+  Utils* utils;
+
+  //constructor
+  bool_from_word(int16_t _i, int16_t _j, uint64_t *_word) : i(_i), j(_j), word(_word) {}
+
+  operator bool() const; //implicite comvertion
+  bool_from_word& operator=(bool value); //assignment operators
+  bool_from_word& operator=(bool_from_word value) {
+    *this = (bool)value;
+    return *this;
+  }
+};
+
+
+/*
+classes
+*/
+
+
 class Matrix {
   friend Vector;
-  friend class reference_arithmetic;
 
   private:
     //blocks
@@ -34,11 +81,10 @@ class Matrix {
     //for comparaisons
     int difference(Matrix const& mat) const;
 
-    //Stupid way of accessing Matrix elements, only for testing or debugging !
-    bool operator()(uint16_t i, uint16_t j) const;
-    void write(uint16_t i, uint16_t j, bool bit);
-
   public:
+    //Stupid way of accessing Matrix elements, only for testing or debugging !
+    bool_from_word operator()(uint16_t i, uint16_t j) const;
+
     //size
     const uint16_t height;
     const uint16_t width;
@@ -106,7 +152,6 @@ class Matrix {
 
 class Vector {
   friend Matrix;
-  friend class reference_arithmetic;
 
   private:
     //blocks
@@ -123,11 +168,10 @@ class Vector {
     //for comparaisons
     int difference(Vector const& vect) const;
 
-    //Stupid way of accessing vector elements, only for testing or debugging !
-    bool operator[](uint16_t i) const;
-    void write(uint16_t i, bool bit);
-
   public:
+    //Stupid way of accessing vector elements, only for testing or debugging !
+    bool_from_byte operator[](uint16_t i) const;
+
     //size
     const uint16_t height;
 

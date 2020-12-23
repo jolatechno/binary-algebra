@@ -8,10 +8,7 @@
 typedef class Utils Utils;
 
 class Utils {
-  friend class Vector;
-  friend class Matrix;
-
-  private:
+  public:
     _OPENMP_GPU("omp declare target")
     static inline bool bit_out_of_byte_reversed(uint8_t byte, uint8_t bit);
     static inline uint8_t byte_out_of_word_reversed(uint64_t word, uint8_t byte);

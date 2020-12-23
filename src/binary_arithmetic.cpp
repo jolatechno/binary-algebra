@@ -11,10 +11,9 @@
 #include "binary_arithmetic.hpp"
 #include "reference_arithmetic/reference_arithmetic.hpp"
 
-#include "reference_arithmetic/read_write.inl"
-
-#include "utils/debug.inl"
-#include "utils/block_arithmetic.inl"
+#include "member/read_write.inl"
+#include "member/debug.inl"
+#include "member/block_arithmetic.inl"
 
 #include "comparisons.inl"
 #include "initializers.inl"

@@ -9,7 +9,7 @@ Matrix reference_arithmetic::transpose(Matrix const& mat) const {
   uint16_t i, j;
   for (i = 0; i < mat.height * 8; i++)
     for (j = 0; j < mat.width * 8; j++)
-      transposed.write(j, i, mat(i, j));
+      transposed(j, i) = mat(i, j);
 
   return transposed;
 }
@@ -31,7 +31,7 @@ Matrix reference_arithmetic::multiplication(Matrix const& mat1, Matrix const& ma
       for (k = 0; k < mat1.width * 8; k++)
         sum = (sum != (mat1(i, k) && mat2(k, j)));
 
-      product.write(i, j, sum);
+      product(i, j) = sum;
     }
 
   return product;
@@ -49,7 +49,7 @@ Vector reference_arithmetic::multiplication(Matrix const& mat, Vector const& vec
     for (k = 0; k < mat.width * 8; k++)
       sum = (sum != (mat(i, k) && vect[k]));
 
-    product.write(i, sum);
+    product[i] = sum;
   }
 
   return product;
@@ -61,7 +61,7 @@ Matrix reference_arithmetic::multiplication(Vector const& vect1, Vector const& v
   uint16_t i, j;
   for (i = 0; i < vect2.height * 8; i++) {
     for (j = 0; j < vect1.height * 8; j++)
-      product.write(i, j, vect1[j] && vect2[i]);
+      product(i, j) = vect1[j] && vect2[i];
   }
 
   return product;
@@ -82,7 +82,7 @@ Matrix reference_arithmetic::addition(Matrix const& mat1, Matrix const& mat2) co
   int16_t i, j;
   for (i = 0; i < mat1.height * 8; i++)
     for (j = 0; j < mat1.width * 8; j++)
-      mat_res.write(i, j, mat1(i, j) != mat2(i, j));
+      mat_res(i, j) = mat1(i, j) != mat2(i, j);
 
   return mat_res;
 }
@@ -93,7 +93,7 @@ Matrix reference_arithmetic::addition(Matrix const& mat, bool bit) const {
   int16_t i, j;
   for (i = 0; i < mat.height * 8; i++)
     for (j = 0; j < mat.width * 8; j++)
-      mat_res.write(i, j, mat(i, j) != bit);
+      mat_res(i, j) = mat(i, j) != bit;
 
   return mat_res;
 }
@@ -104,7 +104,7 @@ Vector reference_arithmetic::addition(Vector const& vect1, Vector const& vect2) 
   Vector vect_res(vect1.height);
 
   for (int16_t i = 0; i < vect1.height * 8; i++)
-    vect_res.write(i, vect1[i] != vect2[i]);
+    vect_res[i] = vect1[i] != vect2[i];
 
   return vect_res;
 }
@@ -113,7 +113,7 @@ Vector reference_arithmetic::addition(Vector const& vect, bool bit) const {
   Vector vect_res(vect.height);
 
   for (int16_t i = 0; i < vect.height * 8; i++)
-    vect_res.write(i, vect[i] != bit);
+    vect_res[i] = vect[i] != bit;
 
   return vect_res;
 }
@@ -133,7 +133,7 @@ Matrix reference_arithmetic::bitwise_multiplication(Matrix const& mat1, Matrix c
   int16_t i, j;
   for (i = 0; i < mat1.height * 8; i++)
     for (j = 0; j < mat1.width * 8; j++)
-      mat_res.write(i, j, mat1(i, j) && mat2(i, j));
+      mat_res(i, j) = mat1(i, j) && mat2(i, j);
 
   return mat_res;
 }
@@ -144,7 +144,7 @@ Matrix reference_arithmetic::bitwise_multiplication(Matrix const& mat, bool bit)
   int16_t i, j;
   for (i = 0; i < mat.height * 8; i++)
     for (j = 0; j < mat.width * 8; j++)
-      mat_res.write(i, j, mat(i, j) && bit);
+      mat_res(i, j) = mat(i, j) && bit;
 
   return mat_res;
 }
@@ -155,7 +155,7 @@ Vector reference_arithmetic::bitwise_multiplication(Vector const& vect1, Vector 
   Vector vect_res(vect1.height);
 
   for (int16_t i = 0; i < vect1.height * 8; i++)
-    vect_res.write(i, vect1[i] && vect2[i]);
+    vect_res[i] = vect1[i] && vect2[i];
 
   return vect_res;
 }
@@ -164,7 +164,7 @@ Vector reference_arithmetic::bitwise_multiplication(Vector const& vect, bool bit
   Vector vect_res(vect.height);
 
   for (int16_t i = 0; i < vect.height * 8; i++)
-    vect_res.write(i, vect[i] && bit);
+    vect_res[i] = vect[i] && bit;
 
   return vect_res;
 }
@@ -181,7 +181,7 @@ Matrix reference_arithmetic::negate(Matrix const& mat) const {
   int16_t i, j;
   for (i = 0; i < mat.height * 8; i++)
     for (j = 0; j < mat.width * 8; j++)
-      mat_res.write(i, j, !mat(i, j));
+      mat_res(i, j) = !mat(i, j);
 
   return mat_res;
 }
@@ -190,7 +190,7 @@ Vector reference_arithmetic::negate(Vector const& vect) const {
   Vector vect_res(vect.height);
 
   for (int16_t i = 0; i < vect.height * 8; i++)
-    vect_res.write(i, !vect[i]);
+    vect_res[i] = !vect[i];
 
   return vect_res;
 }
