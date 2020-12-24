@@ -62,9 +62,6 @@ class Matrix {
   friend Vector;
 
   private:
-    //blocks
-    uint64_t *blocks;
-
     //util operations
     Utils* utils;
 
@@ -82,6 +79,9 @@ class Matrix {
     int difference(Matrix const& mat) const;
 
   public:
+    //blocks
+    uint64_t *blocks;
+
     //Stupid way of accessing Matrix elements, only for testing or debugging !
     bool_from_word operator()(uint16_t i, uint16_t j) const;
 
@@ -154,9 +154,6 @@ class Vector {
   friend Matrix;
 
   private:
-    //blocks
-    uint8_t *blocks;
-
     //util operations
     Utils* utils;
 
@@ -169,6 +166,9 @@ class Vector {
     int difference(Vector const& vect) const;
 
   public:
+    //blocks
+    uint8_t *blocks;
+
     //Stupid way of accessing vector elements, only for testing or debugging !
     bool_from_byte operator[](uint16_t i) const;
 
