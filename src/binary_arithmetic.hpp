@@ -69,14 +69,14 @@ class Matrix {
     Utils* utils;
 
     //block operations
-    _OPENMP_GPU("omp declare target")
+    _OPENMP_GPU_PRAGMA("omp declare target")
     inline uint64_t transpose_block(uint64_t block) const;
     inline uint8_t multiply_block_byte(uint64_t block, uint8_t vect) const;
     inline uint64_t multiply_block_word(uint64_t block0, uint64_t block1, uint64_t block2, uint64_t block3, \
       uint64_t block4, uint64_t block5, uint64_t block6, uint64_t block7, \
       uint8_t vect) const;
     inline uint64_t multiply_block_block(uint64_t block_left, uint64_t block_right) const;
-    _OPENMP_GPU("omp end declare target")
+    _OPENMP_GPU_PRAGMA("omp end declare target")
 
     //for comparaisons
     int difference(Matrix const& mat) const;
@@ -161,9 +161,9 @@ class Vector {
     Utils* utils;
 
     //block operations
-    _OPENMP_GPU("omp declare target")
+    _OPENMP_GPU_PRAGMA("omp declare target")
     inline uint64_t multiply_byte_byte(uint8_t vect_left, uint8_t vect_right) const;
-    _OPENMP_GPU("omp end declare target")
+    _OPENMP_GPU_PRAGMA("omp end declare target")
 
     //for comparaisons
     int difference(Vector const& vect) const;
