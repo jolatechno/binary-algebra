@@ -12,7 +12,7 @@ all: unit_testing.out example.out performance_testing.out
 
 
 mpi:
-	$(eval CCFLAGS+=-DMPI=1)
+	$(eval CCFLAGS+=-DMPIENABLED=1)
 	$(eval CXX=mpic++ -std=c++0x)
 
 gpu: openmp

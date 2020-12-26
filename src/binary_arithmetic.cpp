@@ -7,6 +7,7 @@
 #endif
 
 #include "openmp.hpp"
+#include "mpi.hpp"
 
 #include "binary_arithmetic.hpp"
 #include "reference_arithmetic/reference_arithmetic.hpp"
