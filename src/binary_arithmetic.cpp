@@ -2,10 +2,6 @@
 #include <stdlib.h>
 #include <cassert>
 
-#if defined(_OPENMP)
-  #include <omp.h>
-#endif
-
 #include "openmp.hpp"
 #include "mpi.hpp"
 

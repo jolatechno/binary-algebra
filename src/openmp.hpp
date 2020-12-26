@@ -1,7 +1,9 @@
-#define GPU_LIMIT 10000
-#define CPU_LIMIT 500
+#pragma once
 
-#ifndef _OPENMP_PRAGMA
+#if defined(_OPENMP)
+  #define GPU_LIMIT 10000
+  #define CPU_LIMIT 500
+
   #if defined(_OPENMP)
     #define _OPENMP_PRAGMA(all) _Pragma(all)
   #else

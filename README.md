@@ -14,9 +14,11 @@ To compile this library without __Openmp__ simply use `make lib.a`, and you will
 
 ### MPI
 
-MPI support uses the [mpi-utils](https://github.com/jolatechno/mpi-utils) stored in [./mpi-utils/](mpi-utils), which needs to be cloned if this repository wasn't cloned recursively.
+__MPI__ support uses the [mpi-utils](https://github.com/jolatechno/mpi-utils) stored in [./mpi-utils/](mpi-utils), which needs to be cloned if this repository wasn't cloned recursively.
 
 Compiling using MPI is done by adding the `"mpi"` directive to `make`, which changes the compiler and `CCFLAGS`
+
+You can compile with __MPI__ and __Openmp__ simultaniously by adding both target, or even offload to GPUs on different node using __MPI__.
 
 ### Openmp
 

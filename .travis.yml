@@ -9,7 +9,10 @@ addons:
     update: true
     packages:
       - libomp-dev
+      - mpic++
 
 script:
   - make clean test
   - make openmp clean test
+  - make mpi clean test
+  - make mpi openmp clean test
