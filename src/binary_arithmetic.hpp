@@ -148,6 +148,15 @@ class Matrix {
     Matrix operator&(const bool bit) const;
     Vector operator*(Vector const& vect) const;
     Matrix operator*(Matrix const& mat) const;
+
+    //mpi operation
+    #ifdef MPIENABLED
+      void set_pool_size(int num_workers);
+      int send(int to) const;
+      int send(int to, int start_i, int start_j, int length_i, int length_j) const;
+      int receive(int from);
+      int receive(int from, int start_i, int start_j, int length_i, int length_j);
+    #endif
 };
 
 class Vector {
@@ -229,4 +238,13 @@ class Vector {
     Vector operator&(Vector const& vect) const;
     Vector operator&(const bool bit) const;
     Matrix operator*(Vector const& vect) const;
+
+    //mpi operation
+    #ifdef MPIENABLED
+      void set_pool_size(int num_workers);
+      int send(int to) const;
+      int send(int to, int start_i, int start_j, int length_i, int length_j) const;
+      int receive(int from);
+      int receive(int from, int start_i, int start_j, int length_i, int length_j);
+    #endif
 };
