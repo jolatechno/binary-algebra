@@ -1,0 +1,3 @@
+[submodule "mpi-utils"]
+	path = mpi-utils
+	url = https://github.com/jolatechno/mpi-utils.git
