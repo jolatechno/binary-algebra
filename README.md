@@ -6,7 +6,7 @@ This library is design for Linux only _for now_. For the best result, you should
 
 For GPU offloading you will also need the correct GPU drivers, `nvptx-tools` and `gcc-offload-nvptx`.
 
-To take advantage of MPI, you need to install `mpirun` and `mpicpp`.
+To take advantage of MPI, you need to install `mpirun` and `mpic++`.
 
 ## Compilation
 

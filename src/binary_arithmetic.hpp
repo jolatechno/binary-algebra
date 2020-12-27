@@ -62,6 +62,9 @@ class Matrix {
   friend Vector;
 
   private:
+    //number of mpi worker
+    int num_workers = 1;
+
     //util operations
     Utils* utils;
 
@@ -163,6 +166,9 @@ class Vector {
   friend Matrix;
 
   private:
+    //number of mpi worker
+    int num_workers = 1;
+
     //util operations
     Utils* utils;
 
@@ -243,8 +249,8 @@ class Vector {
     #ifdef MPIENABLED
       void set_pool_size(int num_workers);
       int send(int to) const;
-      int send(int to, int start_i, int start_j, int length_i, int length_j) const;
+      int send(int to, int start, int length) const;
       int receive(int from);
-      int receive(int from, int start_i, int start_j, int length_i, int length_j);
+      int receive(int from, int start, int length);
     #endif
 };

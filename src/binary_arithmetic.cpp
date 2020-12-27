@@ -12,6 +12,7 @@
 #include "member/debug.inl"
 #include "member/block_arithmetic.inl"
 
+#include "mpi.inl"
 #include "comparisons.inl"
 #include "initializers.inl"
 #include "arithmetic.inl"
