@@ -10,7 +10,16 @@
 #include "../src/reference_arithmetic/reference_arithmetic.hpp"
 #include "../src/binary_arithmetic.hpp"
 
+#ifdef MPIENABLED
+  #include <mpi.h>
+#endif
+
 int main(int argc, char** argv){
+  #ifdef MPIENABLED
+    // Initialisation
+    int err = MPI_Init(&argc, &argv); if (err != 0) return err;
+  #endif
+
   const reference_arithmetic ref;
 
   uint16_t i, i_max = 20;
@@ -388,6 +397,10 @@ int main(int argc, char** argv){
     test_self_multiplication(ref, mat_square_1, mat_square_2);
   }
 
+  #ifdef MPIENABLED
+    // Finalisation
+    return MPI_Finalize();
+  #endif
 
   return 0;
 }

@@ -62,8 +62,11 @@ class Matrix {
   friend Vector;
 
   private:
-    //number of mpi worker
-    int num_workers = 1;
+    //mpi variables
+    #ifdef MPIENABLED
+      int num_workers = 1; //number of mpi worker
+      int rank;
+    #endif
 
     //util operations
     Utils* utils;
@@ -166,8 +169,11 @@ class Vector {
   friend Matrix;
 
   private:
-    //number of mpi worker
-    int num_workers = 1;
+    //mpi variables
+    #ifdef MPIENABLED
+      int num_workers = 1; //number of mpi worker
+      int rank;
+    #endif
 
     //util operations
     Utils* utils;

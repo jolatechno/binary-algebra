@@ -41,9 +41,9 @@
 
 
   int Matrix::send(int to, int start_i, int start_j, int length_i, int length_j) const {
-    int size[2] = {height, width};
-    int start[2] = {start_i, start_j};
-    int length[2] = {length_i, length_j};
+    int size[2] = {width, height};
+    int start[2] = {start_j, start_i};
+    int length[2] = {length_j, length_i};
     return mpi::send(to, size, start, length, blocks);
   }
 
@@ -52,9 +52,9 @@
   }
 
   int Matrix::receive(int from, int start_i, int start_j, int length_i, int length_j) {
-    int size[2] = {height, width};
-    int start[2] = {start_i, start_j};
-    int length[2] = {length_i, length_j};
+    int size[2] = {width, height};
+    int start[2] = {start_j, start_i};
+    int length[2] = {length_j, length_i};
     return mpi::receive(from, size, start, length, blocks);
   }
 

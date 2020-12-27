@@ -4,7 +4,16 @@
 
 #include "../src/binary_arithmetic.hpp"
 
+#ifdef MPIENABLED
+  #include <mpi.h>
+#endif
+
 int main(int argc, char** argv){
+  #ifdef MPIENABLED
+    // Initialisation
+    int err = MPI_Init(&argc, &argv); if (err != 0) return err;
+  #endif
+
   Matrix mat(2, 2);
 
   mat.randomize();
@@ -34,4 +43,9 @@ int main(int argc, char** argv){
   printf("%s %s\n", mat == mat_t ? "true" : "false", mat == mat ? "true" : "false");
   printf("%s %s\n", mat != mat_t ? "true" : "false", mat != mat ? "true" : "false");
   printf("%s %s\n", mat == 1 ? "true" : "false", vect == 1 ? "true" : "false");
+
+  #ifdef MPIENABLED
+    // Finalisation
+    return MPI_Finalize();
+  #endif
 }

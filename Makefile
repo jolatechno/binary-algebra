@@ -3,6 +3,7 @@ LINKER=ar
 LOCALLIBS = $(wildcard src/*.cpp) $(wildcard src/**/*.cpp)
 LDLIBS=
 CCFLAGS=
+CRUN=
 
 .PHONY: all test clean
 
@@ -14,6 +15,7 @@ all: unit_testing.out example.out performance_testing.out
 mpi:
 	$(eval CCFLAGS+=-DMPIENABLED=1)
 	$(eval CXX=mpic++ -std=c++0x)
+	$(eval CRUN=mpirun)
 
 gpu: openmp
 	$(eval CCFLAGS+=-DTARGET=1)
@@ -27,10 +29,10 @@ openmp:
 
 
 test:	unit_testing.out
-	./unit_testing/test.out
+	$(CRUN) ./unit_testing/test.out
 
 performance_testing: performance_testing.out
-	./performance_testing/test.out
+	$(CRUN) ./performance_testing/test.out
 
 
 #compile directive
