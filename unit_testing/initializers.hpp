@@ -8,6 +8,24 @@
 
 
 /*
+testing slices
+*/
+
+
+void test_slice(const reference_arithmetic ref, Matrix mat) {
+  Matrix stupid_slice = ref.slice(mat, 1, 2, 3, 4);
+
+  assert(ref.equal(mat.slice(1, 2, 3, 4), stupid_slice));
+}
+
+void test_slice(const reference_arithmetic ref, Vector vect) {
+  Vector stupid_slice = ref.slice(vect, 1, 2);
+
+  assert(ref.equal(vect.slice(1, 2), stupid_slice));
+}
+
+
+/*
 testing zero initializer
 */
 

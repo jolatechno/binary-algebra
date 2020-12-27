@@ -78,6 +78,21 @@ int main(int argc, char** argv){
 
 
   /*
+  testing slices
+  */
+
+
+  printf("testing slices with square matrices...\n");
+  test_slice(ref, mat_square_1);
+
+  printf("testing slices with non-square matrices...\n");
+  test_slice(ref, mat_nsquare_1);
+
+  printf("testing slices with Vectors...\n");
+  test_slice(ref, vect_1);
+
+
+  /*
   testing comparaisons
   */
 

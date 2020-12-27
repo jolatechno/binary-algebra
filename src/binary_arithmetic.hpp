@@ -114,6 +114,9 @@ class Matrix {
     void diag();
     void diag(Vector const& diagonal);
 
+    //slice
+    Matrix slice(int start_i, int start_j, int length_i, int length_j) const;
+
     //comparaisons
     bool operator==(Matrix const& mat) const;
     bool operator==(const bool bit) const;
@@ -211,6 +214,9 @@ class Vector {
 
     //initializers
     void randomize();
+
+    //slice
+    Vector slice(int start, int length) const;
 
     //comparaisons
     bool operator==(Vector const& vect) const;

@@ -1,4 +1,29 @@
 /*
+slices
+*/
+
+
+Matrix reference_arithmetic::slice(Matrix mat, int start_i, int start_j, int length_i, int length_j) const {
+  Matrix res(length_i, length_j);
+
+  for (int16_t i = 0; i < 8*length_i; i++)
+    for (int16_t j = 0; j < 8*length_j; j++)
+      res(i, j) = mat(i + 8*start_i, j + 8*start_j);
+
+  return res;
+}
+
+Vector reference_arithmetic::slice(Vector vect, int start, int length) const {
+  Vector res(length);
+
+  for (int16_t i = 0; i < 8*length; i++)
+      res[i] = vect[i + 8*start];
+
+  return res;
+}
+
+
+/*
 zero initializer
 */
 
