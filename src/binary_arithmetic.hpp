@@ -65,7 +65,7 @@ class Matrix {
     //mpi variables
     #ifdef MPIENABLED
       int num_workers = 1; //number of mpi worker
-      int rank;
+      int rank, size;
     #endif
 
     //util operations
@@ -172,7 +172,7 @@ class Vector {
     //mpi variables
     #ifdef MPIENABLED
       int num_workers = 1; //number of mpi worker
-      int rank;
+      int rank, size;
     #endif
 
     //util operations

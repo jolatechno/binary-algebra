@@ -19,19 +19,19 @@
 
 
   int Matrix::send(int to) const {
-    return MPI_Send(blocks, width * height, MPI_UNSIGNED_LONG, to, 1, MPI_COMM_WORLD);
+    return this->send(to, 0, 0, height, width);
   }
 
   int Vector::send(int to) const {
-    return MPI_Send(blocks, height, MPI_CHAR, to, 1, MPI_COMM_WORLD);
+    return this->send(to, 0, height);
   }
 
   int Matrix::receive(int from) {
-    return MPI_Recv(blocks, width * height, MPI_UNSIGNED_LONG, from, 1, MPI_COMM_WORLD, &mpi::receive_status);
+    return this->receive(from, 0, 0, height, width);
   }
 
   int Vector::receive(int from) {
-    return MPI_Recv(blocks, height, MPI_CHAR, from, 1, MPI_COMM_WORLD, &mpi::receive_status);
+    return this->receive(from, 0, height);
   }
 
 
@@ -41,9 +41,9 @@
 
 
   int Matrix::send(int to, int start_i, int start_j, int length_i, int length_j) const {
-    int size[2] = {width, height};
-    int start[2] = {start_j, start_i};
-    int length[2] = {length_j, length_i};
+    int size[2] = {height, width};
+    int start[2] = {start_i, start_j};
+    int length[2] = {length_i, length_j};
     return mpi::send(to, size, start, length, blocks);
   }
 
@@ -52,9 +52,9 @@
   }
 
   int Matrix::receive(int from, int start_i, int start_j, int length_i, int length_j) {
-    int size[2] = {width, height};
-    int start[2] = {start_j, start_i};
-    int length[2] = {length_j, length_i};
+    int size[2] = {height, width};
+    int start[2] = {start_i, start_j};
+    int length[2] = {length_i, length_j};
     return mpi::receive(from, size, start, length, blocks);
   }
 
