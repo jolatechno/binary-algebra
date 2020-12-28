@@ -5,8 +5,13 @@
 
   #include <omp.h>
 
-  #define GPU_LIMIT 10000
-  #define CPU_LIMIT 500
+  #ifndef GPU_LIMIT
+    #define GPU_LIMIT 10000
+  #endif
+
+  #ifndef CPU_LIMIT
+    #define CPU_LIMIT 500
+  #endif
 #else
   #define _OPENMP_PRAGMA(all)
 #endif

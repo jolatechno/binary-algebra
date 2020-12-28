@@ -26,7 +26,7 @@ The function that are defined when using mpi are `.send()` and `.receive()` for 
 
 To compile it with __Openmp__, you need to use the `"openmp"` directive before all other targets, which will modify the `LDLIBS` variable in the [Makefile](./Makefile).
 
-If compiled with __Openmp__, loops of more than 500 iterations will automatically use a `pragma omp parralel`. You can change this threshold by adding `CPU_LIMIT=xxx` to `CCFLAGS` by using `--environment-overrides CCFLAGS="CPU_LIMIT=xxx"` with `make`.
+If compiled with __Openmp__, loops of more than 500 iterations will automatically use a `pragma omp parralel`. You can change this threshold by adding `-DCPU_LIMIT=xxx` to `CCFLAGS` by using `--environment-overrides CCFLAGS="CPU_LIMIT=xxx"` with `make`.
 
 ### Offloading to GPUs
 
@@ -36,7 +36,7 @@ If you encounter some errors you might want to also pass the flag  `"--environme
 
 All arithmetic operations, self-operators, and comparisons excluding `==, !=` (for performance reasons) are now supported on GPUs.
 
-Loops of more than 10000 iterations will automatically be offloaded to GPUs. You can change this threshold by adding `CPU_LIMIT=xxx` to `CCFLAGS` by using `--environment-overrides CCFLAGS="GPU_LIMIT=yyy"` with `make`. If you want to modify both the GPU offloading threshold and the __Openmp__ threshold, you need to use `--environment-overrides CCFLAGS="CPU_LIMIT=yyy GPU_LIMIT=xxx"` with `make`.
+Loops of more than 10000 iterations will automatically be offloaded to GPUs. You can change this threshold by adding `-DCPU_LIMIT=xxx` to `CCFLAGS` by using `--environment-overrides CCFLAGS="GPU_LIMIT=yyy"` with `make`. If you want to modify both the GPU offloading threshold and the __Openmp__ threshold, you need to use `--environment-overrides CCFLAGS="-DCPU_LIMIT=yyy -DGPU_LIMIT=xxx"` with `make`.
 
 Atomic operations for type `uint8_t` are not supported by __Openmp__ on GPU (see [issue #1](https://github.com/jolatechno/binary_algebra/issues/1)). I finally found a work around for every operation, either by converting types, or by grouping operations together to only apply atomic operations on `long unsigned int`.
 
