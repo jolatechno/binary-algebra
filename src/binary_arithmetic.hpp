@@ -10,6 +10,35 @@
 typedef class Matrix Matrix;
 typedef class Vector Vector;
 
+/*
+slice struct
+*/
+
+
+struct vector_slice {
+  Vector *vect;
+  uint16_t start, length;
+
+  //constructor
+  vector_slice(uint16_t _start, uint16_t _length, Vector *_vect) : start(_start), length(_length), vect(_vect) {}
+
+  operator Vector() const; //implicite comvertion
+  vector_slice& operator=(Vector const& other); //assignment operators
+  vector_slice& operator=(vector_slice const& other);
+};
+
+struct matrix_slice {
+  Matrix *mat;
+  uint16_t start_i, start_j, length_i, length_j;
+
+  //constructor
+  matrix_slice(uint16_t _start_i, uint16_t _start_j, uint16_t _length_i, uint16_t _length_j, Matrix *_mat) : start_i(_start_i), start_j(_start_j), length_i(_length_i), length_j(_length_j), mat(_mat) {}
+
+  operator Matrix() const; //implicite comvertion
+  matrix_slice& operator=(Matrix const& other); //assignment operators
+  matrix_slice& operator=(matrix_slice const& other);
+};
+
 
 /*
 assignment struct
@@ -62,26 +91,32 @@ class Matrix {
   friend Vector;
 
   private:
-    //blocks
-    uint64_t *blocks;
+    //mpi variables
+    #ifdef MPIENABLED
+      int num_workers = 1; //number of mpi worker
+      int rank, size;
+    #endif
 
     //util operations
     Utils* utils;
 
     //block operations
-    _OPENMP_GPU("omp declare target")
+    _OPENMP_GPU_PRAGMA("omp declare target")
     inline uint64_t transpose_block(uint64_t block) const;
     inline uint8_t multiply_block_byte(uint64_t block, uint8_t vect) const;
     inline uint64_t multiply_block_word(uint64_t block0, uint64_t block1, uint64_t block2, uint64_t block3, \
       uint64_t block4, uint64_t block5, uint64_t block6, uint64_t block7, \
       uint8_t vect) const;
     inline uint64_t multiply_block_block(uint64_t block_left, uint64_t block_right) const;
-    _OPENMP_GPU("omp end declare target")
+    _OPENMP_GPU_PRAGMA("omp end declare target")
 
     //for comparaisons
     int difference(Matrix const& mat) const;
 
   public:
+    //blocks
+    uint64_t *blocks;
+
     //Stupid way of accessing Matrix elements, only for testing or debugging !
     bool_from_word operator()(uint16_t i, uint16_t j) const;
 
@@ -107,6 +142,9 @@ class Matrix {
     void randomize();
     void diag();
     void diag(Vector const& diagonal);
+
+    //slice
+    matrix_slice slice(int start_i, int start_j, int length_i, int length_j);
 
     //comparaisons
     bool operator==(Matrix const& mat) const;
@@ -148,27 +186,42 @@ class Matrix {
     Matrix operator&(const bool bit) const;
     Vector operator*(Vector const& vect) const;
     Matrix operator*(Matrix const& mat) const;
+
+    //mpi operation
+    #ifdef MPIENABLED
+      void set_pool_size(int num_workers);
+      int send(int to) const;
+      int send(int to, int start_i, int start_j, int length_i, int length_j) const;
+      int receive(int from);
+      int receive(int from, int start_i, int start_j, int length_i, int length_j);
+    #endif
 };
 
 class Vector {
   friend Matrix;
 
   private:
-    //blocks
-    uint8_t *blocks;
+    //mpi variables
+    #ifdef MPIENABLED
+      int num_workers = 1; //number of mpi worker
+      int rank, size;
+    #endif
 
     //util operations
     Utils* utils;
 
     //block operations
-    _OPENMP_GPU("omp declare target")
+    _OPENMP_GPU_PRAGMA("omp declare target")
     inline uint64_t multiply_byte_byte(uint8_t vect_left, uint8_t vect_right) const;
-    _OPENMP_GPU("omp end declare target")
+    _OPENMP_GPU_PRAGMA("omp end declare target")
 
     //for comparaisons
     int difference(Vector const& vect) const;
 
   public:
+    //blocks
+    uint8_t *blocks;
+
     //Stupid way of accessing vector elements, only for testing or debugging !
     bool_from_byte operator[](uint16_t i) const;
 
@@ -190,6 +243,9 @@ class Vector {
 
     //initializers
     void randomize();
+
+    //slice
+    vector_slice slice(int start, int length);
 
     //comparaisons
     bool operator==(Vector const& vect) const;
@@ -229,4 +285,13 @@ class Vector {
     Vector operator&(Vector const& vect) const;
     Vector operator&(const bool bit) const;
     Matrix operator*(Vector const& vect) const;
+
+    //mpi operation
+    #ifdef MPIENABLED
+      void set_pool_size(int num_workers);
+      int send(int to) const;
+      int send(int to, int start, int length) const;
+      int receive(int from);
+      int receive(int from, int start, int length);
+    #endif
 };

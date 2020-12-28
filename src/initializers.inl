@@ -8,13 +8,15 @@
   auto *this_blocks = blocks; \
   auto _height = height;
 
-
 /*
 randomizers
 */
 
 
 void Matrix::randomize() {
+  #ifdef MPIENABLED
+    if (rank == 0) {
+  #endif
   uint8_t *block_8 = (uint8_t *)blocks;
 
   uint16_t _size = height * width * 8;
@@ -23,15 +25,34 @@ void Matrix::randomize() {
   _OPENMP_PRAGMA("omp parallel for shared(block_8)")
   for (i = 0; i < _size; i++)
     block_8[i] = rand();
+
+  #ifdef MPIENABLED
+      for (int worker = 1; worker < size; worker++)
+      this->send(worker);
+    } else {
+      this->receive(0);
+    }
+  #endif
 }
 
 void Vector::randomize() {
+  #ifdef MPIENABLED
+    if (rank == 0) {
+  #endif
   INITIALIZER_VECTOR_HEADER;
 
   int16_t i;
   _OPENMP_PRAGMA("omp parallel for shared(this_blocks)")
   for (i = 0; i < _height; i++)
     this_blocks[i] = rand();
+
+  #ifdef MPIENABLED
+      for (int worker = 1; worker < size; worker++)
+      this->send(worker);
+    } else {
+      this->receive(0);
+    }
+  #endif
 }
 
 /*

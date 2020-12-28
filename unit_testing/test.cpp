@@ -10,7 +10,16 @@
 #include "../src/reference_arithmetic/reference_arithmetic.hpp"
 #include "../src/binary_arithmetic.hpp"
 
+#ifdef MPIENABLED
+  #include <mpi.h>
+#endif
+
 int main(int argc, char** argv){
+  #ifdef MPIENABLED
+    // Initialisation
+    int err = MPI_Init(&argc, &argv); if (err != 0) return err;
+  #endif
+
   const reference_arithmetic ref;
 
   uint16_t i, i_max = 20;
@@ -65,6 +74,30 @@ int main(int argc, char** argv){
   for (i = 0; i < i_max; i++){
     mat_square_1.randomize(); mat_square_2.randomize(); vect_1.randomize();
     test_diag_initializer(ref, mat_square_1, mat_square_2, vect_1);
+  }
+
+
+  /*
+  testing slices
+  */
+
+
+  printf("testing slices with square matrices...\n");
+  for (i = 0; i < i_max; i++) {
+    mat_square_1.randomize(); mat_square_2.randomize();
+    test_slice(ref, mat_square_1, mat_square_2);
+  }
+
+  printf("testing slices with non-square matrices...\n");
+  for (i = 0; i < i_max; i++) {
+    mat_nsquare_1.randomize(); mat_nsquare_2.randomize();
+    test_slice(ref, mat_nsquare_1, mat_nsquare_2);
+  }
+
+  printf("testing slices with Vectors...\n");
+  for (i = 0; i < i_max; i++) {
+    vect_1.randomize(); vect_2.randomize();
+    test_slice(ref, vect_1, vect_2);
   }
 
 
@@ -388,6 +421,10 @@ int main(int argc, char** argv){
     test_self_multiplication(ref, mat_square_1, mat_square_2);
   }
 
+  #ifdef MPIENABLED
+    // Finalisation
+    return MPI_Finalize();
+  #endif
 
   return 0;
 }

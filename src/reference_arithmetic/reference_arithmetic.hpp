@@ -11,9 +11,6 @@ class Matrix;
 class Vector;
 
 class reference_arithmetic {
-  friend class Matrix;
-  friend class Vector;
-
   public:
     //transposition
     Matrix transpose(Matrix const& mat) const;
@@ -59,4 +56,8 @@ class reference_arithmetic {
     void zero(Vector& vect) const;
     void diag(Matrix& mat) const;
     void diag(Matrix& mat, Vector const& diagonal) const;
+
+    //slices
+    Matrix slice(Matrix const& mat, int start_i, int start_j, int length_i, int length_j) const;
+    Vector slice(Vector const& vect, int start, int length) const;
 };

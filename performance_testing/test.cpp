@@ -6,7 +6,16 @@
 #include "utils.hpp"
 #include "functions.hpp"
 
+#ifdef MPIENABLED
+  #include <mpi.h>
+#endif
+
 int main(int argc, char** argv){
+  #ifdef MPIENABLED
+    // Initialisation
+    int err = MPI_Init(&argc, &argv); if (err != 0) return err;
+  #endif
+
   const int n_iter = 100;
   #if defined(_OPENMP)
     const int sizes[] = {
@@ -97,4 +106,8 @@ int main(int argc, char** argv){
   printf("\n");
   timeit(multiplication_mat, "Matrix multiplication with Matrix  %f %s for size=%dbit\n", n_iter, sizes, n_sizes);
 
+  #ifdef MPIENABLED
+    // Finalisation
+    return MPI_Finalize();
+  #endif
 }

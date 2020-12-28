@@ -1,26 +1,23 @@
-#ifndef _OPENMP_PRAGMA
-  #if defined(_OPENMP)
-    #define _OPENMP_PRAGMA(all) _Pragma(all)
+#pragma once
 
-    #if defined(TARGET)
-      #define _OPENMP_GPU_PRAGMA(cpu, gpu) _Pragma(gpu)
+#if defined(_OPENMP)
+  #define _OPENMP_PRAGMA(all) _Pragma(all)
 
-    #else
-      #define _OPENMP_GPU_PRAGMA(cpu, gpu) _Pragma(cpu)
+  #include <omp.h>
 
-    #endif
-
-  #else
-    #define _OPENMP_PRAGMA(all)
-    #define _OPENMP_GPU_PRAGMA(cpu, gpu)
-
+  #ifndef GPU_LIMIT
+    #define GPU_LIMIT 10000
   #endif
 
-  #if defined(_OPENMP) && defined(TARGET)
-    #define _OPENMP_GPU(gpu) _Pragma(gpu)
-
-  #else
-    #define _OPENMP_GPU(gpu)
-    
+  #ifndef CPU_LIMIT
+    #define CPU_LIMIT 500
   #endif
+#else
+  #define _OPENMP_PRAGMA(all)
+#endif
+
+#if defined(_OPENMP) && defined(TARGET)
+  #define _OPENMP_GPU_PRAGMA(gpu) _Pragma(gpu)
+#else
+  #define _OPENMP_GPU_PRAGMA(gpu)
 #endif

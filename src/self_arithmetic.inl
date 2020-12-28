@@ -8,10 +8,21 @@ void Matrix::operator^=(Matrix const& other) {
   COMPARAISON_VARIABLE_HEADER;
 
   int16_t n;
-  _OPENMP_GPU_PRAGMA("omp parallel for schedule(static) shared(this_blocks, other_blocks)", \
-    "omp target teams distribute parallel for map(tofrom:this_blocks[:_size]) map(to:other_blocks[:_size])")
+  #if defined(_OPENMP) && defined(TARGET)
+    if(_size > GPU_LIMIT) {
+      #pragma omp target teams distribute parallel for map(tofrom:this_blocks[:_size]) map(to:other_blocks[:_size])
+      for (n = 0; n < _size; n++)
+        this_blocks[n] ^= other_blocks[n];
+    } else {
+  #endif
+
+  _OPENMP_PRAGMA("omp parallel for schedule(static) if(_size > CPU_LIMIT)")
   for (n = 0; n < _size; n++)
     this_blocks[n] ^= other_blocks[n];
+
+  #if defined(_OPENMP) && defined(TARGET)
+    }
+  #endif
 }
 
 void Matrix::operator+=(Matrix const& other) {
@@ -29,10 +40,21 @@ void Matrix::operator^=(const bool bit) {
     uint16_t _size = height * width;
 
     int16_t n;
-    _OPENMP_GPU_PRAGMA("omp parallel for schedule(static) shared(this_blocks)", \
-      "omp target teams distribute parallel for map(tofrom:this_blocks[:_size])")
+    #if defined(_OPENMP) && defined(TARGET)
+      if(_size > GPU_LIMIT) {
+        #pragma omp target teams distribute parallel for map(tofrom:this_blocks[:_size])
+        for (n = 0; n < _size; n++)
+          this_blocks[n] = ~this_blocks[n];
+      } else {
+    #endif
+
+    _OPENMP_PRAGMA("omp parallel for schedule(static) if(_size > CPU_LIMIT)")
     for (n = 0; n < _size; n++)
       this_blocks[n] = ~this_blocks[n];
+
+    #if defined(_OPENMP) && defined(TARGET)
+      }
+    #endif
   }
 }
 
@@ -49,10 +71,21 @@ void Vector::operator^=(Vector const& other) {
   COMPARAISON_VARIABLE_HEADER;
 
   int16_t i;
-  _OPENMP_GPU_PRAGMA("omp parallel for schedule(static) shared(this_blocks, other_blocks)", \
-    "omp target teams distribute parallel for map(tofrom:this_blocks[:_height]) map(to:other_blocks[:_height])")
+  #if defined(_OPENMP) && defined(TARGET)
+    if(_height > GPU_LIMIT) {
+      #pragma omp target teams distribute parallel for map(tofrom:this_blocks[:_height]) map(to:other_blocks[:_height])
+      for (i = 0; i < _height; i++)
+        this_blocks[i] ^= other_blocks[i];
+    } else {
+  #endif
+
+  _OPENMP_PRAGMA("omp parallel for schedule(static) if(_height > CPU_LIMIT)")
   for (i = 0; i < _height; i++)
     this_blocks[i] ^= other_blocks[i];
+
+  #if defined(_OPENMP) && defined(TARGET)
+    }
+  #endif
 }
 
 void Vector::operator+=(Vector const& other) {
@@ -70,10 +103,21 @@ void Vector::operator^=(const bool bit) {
     uint16_t _height = height;
 
     int16_t i;
-    _OPENMP_GPU_PRAGMA("omp parallel for schedule(static) shared(this_blocks)", \
-      "omp target teams distribute parallel for map(tofrom:this_blocks[:_height])")
+    #if defined(_OPENMP) && defined(TARGET)
+      if(_height > GPU_LIMIT) {
+        #pragma omp target teams distribute parallel for map(tofrom:this_blocks[:_height])
+        for (i = 0; i < _height; i++)
+          this_blocks[i] = ~this_blocks[i];
+      } else {
+    #endif
+
+    _OPENMP_PRAGMA("omp parallel for schedule(static) if(_height > CPU_LIMIT)")
     for (i = 0; i < _height; i++)
       this_blocks[i] = ~this_blocks[i];
+
+    #if defined(_OPENMP) && defined(TARGET)
+      }
+    #endif
   }
 }
 
@@ -96,10 +140,21 @@ void Matrix::operator&=(Matrix const& other) {
   COMPARAISON_VARIABLE_HEADER;
 
   int16_t n;
-  _OPENMP_GPU_PRAGMA("omp parallel for schedule(static) shared(this_blocks, other_blocks)", \
-    "omp target teams distribute parallel for map(tofrom:this_blocks[:_size]) map(to:other_blocks[:_size])")
+  #if defined(_OPENMP) && defined(TARGET)
+    if(_size > GPU_LIMIT) {
+      #pragma omp target teams distribute parallel for map(tofrom:this_blocks[:_size]) map(to:other_blocks[:_size])
+      for (n = 0; n < _size; n++)
+        this_blocks[n] &= other_blocks[n];
+    } else {
+  #endif
+
+  _OPENMP_PRAGMA("omp parallel for schedule(static) if(_size > CPU_LIMIT)")
   for (n = 0; n < _size; n++)
     this_blocks[n] &= other_blocks[n];
+
+  #if defined(_OPENMP) && defined(TARGET)
+    }
+  #endif
 }
 
 void Matrix::operator&=(const bool bit) {
@@ -112,10 +167,21 @@ void Vector::operator&=(Vector const& other) {
   COMPARAISON_VARIABLE_HEADER;
 
   int16_t i;
-  _OPENMP_GPU_PRAGMA("omp parallel for schedule(static) shared(this_blocks, other_blocks)", \
-    "omp target teams distribute parallel for map(tofrom:this_blocks[:_height]) map(to:other_blocks[:_height])")
+  #if defined(_OPENMP) && defined(TARGET)
+    if(_height > GPU_LIMIT) {
+      #pragma omp target teams distribute parallel for map(tofrom:this_blocks[:_height]) map(to:other_blocks[:_height])
+      for (i = 0; i < _height; i++)
+        this_blocks[i] &= other_blocks[i];
+    } else {
+  #endif
+
+  _OPENMP_PRAGMA("omp parallel for schedule(static) if(_height > CPU_LIMIT)")
   for (i = 0; i < _height; i++)
     this_blocks[i] &= other_blocks[i];
+
+  #if defined(_OPENMP) && defined(TARGET)
+    }
+  #endif
 }
 
 void Vector::operator&=(const bool bit) {
