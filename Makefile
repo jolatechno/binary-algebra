@@ -1,4 +1,4 @@
-CXX=g++ -std=c++0x
+CXX+=-std=c++0x
 LINKER=ar
 LDLIBS=
 CCFLAGS=
