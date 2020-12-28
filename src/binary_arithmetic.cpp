@@ -11,6 +11,7 @@
 #include "member/read_write.inl"
 #include "member/debug.inl"
 #include "member/block_arithmetic.inl"
+#include "member/slice.inl"
 
 #include "mpi.inl"
 #include "comparisons.inl"

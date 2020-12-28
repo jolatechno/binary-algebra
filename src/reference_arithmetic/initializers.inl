@@ -3,7 +3,7 @@ slices
 */
 
 
-Matrix reference_arithmetic::slice(Matrix mat, int start_i, int start_j, int length_i, int length_j) const {
+Matrix reference_arithmetic::slice(Matrix const& mat, int start_i, int start_j, int length_i, int length_j) const {
   Matrix res(length_i, length_j);
 
   for (int16_t i = 0; i < 8*length_i; i++)
@@ -13,7 +13,7 @@ Matrix reference_arithmetic::slice(Matrix mat, int start_i, int start_j, int len
   return res;
 }
 
-Vector reference_arithmetic::slice(Vector vect, int start, int length) const {
+Vector reference_arithmetic::slice(Vector const& vect, int start, int length) const {
   Vector res(length);
 
   for (int16_t i = 0; i < 8*length; i++)

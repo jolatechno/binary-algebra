@@ -10,6 +10,35 @@
 typedef class Matrix Matrix;
 typedef class Vector Vector;
 
+/*
+slice struct
+*/
+
+
+struct vector_slice {
+  Vector *vect;
+  uint16_t start, length;
+
+  //constructor
+  vector_slice(uint16_t _start, uint16_t _length, Vector *_vect) : start(_start), length(_length), vect(_vect) {}
+
+  operator Vector() const; //implicite comvertion
+  vector_slice& operator=(Vector const& other); //assignment operators
+  vector_slice& operator=(vector_slice const& other);
+};
+
+struct matrix_slice {
+  Matrix *mat;
+  uint16_t start_i, start_j, length_i, length_j;
+
+  //constructor
+  matrix_slice(uint16_t _start_i, uint16_t _start_j, uint16_t _length_i, uint16_t _length_j, Matrix *_mat) : start_i(_start_i), start_j(_start_j), length_i(_length_i), length_j(_length_j), mat(_mat) {}
+
+  operator Matrix() const; //implicite comvertion
+  matrix_slice& operator=(Matrix const& other); //assignment operators
+  matrix_slice& operator=(matrix_slice const& other);
+};
+
 
 /*
 assignment struct
@@ -115,7 +144,7 @@ class Matrix {
     void diag(Vector const& diagonal);
 
     //slice
-    Matrix slice(int start_i, int start_j, int length_i, int length_j) const;
+    matrix_slice slice(int start_i, int start_j, int length_i, int length_j);
 
     //comparaisons
     bool operator==(Matrix const& mat) const;
@@ -216,7 +245,7 @@ class Vector {
     void randomize();
 
     //slice
-    Vector slice(int start, int length) const;
+    vector_slice slice(int start, int length);
 
     //comparaisons
     bool operator==(Vector const& vect) const;

@@ -83,13 +83,22 @@ int main(int argc, char** argv){
 
 
   printf("testing slices with square matrices...\n");
-  test_slice(ref, mat_square_1);
+  for (i = 0; i < i_max; i++) {
+    mat_square_1.randomize(); mat_square_2.randomize();
+    test_slice(ref, mat_square_1, mat_square_2);
+  }
 
   printf("testing slices with non-square matrices...\n");
-  test_slice(ref, mat_nsquare_1);
+  for (i = 0; i < i_max; i++) {
+    mat_nsquare_1.randomize(); mat_nsquare_2.randomize();
+    test_slice(ref, mat_nsquare_1, mat_nsquare_2);
+  }
 
   printf("testing slices with Vectors...\n");
-  test_slice(ref, vect_1);
+  for (i = 0; i < i_max; i++) {
+    vect_1.randomize(); vect_2.randomize();
+    test_slice(ref, vect_1, vect_2);
+  }
 
 
   /*

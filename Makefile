@@ -1,6 +1,5 @@
 CXX=g++ -std=c++0x
 LINKER=ar
-LOCALLIBS = $(wildcard src/*.cpp) $(wildcard src/**/*.cpp)
 LDLIBS=
 CCFLAGS=
 CRUN=
@@ -19,7 +18,7 @@ mpi:
 
 gpu: openmp
 	$(eval CCFLAGS+=-DTARGET=1)
-	$(eval LDLIBS+=-fno-stack-protector -fcf-protection=none -foffload=nvptx-none)
+	$(eval LDLIBS+=-fno-stack-protector -foffload=nvptx-none)
 
 openmp:
 	$(eval LDLIBS+=-fopenmp)

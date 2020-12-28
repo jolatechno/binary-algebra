@@ -20,6 +20,8 @@ Compiling using MPI is done by adding the `"mpi"` directive to `make`, which cha
 
 You can compile with __MPI__ and __Openmp__ simultaniously by adding both target, or even offload to GPUs on different node using __MPI__.
 
+The function that are defined when using mpi are `.send()` and `.receive()` for both `Vectors` and `Matrices`. You can either send or receive the whole `Vector` or `Matrix` by only specifying the rank of the node to send to or receive from. You can also use the same arguments as with slices to send only a slice, with the added first argument of the rank of the node to send to or receive from.
+
 ### Openmp
 
 To compile it with __Openmp__, you need to use the `"openmp"` directive before all other targets, which will modify the `LDLIBS` variable in the [Makefile](./Makefile).
@@ -28,7 +30,9 @@ If compiled with __Openmp__, loops of more than 500 iterations will automaticall
 
 ### Offloading to GPUs
 
-To compile it with __Openmp__ and enable Offlowding to GPUs, you will need to use the `"gpu"` directive before all other targets, which will modify the `CCFLAGS` and `LDLIBS` variable in the [Makefile](./Makefile).
+To compile it with __Openmp__ and enable offloading to GPUs, you will need to use the `"gpu"` directive before all other targets, which will modify the `CCFLAGS` and `LDLIBS` variable in the [Makefile](./Makefile).
+
+If you encounter some errors you might want to also pass the flag  `"--environment-overrides CCFLAGS=-fcf-protection=none"`.
 
 All arithmetic operations, self-operators, and comparisons excluding `==, !=` (for performance reasons) are now supported on GPUs.
 
@@ -98,7 +102,9 @@ You can use the function `.randomize()` on a `Vector` or a `Matrix` to randomize
 
 ## Reading and writing
 
-You can read and write to a `Vector` or a `Matrix` at a specific index using using the following code :
+### Via indexes
+
+You can read and write to a `Vector` or a `Matrix` at a specific index using the following code :
 
 ```cpp
 //binary_arithmetic included earlier
@@ -119,6 +125,30 @@ int main(int argc, char** argv){
 ```
 
 This uses a intermediary `struct` that passes assignment to `bool` to writing to a specific `bit` of the `Vector` or `Matrix`, and support casting to `bool`.
+
+### Using slices
+
+You can read and write to `slices` of `Vectors` or `Matrices`  using the following code :
+
+```cpp
+//binary_arithmetic included earlier
+
+int main(int argc, char** argv){
+  Matrix mat(3, 3); //initializing
+  Vector vect(3); //initializing
+
+  Matrix slice1 = mat.slice(0, 1, 1, 2); //read a slice of size (1, 2) starting at index (0, 1)
+  Vector slice2 = vect.slice(1, 2); //read a slice of size 2 starting at index 1
+
+  mat.slice(1, 0, 1, 2) = slice1; //write slice1 into mat starting at index (1, 0)
+  vect.slice(0, 2) = slice2; //write slice1 into vect starting at index 0
+
+  mat.slice(0, 2, 2, 1) = mat.slice(0, 1, 2, 1); //write mat.slice(0, 1, 2, 1) into mat starting at index (0, 2)
+  vect.slice(2, 1) = vect.slice(1, 1); //write vect.slice(1, 1) into vect starting at index 2
+}
+```
+
+This also uses a intermediary `struct`.
 
 ## Printing
 

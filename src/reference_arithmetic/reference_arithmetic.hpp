@@ -58,6 +58,6 @@ class reference_arithmetic {
     void diag(Matrix& mat, Vector const& diagonal) const;
 
     //slices
-    Matrix slice(Matrix mat, int start_i, int start_j, int length_i, int length_j) const;
-    Vector slice(Vector vect, int start, int length) const;
+    Matrix slice(Matrix const& mat, int start_i, int start_j, int length_i, int length_j) const;
+    Vector slice(Vector const& vect, int start, int length) const;
 };

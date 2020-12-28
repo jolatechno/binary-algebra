@@ -8,30 +8,6 @@
   auto *this_blocks = blocks; \
   auto _height = height;
 
-
-/*
-slices
-*/
-
-
-Matrix Matrix::slice(int start_i, int start_j, int length_i, int length_j) const {
-  Matrix res(length_i, length_j);
-
-  for (int16_t i = 0; i < length_i; i++)
-    memcpy(&res.blocks[i*length_j], &blocks[start_j + (i + start_i)*width], length_j * sizeof(uint64_t)); //copy blocks
-
-  return res;
-}
-
-Vector Vector::slice(int start, int length) const {
-  Vector res(length);
-
-  memcpy(res.blocks, &blocks[start], length * sizeof(uint8_t)); //copy blocks
-
-  return res;
-}
-
-
 /*
 randomizers
 */

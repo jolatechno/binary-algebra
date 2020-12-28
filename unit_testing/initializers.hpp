@@ -10,18 +10,31 @@
 /*
 testing slices
 */
+#include <iostream>
 
 
-void test_slice(const reference_arithmetic ref, Matrix mat) {
-  Matrix stupid_slice = ref.slice(mat, 1, 2, 3, 4);
+void test_slice(const reference_arithmetic ref, Matrix mat1, Matrix mat2) {
+  Matrix stupid_slice = ref.slice(mat1, 1, 2, 3, 4);
 
-  assert(ref.equal(mat.slice(1, 2, 3, 4), stupid_slice));
+  assert(ref.equal(mat1.slice(1, 2, 3, 4), stupid_slice));
+
+  mat1.slice(1, 1, 2, 2) = mat2.slice(0, 1, 2, 2);
+  assert(ref.equal(ref.slice(mat1, 1, 1, 2, 2), ref.slice(mat2, 0, 1, 2, 2)));
+
+  mat1.slice(2, 2, 2, 2) = (Matrix)mat2.slice(1, 2, 2, 2);
+  assert(ref.equal(ref.slice(mat1, 2, 2, 2, 2), ref.slice(mat2, 1, 2, 2, 2)));
 }
 
-void test_slice(const reference_arithmetic ref, Vector vect) {
-  Vector stupid_slice = ref.slice(vect, 1, 2);
+void test_slice(const reference_arithmetic ref, Vector vect1, Vector vect2) {
+  Vector stupid_slice = ref.slice(vect1, 1, 2);
 
-  assert(ref.equal(vect.slice(1, 2), stupid_slice));
+  assert(ref.equal(vect1.slice(1, 2), stupid_slice));
+
+  vect1.slice(2, 2) = vect2.slice(1, 2);
+  assert(ref.equal(ref.slice(vect1, 2, 2), ref.slice(vect2, 1, 2)));
+
+  vect1.slice(2, 2) = (Vector)vect2.slice(0, 2);
+  assert(ref.equal(ref.slice(vect1, 2, 2), ref.slice(vect2, 0, 2)));
 }
 
 
