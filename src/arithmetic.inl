@@ -35,7 +35,7 @@ Matrix Matrix::T() const {
   uint16_t _height = height;
 
   int16_t i, j;
-  _OPENMP_GPU_PRAGMA("omp target teams distributemap(to:this_blocks[:_width * _height]) map(from:res_blocks[:_width * _height]) if(_width*_height > GPU_LIMIT)")
+  _OPENMP_GPU_PRAGMA("omp target teams distribute map(to:this_blocks[:_width * _height]) map(from:res_blocks[:_width * _height]) if(_width*_height > GPU_LIMIT)")
   _OPENMP_PRAGMA("omp parallel for collapse(2) schedule(static) if(_width*_height > CPU_LIMIT)")
   for (i = 0; i < _height; i++)
     for (j = 0; j < _width; j++)
@@ -59,7 +59,7 @@ Matrix Matrix::operator~() const {
   uint16_t _size = width * height;
 
   int16_t n;
-  _OPENMP_GPU_PRAGMA("omp target teams distributemap(to:this_blocks[:_size]) map(from:res_blocks[:_size]) if(_size > GPU_LIMIT)")
+  _OPENMP_GPU_PRAGMA("omp target teams distribute map(to:this_blocks[:_size]) map(from:res_blocks[:_size]) if(_size > GPU_LIMIT)")
   _OPENMP_PRAGMA("omp parallel for schedule(static) if(_size > CPU_LIMIT)")
   for (n = 0; n < _size; n++)
     res_blocks[n] = ~this_blocks[n];
@@ -76,7 +76,7 @@ Vector Vector::operator~() const {
   uint16_t _height = height;
 
   int16_t i;
-  _OPENMP_GPU_PRAGMA("omp target teams distributemap(to:this_blocks[:_height]) map(from:res_blocks[:_height]) if(_height > GPU_LIMIT)")
+  _OPENMP_GPU_PRAGMA("omp target teams distribute map(to:this_blocks[:_height]) map(from:res_blocks[:_height]) if(_height > GPU_LIMIT)")
   _OPENMP_PRAGMA("omp parallel for schedule(static) if(_height > CPU_LIMIT)")
   for (i = 0; i < _height/8; i++)
     res_blocks[i] = ~this_blocks[i];
@@ -98,7 +98,7 @@ Matrix Matrix::operator^(Matrix const& other) const {
   ARITHMETIC_VARIABLE_HEADER;
 
   int16_t n;
-  _OPENMP_GPU_PRAGMA("omp target teams distributemap(to:this_blocks[:_size], other_blocks[:_size]) map(from:res_blocks[:_size]) if(_size > GPU_LIMIT)")
+  _OPENMP_GPU_PRAGMA("omp target teams distribute map(to:this_blocks[:_size], other_blocks[:_size]) map(from:res_blocks[:_size]) if(_size > GPU_LIMIT)")
   _OPENMP_PRAGMA("omp parallel for schedule(static) if(_size > CPU_LIMIT)")
   for (n = 0; n < _height * _width; n++)
     res_blocks[n] = this_blocks[n] ^ other_blocks[n];
@@ -130,7 +130,7 @@ Vector Vector::operator^(Vector const& other) const {
   ARITHMETIC_VECTOR_BITWISE_HEADER;
 
   int16_t i;
-  _OPENMP_GPU_PRAGMA("omp target teams distributemap(to:this_blocks[:_height], other_blocks[:_height]) map(from:res_blocks[:_height]) if(_height > GPU_LIMIT)")
+  _OPENMP_GPU_PRAGMA("omp target teams distribute map(to:this_blocks[:_height], other_blocks[:_height]) map(from:res_blocks[:_height]) if(_height > GPU_LIMIT)")
   _OPENMP_PRAGMA("omp parallel for schedule(static) if(_height > CPU_LIMIT)")
   for (i = 0; i < _height/8; i++)
     res_blocks[i] = this_blocks[i] ^ other_blocks[i];
@@ -172,7 +172,7 @@ Matrix Matrix::operator&(Matrix const& other) const {
   ARITHMETIC_VARIABLE_HEADER;
 
   int16_t n;
-  _OPENMP_GPU_PRAGMA("omp target teams distributemap(to:this_blocks[:_size], other_blocks[:_size]) map(from:res_blocks[:_size]) if(_size > GPU_LIMIT)")
+  _OPENMP_GPU_PRAGMA("omp target teams distribute map(to:this_blocks[:_size], other_blocks[:_size]) map(from:res_blocks[:_size]) if(_size > GPU_LIMIT)")
   _OPENMP_PRAGMA("omp parallel for schedule(static) if(_size > CPU_LIMIT)")
   for (n = 0; n < _size; n++)
     res_blocks[n] = this_blocks[n] & other_blocks[n];
@@ -188,7 +188,7 @@ Vector Vector::operator&(Vector const& other) const {
   ARITHMETIC_VECTOR_BITWISE_HEADER;
 
   int16_t i;
-  _OPENMP_GPU_PRAGMA("omp target teams distributemap(to:this_blocks[:_height], other_blocks[:_height]) map(from:res_blocks[:_height]) if(_height > GPU_LIMIT)")
+  _OPENMP_GPU_PRAGMA("omp target teams distribute map(to:this_blocks[:_height], other_blocks[:_height]) map(from:res_blocks[:_height]) if(_height > GPU_LIMIT)")
   _OPENMP_PRAGMA("omp parallel for schedule(static) if(_height > CPU_LIMIT)")
   for (i = 0; i < _height/8; i++)
     res_blocks[i] = this_blocks[i] & other_blocks[i];
@@ -223,7 +223,7 @@ Matrix Matrix::operator*(Matrix const& other) const {
   long unsigned int *this_blocks = blocks;
 
   int16_t i, j, k;
-  _OPENMP_GPU_PRAGMA("omp target teams distributemap(to:this_blocks[:_width * _height], other_blocks[:_width * _size]) map(from:res_blocks[:_height * _size]) if(_width*_height*_size > GPU_LIMIT)")
+  _OPENMP_GPU_PRAGMA("omp target teams distribute map(to:this_blocks[:_width * _height], other_blocks[:_width * _size]) map(from:res_blocks[:_height * _size]) if(_width*_height*_size > GPU_LIMIT)")
   _OPENMP_PRAGMA("omp parallel for collapse(3) schedule(static) if(_width*_height*_size > CPU_LIMIT)")
       for (j = 0; j < _size; j++)
     for (k = 0; k < _width; k++)
@@ -248,7 +248,7 @@ Vector Matrix::operator*(Vector const& other) const {
   uint64_t *this_blocks = blocks;
 
   int16_t i, k;
-  _OPENMP_GPU_PRAGMA("omp target teams distributemap(to:this_blocks[:_width * _height], other_blocks[:_width]) map(from:res_blocks[:_height]) if(_height*_width > GPU_LIMIT)")
+  _OPENMP_GPU_PRAGMA("omp target teams distribute map(to:this_blocks[:_width * _height], other_blocks[:_width]) map(from:res_blocks[:_height]) if(_height*_width > GPU_LIMIT)")
   _OPENMP_PRAGMA("omp parallel for collapse(2) schedule(static) if(_height*_width > CPU_LIMIT)")
   for (k = 0; k < _width; k++)
     for (i = 0; i < _height/8; i++) {
@@ -276,7 +276,7 @@ Matrix Vector::operator*(Vector const& other) const {
   uint8_t *this_blocks = blocks;
 
   int16_t i, j;
-  _OPENMP_GPU_PRAGMA("omp target teams distributemap(to:this_blocks[:_width], other_blocks[:_height]) map(from:res_blocks[:_height * _width]) if(_width*_height > GPU_LIMIT)")
+  _OPENMP_GPU_PRAGMA("omp target teams distribute map(to:this_blocks[:_width], other_blocks[:_height]) map(from:res_blocks[:_height * _width]) if(_width*_height > GPU_LIMIT)")
   _OPENMP_PRAGMA("omp parallel for collapse(2) schedule(static) if(_height*_width > CPU_LIMIT)")
   for (j = 0; j < _width; j++)
     for (i = 0; i < _height; i++)
@@ -298,7 +298,7 @@ bool Matrix::operator%(Matrix const& other) const {
   long unsigned int sum = 0;
 
   int16_t n;
-  _OPENMP_GPU_PRAGMA("omp target teams distributemap(tofrom:sum) map(to:this_blocks[:_size], other_blocks[:_size]) if(_size > CPU_LIMIT)")
+  _OPENMP_GPU_PRAGMA("omp target teams distribute map(tofrom:sum) map(to:this_blocks[:_size], other_blocks[:_size]) if(_size > CPU_LIMIT)")
   _OPENMP_PRAGMA("omp parallel for reduction(^ : sum) schedule(static) if(_size > CPU_LIMIT)")
   for (n = 0; n < _size; n++)
     sum ^= this_blocks[n] & other_blocks[n];
@@ -313,7 +313,7 @@ bool Vector::operator%(Vector const& other) const {
   unsigned int sum = 0;
 
   int16_t i;
-  _OPENMP_GPU_PRAGMA("omp target teams distributemap(tofrom:sum) map(to:this_blocks[:_height], other_blocks[:_height]) if(_height > CPU_LIMIT)")
+  _OPENMP_GPU_PRAGMA("omp target teams distribute map(tofrom:sum) map(to:this_blocks[:_height], other_blocks[:_height]) if(_height > CPU_LIMIT)")
   _OPENMP_PRAGMA("omp parallel for reduction(^ : sum) schedule(static) if(_height > CPU_LIMIT)")
   for (i = 0; i < _height; i++)
     sum ^= this_blocks[i] & other_blocks[i];
@@ -328,7 +328,7 @@ int Matrix::operator/(Matrix const& other) const {
   int sum = 0;
 
   int16_t n;
-  _OPENMP_GPU_PRAGMA("omp target teams distributemap(tofrom:sum) map(to:this_blocks[:_size], other_blocks[:_size]) if(_size > CPU_LIMIT)")
+  _OPENMP_GPU_PRAGMA("omp target teams distribute map(tofrom:sum) map(to:this_blocks[:_size], other_blocks[:_size]) if(_size > CPU_LIMIT)")
   _OPENMP_PRAGMA("omp parallel for reduction(+ : sum) schedule(static) if(_size > CPU_LIMIT)")
   for (n = 0; n < _size; n++)
     sum += utils->count_ones_64(this_blocks[n] & other_blocks[n]);
@@ -343,7 +343,7 @@ int Vector::operator/(Vector const& other) const {
   int sum = 0;
 
   int16_t i;
-  _OPENMP_GPU_PRAGMA("omp target teams distributemap(tofrom:sum) map(to:this_blocks[:_height], other_blocks[:_height]) if(_height > CPU_LIMIT)")
+  _OPENMP_GPU_PRAGMA("omp target teams distribute map(tofrom:sum) map(to:this_blocks[:_height], other_blocks[:_height]) if(_height > CPU_LIMIT)")
   _OPENMP_PRAGMA("omp parallel for reduction(+ : sum) schedule(static) if(_height > CPU_LIMIT)")
   for (i = 0; i < _height; i++)
     sum += utils->count_ones_8(this_blocks[i] & other_blocks[i]);
