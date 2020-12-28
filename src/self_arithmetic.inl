@@ -42,7 +42,7 @@ void Matrix::operator^=(const bool bit) {
     int16_t n;
     #if defined(_OPENMP) && defined(TARGET)
       if(_size > GPU_LIMIT) {
-        #pragma omp target team distribute parallel for map(tofrom:this_blocks[:_size])
+        #pragma omp target teams distribute parallel for map(tofrom:this_blocks[:_size])
         for (n = 0; n < _size; n++)
           this_blocks[n] = ~this_blocks[n];
       } else {
@@ -105,7 +105,7 @@ void Vector::operator^=(const bool bit) {
     int16_t i;
     #if defined(_OPENMP) && defined(TARGET)
       if(_height > GPU_LIMIT) {
-        #pragma omp target team distribute parallel for map(tofrom:this_blocks[:_height])
+        #pragma omp target teams distribute parallel for map(tofrom:this_blocks[:_height])
         for (i = 0; i < _height; i++)
           this_blocks[i] = ~this_blocks[i];
       } else {

@@ -36,8 +36,8 @@ Matrix Matrix::T() const {
 
   int16_t i, j;
   #if defined(_OPENMP) && defined(TARGET)
-    #pragma omp target teams distribute for collapse(2) map(to:this_blocks[:_width * _height]) map(from:res_blocks[:_width * _height])
     if(_width*_height > GPU_LIMIT) {
+    #pragma omp target teams distribute parallel for collapse(2) map(to:this_blocks[:_width * _height]) map(from:res_blocks[:_width * _height])
       for (i = 0; i < _height; i++)
         for (j = 0; j < _width; j++)
           res_blocks[i + j*_height] = transpose_block(this_blocks[j + i*_width]);
@@ -101,7 +101,7 @@ Vector Vector::operator~() const {
   int16_t i;
   #if defined(_OPENMP) && defined(TARGET)
     if(_height > GPU_LIMIT) {
-      #pragma omp target teams distribute parallel fo map(to:this_blocks[:_height]) map(from:res_blocks[:_height])
+      #pragma omp target teams distribute parallel for map(to:this_blocks[:_height]) map(from:res_blocks[:_height])
       for (i = 0; i < _height/8; i++)
         res_blocks[i] = ~this_blocks[i];
     } else {
@@ -343,17 +343,18 @@ Vector Matrix::operator*(Vector const& other) const {
       uint8_t *other_blocks = other.blocks;
       uint64_t *this_blocks = blocks;
 
-      #pragma omp target teams distribute for collapse(2) map(to:this_blocks[:_width * _height], other_blocks[:_width]) map(from:res_blocks[:_height])
+      #pragma omp target teams distribute parallel for collapse(2) map(to:this_blocks[:_width * _height], other_blocks[:_width]) map(from:res_blocks[:_height])
       for (k = 0; k < _width; k++)
         for (i = 0; i < _height/8; i++) {
           #pragma omp atomic
           res_blocks[i] ^= multiply_block_word(this_blocks[k + 8*i*_width], this_blocks[k + (8*i + 1)*_width], this_blocks[k + (8*i + 2)*_width], this_blocks[k + (8*i + 3)*_width], \
             this_blocks[k + (8*i + 4)*_width], this_blocks[k + (8*i + 5)*_width], this_blocks[k + (8*i + 6)*_width], this_blocks[k + (8*i + 7)*_width], \
             other_blocks[k]);
+        }
 
       for (k = 0; k < _width; k++)
         for (i = _height - _height%8; i < _height; i++)
-          res.blocks[i] ^= multiply_block_byte(this.blocks[k + i*_width], other.blocks[k]);
+          res.blocks[i] ^= multiply_block_byte(blocks[k + i*_width], other.blocks[k]);
     } else {
   #endif
 
@@ -390,8 +391,8 @@ Matrix Vector::operator*(Vector const& other) const {
 
   int16_t i, j;
   #if defined(_OPENMP) && defined(TARGET)
-    if(_width*_height > GPU_LIMIT) {
-      #pragma omp target teams distribute for collapse(2) map(to:this_blocks[:_width], other_blocks[:_height]) map(from:res_blocks[:_height * _width])
+    if(_width *_height > GPU_LIMIT) {
+      #pragma omp target teams distribute parallel for collapse(2) map(to:this_blocks[:_width], other_blocks[:_height]) map(from:res_blocks[:_height * _width])
       for (j = 0; j < _width; j++)
         for (i = 0; i < _height; i++)
           res_blocks[j + i*_width] = multiply_byte_byte(this_blocks[j], other_blocks[i]);
@@ -450,7 +451,7 @@ bool Vector::operator%(Vector const& other) const {
 
   int16_t i;
   #if defined(_OPENMP) && defined(TARGET)
-    if(_size > GPU_LIMIT) {
+    if(_height > GPU_LIMIT) {
       #pragma omp target teams distribute parallel for reduction(^ : sum) map(tofrom:sum) map(to:this_blocks[:_height], other_blocks[:_height])
       for (i = 0; i < _height; i++)
         sum ^= this_blocks[i] & other_blocks[i];
@@ -502,7 +503,7 @@ int Vector::operator/(Vector const& other) const {
 
   int16_t i;
   #if defined(_OPENMP) && defined(TARGET)
-    if(_size > GPU_LIMIT) {
+    if(_height > GPU_LIMIT) {
       #pragma omp target teams distribute parallel for reduction(+ : sum) map(tofrom:sum) map(to:this_blocks[:_height], other_blocks[:_height])
       for (i = 0; i < _height; i++)
         sum += utils->count_ones_8(this_blocks[i] & other_blocks[i]);
