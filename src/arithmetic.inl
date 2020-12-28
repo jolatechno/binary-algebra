@@ -38,9 +38,11 @@ Matrix Matrix::T() const {
   #if defined(_OPENMP) && defined(TARGET)
     if(_width*_height > GPU_LIMIT) {
     #pragma omp target teams distribute parallel for collapse(2) map(to:this_blocks[:_width * _height]) map(from:res_blocks[:_width * _height])
-      for (i = 0; i < _height; i++)
+      for (i = 0; i < _height; i++) {
+        #pragma omp parralel for
         for (j = 0; j < _width; j++)
           res_blocks[i + j*_height] = transpose_block(this_blocks[j + i*_width]);
+      }
     } else {
   #endif
 
@@ -305,9 +307,9 @@ Matrix Matrix::operator*(Matrix const& other) const {
     if(_width*_height*_size > GPU_LIMIT) {
       #pragma omp target teams distribute parallel for collapse(2) map(to:this_blocks[:_width * _height], other_blocks[:_width * _size]) map(from:res_blocks[:_height * _size])
       for (j = 0; j < _size; j++)
-        for (i = 0; i < _height; i++) {
+        for (k = 0; k < _width; k++) {
           #pragma omp parralel for
-          for (k = 0; k < _width; k++) {
+          for (i = 0; i < _height; i++) {
             #pragma omp atomic
             res_blocks[i + j*_height] ^= multiply_block_block(this_blocks[k + j*_width], other_blocks[i + k*_size]);
           }
@@ -347,9 +349,9 @@ Vector Matrix::operator*(Vector const& other) const {
       uint64_t *this_blocks = blocks;
 
       #pragma omp target teams distribute parallel for map(to:this_blocks[:_width * _height], other_blocks[:_width]) map(from:res_blocks[:_height])
-      for (i = 0; i < _height/8; i++) {
+      for (k = 0; k < _width; k++) {
         #pragma omp parralel for
-        for (k = 0; k < _width; k++) {
+         for (i = 0; i < _height/8; i++) {
           #pragma omp atomic
           res_blocks[i] ^= multiply_block_word(this_blocks[k + 8*i*_width], this_blocks[k + (8*i + 1)*_width], this_blocks[k + (8*i + 2)*_width], this_blocks[k + (8*i + 3)*_width], \
             this_blocks[k + (8*i + 4)*_width], this_blocks[k + (8*i + 5)*_width], this_blocks[k + (8*i + 6)*_width], this_blocks[k + (8*i + 7)*_width], \
