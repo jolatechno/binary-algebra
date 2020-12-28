@@ -13,6 +13,6 @@ addons:
 
 script:
   - make clean test
-  - make --environment-overrides CCFLAGS=-DCPU_LIMIT=0 openmp clean test
+  - make CCFLAGS=-DCPU_LIMIT=0 openmp clean test
   - make mpi clean test
-  - make --environment-overrides CCFLAGS=-DCPU_LIMIT=0 mpi openmp clean test
+  - make CCFLAGS=-DCPU_LIMIT=0 mpi openmp clean test
