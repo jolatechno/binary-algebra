@@ -33,6 +33,14 @@ void Matrix::randomize() {
       this->receive(0);
     }
   #endif
+
+  #if defined(_OPENMP) && defined(TARGET)
+    if (height * width > GPU_LIMIT) {
+      uint16_t _size = height * width;
+      auto *this_blocks = blocks;
+      #pragma omp target update to(this_blocks[0:_size])
+    }
+  #endif
 }
 
 void Vector::randomize() {
@@ -53,6 +61,14 @@ void Vector::randomize() {
       this->receive(0);
     }
   #endif
+
+  #if defined(_OPENMP) && defined(TARGET)
+    if (height > GPU_LIMIT) {
+      uint16_t _height = height;
+      auto *this_blocks = blocks;
+      #pragma omp target update to(this_blocks[0:_height])
+    }
+  #endif
 }
 
 /*
@@ -66,6 +82,14 @@ Matrix& Matrix::operator=(Matrix const& other) {
     assert(width == other.width);
 
     memcpy(blocks, other.blocks, height * width * sizeof(uint64_t)); //copy blocks
+
+    #if defined(_OPENMP) && defined(TARGET)
+      if (height * width > GPU_LIMIT) {
+        uint16_t _size = height * width;
+        auto *this_blocks = blocks;
+        #pragma omp target update to(this_blocks[0:_size])
+      }
+    #endif
   }
   return *this;
 }
@@ -75,6 +99,14 @@ Vector& Vector::operator=(Vector const& other) {
     assert(height == other.height); //check if dimensions are compatible
 
     memcpy(blocks, other.blocks, height * sizeof(uint8_t)); //copy blocks
+
+    #if defined(_OPENMP) && defined(TARGET)
+      if (height > GPU_LIMIT) {
+        uint16_t _height = height;
+        auto *this_blocks = blocks;
+        #pragma omp target update to(this_blocks[0:_height])
+      }
+    #endif
   }
   return *this;
 }
@@ -97,6 +129,14 @@ void Matrix::diag() {
       } else {
         this_blocks[i + j*_height] = 0;
       }
+
+  #if defined(_OPENMP) && defined(TARGET)
+    if (height * width > GPU_LIMIT) {
+      uint16_t _size = height * width;
+      auto *this_blocks = blocks;
+      #pragma omp target update to(this_blocks[0:_size])
+    }
+  #endif
 }
 
 void Matrix::diag(Vector const& diagonal) {
@@ -117,4 +157,12 @@ void Matrix::diag(Vector const& diagonal) {
       } else {
         blocks[i + j*_height] = 0;
       }
+
+  #if defined(_OPENMP) && defined(TARGET)
+    if (height * width > GPU_LIMIT) {
+      uint16_t _size = height * width;
+      auto *this_blocks = blocks;
+      #pragma omp target update to(this_blocks[0:_size])
+    }
+  #endif
 }
