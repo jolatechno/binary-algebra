@@ -159,7 +159,7 @@ int Matrix::difference(Matrix const& other) const {
     int16_t n;
     #if defined(_OPENMP) && defined(TARGET)
       if(_size > GPU_LIMIT) {
-        #pragma omp target teams distribute parallel for reduction(+ : diff) map(tofrom:diff) map(to:this_blocks[:_size], other_blocks[:_size])
+        #pragma omp target teams distribute parallel for reduction(+ : diff) defaultmap(tofrom:diff) defaultmap(to:this_blocks[:_size], other_blocks[:_size])
         for (n = 0; n < _size; n++)
           diff +=  utils->count_ones_64(this_blocks[n]) - utils->count_ones_64(other_blocks[n]);
       } else {
@@ -189,7 +189,7 @@ int Vector::difference(Vector const& other) const {
     int16_t i;
     #if defined(_OPENMP) && defined(TARGET)
       if(_height > GPU_LIMIT) {
-        #pragma omp target teams distribute parallel for reduction(+ : diff) map(tofrom:diff) map(to:this_blocks[:_height], other_blocks[:_height])
+        #pragma omp target teams distribute parallel for reduction(+ : diff) defaultmap(tofrom:diff) defaultmap(to:this_blocks[:_height], other_blocks[:_height])
         for (i = 0; i < _height; i++)
           diff += utils->count_ones_8(this_blocks[i]) - utils->count_ones_8(other_blocks[i]);
       } else {
