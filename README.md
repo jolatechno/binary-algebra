@@ -2,11 +2,13 @@
 
 ## Requirements
 
-This library is design for Linux only _for now_. For the best result, you should install __Openmp__ (`libomp5-xx`), and compile the library using it.
+This library is design for Linux only _for now_, it require `g++-10` for compilation.
 
-For GPU offloading you will also need the correct GPU drivers, and either `gcc-offload-nvptx` for __NVIDIA__ cards, or `gcc-10-offload-amdgcn` for __AMD__ GPUs.
+ For the best result, you should install __Openmp__ (`libomp5-xx`), and compile the library using it.
 
-To take advantage of MPI, you need to install `mpirun` and `mpic++`.
+For GPU offloading you will also need the correct GPU drivers, and either `gcc-10-offload-nvptx` for __NVIDIA__ cards, or `gcc-10-offload-amdgcn` for __AMD__ GPUs.
+
+To take advantage of MPI, you need to install `mpic++`.
 
 ## Compilation
 
