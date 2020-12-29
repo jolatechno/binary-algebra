@@ -13,15 +13,13 @@
   }
 
   void Matrix::to(int start, int end) {
-    uint16_t diff = end - start;
-    uint64_t *this_blocks = &blocks[start];
-    #pragma omp target update to(this_blocks[:diff])
+    uint64_t *this_blocks = blocks;
+    #pragma omp target update to(this_blocks[start:end])
   }
 
   void Vector::to(int start, int end) {
-    uint16_t diff = end - start;
-    uint8_t *this_blocks = &blocks[start];
-    #pragma omp target update to(this_blocks[:diff])
+    uint8_t *this_blocks = blocks;
+    #pragma omp target update to(this_blocks[start:end])
   }
 
   void Matrix::from() {
@@ -37,14 +35,12 @@
   }
 
   void Matrix::from(int start, int end) {
-    uint16_t diff = end - start;
-    uint64_t *this_blocks = &blocks[start];
-    #pragma omp target update from(this_blocks[:diff])
+    uint64_t *this_blocks = blocks;
+    #pragma omp target update from(this_blocks[start:end])
   }
 
   void Vector::from(int start, int end) {
-    uint16_t diff = end - start;
-    uint8_t *this_blocks = &blocks[start];
-    #pragma omp target update from(this_blocks[:diff])
+    uint8_t *this_blocks = blocks;
+    #pragma omp target update from(this_blocks[start:end])
   }
 #endif
