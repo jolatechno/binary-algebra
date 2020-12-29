@@ -13,6 +13,7 @@ void Matrix::operator^=(Matrix const& other) {
       #pragma omp target teams distribute parallel for map(tofrom:this_blocks[:_size]) map(to:other_blocks[:_size])
       for (n = 0; n < _size; n++)
         this_blocks[n] ^= other_blocks[n];
+      from();
     } else {
   #endif
 
@@ -21,6 +22,7 @@ void Matrix::operator^=(Matrix const& other) {
     this_blocks[n] ^= other_blocks[n];
 
   #if defined(_OPENMP) && defined(TARGET)
+      to();
     }
   #endif
 }
@@ -45,6 +47,7 @@ void Matrix::operator^=(const bool bit) {
         #pragma omp target teams distribute parallel for map(tofrom:this_blocks[:_size])
         for (n = 0; n < _size; n++)
           this_blocks[n] = ~this_blocks[n];
+        from();
       } else {
     #endif
 
@@ -53,6 +56,7 @@ void Matrix::operator^=(const bool bit) {
       this_blocks[n] = ~this_blocks[n];
 
     #if defined(_OPENMP) && defined(TARGET)
+        to();
       }
     #endif
   }
@@ -76,6 +80,7 @@ void Vector::operator^=(Vector const& other) {
       #pragma omp target teams distribute parallel for map(tofrom:this_blocks[:_height]) map(to:other_blocks[:_height])
       for (i = 0; i < _height; i++)
         this_blocks[i] ^= other_blocks[i];
+      from();
     } else {
   #endif
 
@@ -84,6 +89,7 @@ void Vector::operator^=(Vector const& other) {
     this_blocks[i] ^= other_blocks[i];
 
   #if defined(_OPENMP) && defined(TARGET)
+      to();
     }
   #endif
 }
@@ -108,6 +114,7 @@ void Vector::operator^=(const bool bit) {
         #pragma omp target teams distribute parallel for map(tofrom:this_blocks[:_height])
         for (i = 0; i < _height; i++)
           this_blocks[i] = ~this_blocks[i];
+        from();
       } else {
     #endif
 
@@ -116,6 +123,7 @@ void Vector::operator^=(const bool bit) {
       this_blocks[i] = ~this_blocks[i];
 
     #if defined(_OPENMP) && defined(TARGET)
+        to();
       }
     #endif
   }
@@ -145,6 +153,7 @@ void Matrix::operator&=(Matrix const& other) {
       #pragma omp target teams distribute parallel for map(tofrom:this_blocks[:_size]) map(to:other_blocks[:_size])
       for (n = 0; n < _size; n++)
         this_blocks[n] &= other_blocks[n];
+      from();
     } else {
   #endif
 
@@ -153,6 +162,7 @@ void Matrix::operator&=(Matrix const& other) {
     this_blocks[n] &= other_blocks[n];
 
   #if defined(_OPENMP) && defined(TARGET)
+      to();
     }
   #endif
 }
@@ -172,6 +182,7 @@ void Vector::operator&=(Vector const& other) {
       #pragma omp target teams distribute parallel for map(tofrom:this_blocks[:_height]) map(to:other_blocks[:_height])
       for (i = 0; i < _height; i++)
         this_blocks[i] &= other_blocks[i];
+      from();
     } else {
   #endif
 
@@ -180,6 +191,7 @@ void Vector::operator&=(Vector const& other) {
     this_blocks[i] &= other_blocks[i];
 
   #if defined(_OPENMP) && defined(TARGET)
+      to();
     }
   #endif
 }

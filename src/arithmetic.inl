@@ -37,10 +37,11 @@ Matrix Matrix::T() const {
   int16_t i, j;
   #if defined(_OPENMP) && defined(TARGET)
     if(_width*_height > GPU_LIMIT) {
-    #pragma omp target teams distribute parallel for collapse(2) map(from:res_blocks[:_width*_height])
-    for (i = 0; i < _height; i++)
-      for (j = 0; j < _width; j++)
-        res_blocks[i + j*_height] = transpose_block(this_blocks[j + i*_width]);
+      #pragma omp target teams distribute parallel for collapse(2)
+      for (i = 0; i < _height; i++)
+        for (j = 0; j < _width; j++)
+          res_blocks[i + j*_height] = transpose_block(this_blocks[j + i*_width]);
+      res.from();
     } else {
   #endif
 
@@ -50,6 +51,7 @@ Matrix Matrix::T() const {
       res_blocks[i + j*_height] = transpose_block(this_blocks[j + i*_width]);
 
   #if defined(_OPENMP) && defined(TARGET)
+      res.to();
     }
   #endif
 
@@ -73,9 +75,10 @@ Matrix Matrix::operator~() const {
   int16_t n;
   #if defined(_OPENMP) && defined(TARGET)
     if(_size > GPU_LIMIT) {
-      #pragma omp target teams distribute parallel for map(from:res_blocks[:_size])
+      #pragma omp target teams distribute parallel for
       for (n = 0; n < _size; n++)
         res_blocks[n] = ~this_blocks[n];
+        res.from();
     } else {
   #endif
 
@@ -84,6 +87,7 @@ Matrix Matrix::operator~() const {
     res_blocks[n] = ~this_blocks[n];
 
   #if defined(_OPENMP) && defined(TARGET)
+      res.to();
     }
   #endif
 
@@ -101,9 +105,10 @@ Vector Vector::operator~() const {
   int16_t i;
   #if defined(_OPENMP) && defined(TARGET)
     if(_height > GPU_LIMIT) {
-      #pragma omp target teams distribute parallel for map(from:res_blocks[:_height])
+      #pragma omp target teams distribute parallel for
       for (i = 0; i < _height; i++)
         res_blocks[i] = ~this_blocks[i];
+      res.from();
     } else {
   #endif
 
@@ -112,11 +117,16 @@ Vector Vector::operator~() const {
     res_blocks[i] = ~this_blocks[i];
 
   #if defined(_OPENMP) && defined(TARGET)
+      res.to(0, _height - _height%8);
     }
   #endif
 
   for (i = _height - _height%8; i < _height; i++)
     res.blocks[i] = ~blocks[i];
+
+  #if defined(_OPENMP) && defined(TARGET)
+    res.to(_height - _height%8, _height);
+  #endif
 
   return res;
 }
@@ -134,9 +144,10 @@ Matrix Matrix::operator^(Matrix const& other) const {
   int16_t n;
   #if defined(_OPENMP) && defined(TARGET)
     if(_size > GPU_LIMIT) {
-      #pragma omp target teams distribute parallel for map(from:res_blocks[:_size])
+      #pragma omp target teams distribute parallel for
       for (n = 0; n < _size; n++)
         res_blocks[n] = this_blocks[n] ^ other_blocks[n];
+      res.from();
     } else {
   #endif
 
@@ -145,6 +156,7 @@ Matrix Matrix::operator^(Matrix const& other) const {
     res_blocks[n] = this_blocks[n] ^ other_blocks[n];
 
   #if defined(_OPENMP) && defined(TARGET)
+      res.to();
     }
   #endif
 
@@ -180,6 +192,7 @@ Vector Vector::operator^(Vector const& other) const {
       #pragma omp target teams distribute parallel for map(from:res_blocks[:_height/8])
       for (i = 0; i < _height/8; i++)
         res_blocks[i] = this_blocks[i] ^ other_blocks[i];
+      res.from();
     } else {
   #endif
 
@@ -188,11 +201,17 @@ Vector Vector::operator^(Vector const& other) const {
     res_blocks[i] = this_blocks[i] ^ other_blocks[i];
 
   #if defined(_OPENMP) && defined(TARGET)
+      res.to(0, _height - _height%8);
     }
   #endif
 
+
   for (i = _height - _height%8; i < _height; i++)
     res.blocks[i] = blocks[i] ^ other.blocks[i];
+
+  #if defined(_OPENMP) && defined(TARGET)
+    res.to(_height - _height%8, _height);
+  #endif
 
   return res;
 }
@@ -233,6 +252,7 @@ Matrix Matrix::operator&(Matrix const& other) const {
       #pragma omp target teams distribute parallel for map(from:res_blocks[:_size])
       for (n = 0; n < _size; n++)
         res_blocks[n] = this_blocks[n] & other_blocks[n];
+      res.from();
     } else {
   #endif
 
@@ -241,6 +261,7 @@ Matrix Matrix::operator&(Matrix const& other) const {
     res_blocks[n] = this_blocks[n] & other_blocks[n];
 
   #if defined(_OPENMP) && defined(TARGET)
+      res.to();
     }
   #endif
 
@@ -260,6 +281,7 @@ Vector Vector::operator&(Vector const& other) const {
       #pragma omp target teams distribute parallel for map(from:res_blocks[:_height/8])
       for (i = 0; i < _height/8; i++)
         res_blocks[i] = this_blocks[i] & other_blocks[i];
+      res.from();
     } else {
   #endif
 
@@ -268,11 +290,16 @@ Vector Vector::operator&(Vector const& other) const {
     res_blocks[i] = this_blocks[i] & other_blocks[i];
 
   #if defined(_OPENMP) && defined(TARGET)
+      res.to(0, _height - _height%8);
     }
   #endif
 
   for (i = _height - _height%8; i < _height; i++)
     res.blocks[i] = blocks[i] & other.blocks[i];
+
+  #if defined(_OPENMP) && defined(TARGET)
+    res.to(_height - _height%8, _height);
+  #endif
 
   return res;
 }
@@ -310,6 +337,7 @@ Matrix Matrix::operator*(Matrix const& other) const {
             #pragma omp atomic
             res_blocks[i + j*_height] ^= multiply_block_block(this_blocks[k + j*_width], other_blocks[i + k*_size]);
           }
+      res.from();
     } else {
   #endif
 
@@ -322,6 +350,7 @@ Matrix Matrix::operator*(Matrix const& other) const {
       }
 
   #if defined(_OPENMP) && defined(TARGET)
+      res.to();
     }
   #endif
 
@@ -356,8 +385,7 @@ Vector Matrix::operator*(Vector const& other) const {
         for (i = _height - _height%8; i < _height; i++)
           res.blocks[i] ^= multiply_block_byte(blocks[k + i*_width], other.blocks[k]);
 
-      uint8_t *res_blocks_8 = &res.blocks[_height - _height%8];
-      #pragma omp update to(res_blocks_8[:_height])
+      res.from();
     } else {
   #endif
 
@@ -373,6 +401,7 @@ Vector Matrix::operator*(Vector const& other) const {
     }
 
   #if defined(_OPENMP) && defined(TARGET)
+      res.to();
     }
   #endif
 
@@ -399,6 +428,7 @@ Matrix Vector::operator*(Vector const& other) const {
       for (j = 0; j < _width; j++)
         for (i = 0; i < _height; i++)
           res_blocks[j + i*_width] = multiply_byte_byte(this_blocks[j], other_blocks[i]);
+      res.from();
     } else {
   #endif
 
@@ -408,6 +438,7 @@ Matrix Vector::operator*(Vector const& other) const {
       res_blocks[j + i*_width] = multiply_byte_byte(this_blocks[j], other_blocks[i]);
 
   #if defined(_OPENMP) && defined(TARGET)
+      res.to();
     }
   #endif
 

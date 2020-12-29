@@ -195,6 +195,14 @@ class Matrix {
       int receive(int from);
       int receive(int from, int start_i, int start_j, int length_i, int length_j);
     #endif
+
+    //gpu operations
+    #if defined(_OPENMP) && defined(TARGET)
+      void to();
+      void to(int start, int end);
+      void from();
+      void from(int start, int end);
+    #endif
 };
 
 class Vector {
@@ -293,5 +301,13 @@ class Vector {
       int send(int to, int start, int length) const;
       int receive(int from);
       int receive(int from, int start, int length);
+    #endif
+
+    //gpu operations
+    #if defined(_OPENMP) && defined(TARGET)
+      void to();
+      void to(int start, int end);
+      void from();
+      void from(int start, int end);
     #endif
 };

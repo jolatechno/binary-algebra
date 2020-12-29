@@ -15,6 +15,11 @@ bool_from_byte& bool_from_byte::operator=(bool value) {
   if (value)
     *byte |= mask;
 
+  #if defined(_OPENMP) && defined(TARGET)
+    auto *_byte = byte;
+    #pragma omp target update to(_byte)
+  #endif
+
   return *this;
 }
 
@@ -26,6 +31,11 @@ bool_from_word& bool_from_word::operator=(bool value) {
   *word &= ~mask;
   if (value)
     *word |= mask;
+
+  #if defined(_OPENMP) && defined(TARGET)
+    auto *_word = word;
+    #pragma omp target update to(_word)
+  #endif
 
   return *this;
 }

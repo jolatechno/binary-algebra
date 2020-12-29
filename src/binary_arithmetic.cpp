@@ -14,6 +14,7 @@
 #include "member/slice.inl"
 
 #include "mpi.inl"
+#include "openmp.inl"
 #include "comparisons.inl"
 #include "initializers.inl"
 #include "arithmetic.inl"
@@ -32,10 +33,8 @@ Matrix::Matrix(uint16_t _height, uint16_t _width) : height(_height), width(_widt
     MPI_Comm_size(MPI_COMM_WORLD, &size);
   #endif
   #if defined(_OPENMP) && defined(TARGET)
-    if (_height * _width > GPU_LIMIT) {
-      auto *this_blocks = blocks;
-      #pragma omp target enter data map(alloc:this_blocks[0:_height * _width])
-    }
+    auto *this_blocks = blocks;
+    #pragma omp target enter data map(alloc:this_blocks[:_height * _width])
   #endif
 }
 
@@ -47,10 +46,8 @@ Matrix::Matrix(uint16_t _size) : height(_size), width(_size) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
   #endif
   #if defined(_OPENMP) && defined(TARGET)
-  if (_size * _size > GPU_LIMIT) {
     auto *this_blocks = blocks;
-    #pragma omp target enter data map(alloc:this_blocks[0:_size * _size])
-  }
+    #pragma omp target enter data map(alloc:this_blocks[:_size * _size])
   #endif
 }
 
@@ -62,10 +59,8 @@ Vector::Vector(uint16_t _size): height(_size) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
   #endif
   #if defined(_OPENMP) && defined(TARGET)
-  if (_size > GPU_LIMIT) {
     auto *this_blocks = blocks;
-    #pragma omp target enter data map(alloc:this_blocks[0:_size])
-  }
+    #pragma omp target enter data map(alloc:this_blocks[:_size])
   #endif
 }
 
@@ -86,11 +81,9 @@ Matrix::Matrix(Matrix const& other) : height(other.height), width(other.width) {
   memcpy(blocks, other.blocks, height * width * sizeof(uint64_t)); //copy blocks
 
   #if defined(_OPENMP) && defined(TARGET)
-    if (height * width > GPU_LIMIT) {
-      uint16_t _size = height * width;
-      auto *this_blocks = blocks;
-      #pragma omp target enter data map(to:this_blocks[0:_size])
-    }
+    uint16_t _size = height * width;
+    auto *this_blocks = blocks;
+    #pragma omp target enter data map(to:this_blocks[:_size])
   #endif
 }
 
@@ -105,11 +98,9 @@ Vector::Vector(Vector const& other) : height(other.height) {
   memcpy(blocks, other.blocks, height * sizeof(uint8_t)); //copy blocks
 
   #if defined(_OPENMP) && defined(TARGET)
-    if (height > GPU_LIMIT) {
-      uint16_t _height = height;
-      auto *this_blocks = blocks;
-      #pragma omp target enter data map(to:this_blocks[0:_height])
-    }
+    uint16_t _height = height;
+    auto *this_blocks = blocks;
+    #pragma omp target enter data map(to:this_blocks[:_height])
   #endif
 }
 
@@ -121,22 +112,18 @@ destructors
 
 Matrix::~Matrix(){
   #if defined(_OPENMP) && defined(TARGET)
-    if (height > GPU_LIMIT) {
-      uint16_t _size = height * width;
-      auto *this_blocks = blocks;
-      #pragma omp target exit data map(delete:this_blocks[0:_size])
-    }
+    uint16_t _size = height * width;
+    auto *this_blocks = blocks;
+    #pragma omp target exit data map(delete:this_blocks[:_size])
   #endif
   free(blocks);
 }
 
 Vector::~Vector(){
   #if defined(_OPENMP) && defined(TARGET)
-    if (height > GPU_LIMIT) {
-      uint16_t _height = height;
-      auto *this_blocks = blocks;
-      #pragma omp target exit data map(delete:this_blocks[0:_height])
-    }
+    uint16_t _height = height;
+    auto *this_blocks = blocks;
+    #pragma omp target exit data map(delete:this_blocks[:_height])
   #endif
   free(blocks);
 }

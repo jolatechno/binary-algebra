@@ -35,11 +35,7 @@ void Matrix::randomize() {
   #endif
 
   #if defined(_OPENMP) && defined(TARGET)
-    if (height * width > GPU_LIMIT) {
-      uint16_t _size = height * width;
-      auto *this_blocks = blocks;
-      #pragma omp target update to(this_blocks[0:_size])
-    }
+    to();
   #endif
 }
 
@@ -63,11 +59,7 @@ void Vector::randomize() {
   #endif
 
   #if defined(_OPENMP) && defined(TARGET)
-    if (height > GPU_LIMIT) {
-      uint16_t _height = height;
-      auto *this_blocks = blocks;
-      #pragma omp target update to(this_blocks[0:_height])
-    }
+    to();
   #endif
 }
 
@@ -84,11 +76,7 @@ Matrix& Matrix::operator=(Matrix const& other) {
     memcpy(blocks, other.blocks, height * width * sizeof(uint64_t)); //copy blocks
 
     #if defined(_OPENMP) && defined(TARGET)
-      if (height * width > GPU_LIMIT) {
-        uint16_t _size = height * width;
-        auto *this_blocks = blocks;
-        #pragma omp target update to(this_blocks[0:_size])
-      }
+      to();
     #endif
   }
   return *this;
@@ -101,11 +89,7 @@ Vector& Vector::operator=(Vector const& other) {
     memcpy(blocks, other.blocks, height * sizeof(uint8_t)); //copy blocks
 
     #if defined(_OPENMP) && defined(TARGET)
-      if (height > GPU_LIMIT) {
-        uint16_t _height = height;
-        auto *this_blocks = blocks;
-        #pragma omp target update to(this_blocks[0:_height])
-      }
+      to();
     #endif
   }
   return *this;
@@ -131,11 +115,7 @@ void Matrix::diag() {
       }
 
   #if defined(_OPENMP) && defined(TARGET)
-    if (height * width > GPU_LIMIT) {
-      uint16_t _size = height * width;
-      auto *this_blocks = blocks;
-      #pragma omp target update to(this_blocks[0:_size])
-    }
+    to();
   #endif
 }
 
@@ -159,10 +139,6 @@ void Matrix::diag(Vector const& diagonal) {
       }
 
   #if defined(_OPENMP) && defined(TARGET)
-    if (height * width > GPU_LIMIT) {
-      uint16_t _size = height * width;
-      auto *this_blocks = blocks;
-      #pragma omp target update to(this_blocks[0:_size])
-    }
+    to();
   #endif
 }
