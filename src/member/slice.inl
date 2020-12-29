@@ -56,7 +56,7 @@ matrix_slice& matrix_slice::operator=(Matrix const& other) {
     memcpy(&mat->blocks[start_j + (i + start_i)*mat->width], &other.blocks[i*length_j], length_j * sizeof(uint64_t)); //copy blocks
 
     #if defined(_OPENMP) && defined(TARGET)
-      mat->to(start_j + (i + start_i)*mat->width, start_j + length_j + (i + start_i)*mat->width);
+      mat->to(start_j + (i + start_i)*mat->width, length_j);
     #endif
   }
 
@@ -69,7 +69,7 @@ vector_slice& vector_slice::operator=(Vector const& other) {
   memcpy(&vect->blocks[start], other.blocks, length * sizeof(uint8_t)); //copy blocks
 
   #if defined(_OPENMP) && defined(TARGET)
-    vect->to(start, start + length);
+    vect->to(start, length);
   #endif
 
   return *this;
@@ -83,7 +83,7 @@ matrix_slice& matrix_slice::operator=(matrix_slice const& other) {
     memcpy(&mat->blocks[start_j + (i + start_i)*mat->width], &other.mat->blocks[other.start_j + (i + other.start_i)*other.mat->width], length_j * sizeof(uint64_t)); //copy blocks
 
     #if defined(_OPENMP) && defined(TARGET)
-      mat->to(start_j + (i + start_i)*mat->width, start_j + length_j + (i + start_i)*mat->width);
+      mat->to(start_j + (i + start_i)*mat->width, length_j);
     #endif
   }
 
@@ -98,7 +98,7 @@ vector_slice& vector_slice::operator=(vector_slice const& other) {
   memcpy(&vect->blocks[start], &other.vect->blocks[other.start], length * sizeof(uint8_t)); //copy blocks
 
   #if defined(_OPENMP) && defined(TARGET)
-    vect->to(start, start + length);
+    vect->to(start, length);
   #endif
 
   return *this;

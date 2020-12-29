@@ -125,7 +125,7 @@ Vector Vector::operator~() const {
     res.blocks[i] = ~blocks[i];
 
   #if defined(_OPENMP) && defined(TARGET)
-    res.to(_height - _height%8, _height);
+    res.to(_height - _height%8, _height%8);
   #endif
 
   return res;
@@ -209,7 +209,7 @@ Vector Vector::operator^(Vector const& other) const {
     res.blocks[i] = blocks[i] ^ other.blocks[i];
 
   #if defined(_OPENMP) && defined(TARGET)
-    res.to(_height - _height%8, _height);
+    res.to(_height - _height%8, _height%8);
   #endif
 
   return res;
@@ -297,7 +297,7 @@ Vector Vector::operator&(Vector const& other) const {
     res.blocks[i] = blocks[i] & other.blocks[i];
 
   #if defined(_OPENMP) && defined(TARGET)
-    res.to(_height - _height%8, _height);
+    res.to(_height - _height%8, _height%8);
   #endif
 
   return res;
@@ -384,7 +384,7 @@ Vector Matrix::operator*(Vector const& other) const {
       for (k = 0; k < _width; k++)
         for (i = _height - _height%8; i < _height; i++)
           res.blocks[i] ^= multiply_block_byte(blocks[k + i*_width], other.blocks[k]);
-      res.to(_height - _height%8, _height);
+      res.to(_height - _height%8, _height%8);
 
     } else {
   #endif

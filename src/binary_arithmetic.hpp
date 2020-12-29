@@ -199,9 +199,9 @@ class Matrix {
     //gpu operations
     #if defined(_OPENMP) && defined(TARGET)
       void to();
-      void to(int start, int end);
+      void to(int start, int length);
       void from();
-      void from(int start, int end);
+      void from(int start, int length);
     #endif
 };
 
@@ -306,8 +306,8 @@ class Vector {
     //gpu operations
     #if defined(_OPENMP) && defined(TARGET)
       void to();
-      void to(int start, int end);
+      void to(int start, int length);
       void from();
-      void from(int start, int end);
+      void from(int start, int length);
     #endif
 };

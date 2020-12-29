@@ -12,14 +12,14 @@
     #pragma omp target update to(this_blocks[:_height])
   }
 
-  void Matrix::to(int start, int end) {
+  void Matrix::to(int start, int length) {
     uint64_t *this_blocks = blocks;
-    #pragma omp target update to(this_blocks[start:end])
+    #pragma omp target update to(this_blocks[start:length])
   }
 
-  void Vector::to(int start, int end) {
+  void Vector::to(int start, int length) {
     uint8_t *this_blocks = blocks;
-    #pragma omp target update to(this_blocks[start:end])
+    #pragma omp target update to(this_blocks[start:length])
   }
 
   void Matrix::from() {
@@ -34,13 +34,13 @@
     #pragma omp target update to(this_blocks[:_height])
   }
 
-  void Matrix::from(int start, int end) {
+  void Matrix::from(int start, int length) {
     uint64_t *this_blocks = blocks;
-    #pragma omp target update from(this_blocks[start:end])
+    #pragma omp target update from(this_blocks[start:length])
   }
 
-  void Vector::from(int start, int end) {
+  void Vector::from(int start, int length) {
     uint8_t *this_blocks = blocks;
-    #pragma omp target update from(this_blocks[start:end])
+    #pragma omp target update from(this_blocks[start:length])
   }
-#endif
+#lengthif
