@@ -362,7 +362,7 @@ Vector Matrix::operator*(Vector const& other) const {
       for (k = 0; k < _width; k++)
         for (i = _height - _height%8; i < _height; i++)
           res.blocks[i] ^= multiply_block_byte(blocks[k + i*_width], other.blocks[k]);
-      res.to(); //_height - _height%8, _height%8);
+      res.to(_height - _height%8, _height%8);
 
     } else {
   #endif
