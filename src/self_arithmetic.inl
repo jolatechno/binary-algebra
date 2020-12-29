@@ -7,15 +7,19 @@ void Matrix::operator^=(Matrix const& other) {
   COMPARAISON_MATRIX_BITWISE_HEADER;
   COMPARAISON_VARIABLE_HEADER;
 
-  int16_t n;
   #if defined(_OPENMP) && defined(TARGET)
     if(_size > GPU_LIMIT) {
+      int16_t i, j;
       #pragma omp target teams distribute parallel for map(tofrom:this_blocks[:_size]) map(to:other_blocks[:_size])
-      for (n = 0; n < _size; n++)
-        this_blocks[n] ^= other_blocks[n];
+      for (i = 0; i < _height; i++) {
+        #pragma omp parallel for
+        for (j = 0; j < _width; j++)
+          this_blocks[j + i*_width] ^= other_blocks[j + i*_width];
+      }
     } else {
   #endif
 
+  int16_t n;
   _OPENMP_PRAGMA("omp parallel for schedule(static) if(_size > CPU_LIMIT)")
   for (n = 0; n < _size; n++)
     this_blocks[n] ^= other_blocks[n];
@@ -37,17 +41,23 @@ void Matrix::operator^=(const bool bit) {
   if (bit) {
     uint64_t *this_blocks = blocks;
 
-    uint16_t _size = height * width;
+    uint16_t _width = width;
+    uint16_t _height = height;
+    uint16_t _size = _width * _height;
 
-    int16_t n;
     #if defined(_OPENMP) && defined(TARGET)
+      int16_t i, j;
       if(_size > GPU_LIMIT) {
         #pragma omp target teams distribute parallel for map(tofrom:this_blocks[:_size])
-        for (n = 0; n < _size; n++)
-          this_blocks[n] = ~this_blocks[n];
+        for (i = 0; i < _height; i++) {
+          #pragma omp parallel for
+          for (j = 0; j < _width; j++)
+            this_blocks[j + i*_width] = ~this_blocks[j + i*_width];
+        }
       } else {
     #endif
 
+    int16_t n;
     _OPENMP_PRAGMA("omp parallel for schedule(static) if(_size > CPU_LIMIT)")
     for (n = 0; n < _size; n++)
       this_blocks[n] = ~this_blocks[n];
@@ -139,15 +149,19 @@ void Matrix::operator&=(Matrix const& other) {
   COMPARAISON_MATRIX_BITWISE_HEADER;
   COMPARAISON_VARIABLE_HEADER;
 
-  int16_t n;
   #if defined(_OPENMP) && defined(TARGET)
     if(_size > GPU_LIMIT) {
+      int16_t i, j;
       #pragma omp target teams distribute parallel for map(tofrom:this_blocks[:_size]) map(to:other_blocks[:_size])
-      for (n = 0; n < _size; n++)
-        this_blocks[n] &= other_blocks[n];
+      for (i = 0; i < _height; i++) {
+        #pragma omp parallel for
+        for (j = 0; j < _width; j++)
+          this_blocks[j + i*_width] &= other_blocks[j + i*_width];
+      }
     } else {
   #endif
 
+  int16_t n;
   _OPENMP_PRAGMA("omp parallel for schedule(static) if(_size > CPU_LIMIT)")
   for (n = 0; n < _size; n++)
     this_blocks[n] &= other_blocks[n];
