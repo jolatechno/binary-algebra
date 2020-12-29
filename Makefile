@@ -3,6 +3,7 @@ LINKER=ar
 LDLIBS=
 CCFLAGS=
 CRUN=
+AMDGPU=
 
 .PHONY: all test clean
 
@@ -16,12 +17,25 @@ mpi:
 	$(eval CXX=mpic++ -std=c++0x)
 	$(eval CRUN=mpirun)
 
-gpu: openmp
+openmp:
+	$(eval LDLIBS+=-fopenmp)
+
+gpu-nvidia: openmp
 	$(eval CCFLAGS+=-DTARGET=1)
 	$(eval LDLIBS+=-fno-stack-protector -foffload=nvptx-none)
 
-openmp:
-	$(eval LDLIBS+=-fopenmp)
+gpu-amd:	openmp
+	$(eval CCFLAGS+=-DTARGET=1)
+	$(eval LDLIBS+=-fno-stack-protector -foffload=amdgcn-amdhsa=\"$(AMDGPU)\")
+
+fiji:
+	$(eval AMDGPU=fiji)
+
+vega10:
+	$(eval AMDGPU=gfx900)
+
+vega20:
+	$(eval AMDGPU=gfx906)
 
 
 #run directive
