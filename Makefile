@@ -26,7 +26,7 @@ gpu-nvidia: openmp
 
 gpu-amd:	openmp
 	$(eval U_CCFLAGS+=-DTARGET=1)
-	$(eval U_LDLIBS+=-fno-stack-protector -foffload=amdgcn-amdhsa="-march$(AMDGPU)")
+	$(eval U_LDLIBS+=-fno-stack-protector -foffload=amdgcn-amdhsa="-march=$(AMDGPU)")
 
 fiji:
 	$(eval AMDGPU=fiji)
