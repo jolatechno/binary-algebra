@@ -14,10 +14,7 @@
 #define ARITHMETIC_VECTOR_BITWISE_HEADER \
   assert(height == other.height); \
   Vector res(height); \
-  auto _height = height; \
-  uint64_t *res_blocks = (uint64_t *)&res.blocks[0]; \
-  uint64_t *other_blocks = (uint64_t *)&other.blocks[0]; \
-  uint64_t *this_blocks = (uint64_t *)&blocks[0];
+  auto _height = height;
 
 
 /*
@@ -97,8 +94,8 @@ Matrix Matrix::operator~() const {
 Vector Vector::operator~() const {
   Vector res(height);
 
-  uint64_t *this_blocks = (uint64_t *)&blocks[0];
-  uint64_t *res_blocks = (uint64_t *)&res.blocks[0];
+  uint8_t *this_blocks = blocks;
+  uint8_t *res_blocks = res.blocks;
 
   uint16_t _height = height;
 
@@ -113,19 +110,12 @@ Vector Vector::operator~() const {
   #endif
 
   _OPENMP_PRAGMA("omp parallel for schedule(static) if(_height > CPU_LIMIT)")
-  for (i = 0; i < _height/8; i++)
+  for (i = 0; i < _height; i++)
     res_blocks[i] = ~this_blocks[i];
 
   #if defined(_OPENMP) && defined(TARGET)
-      res.to(0, _height - _height%8);
+      res.to();
     }
-  #endif
-
-  for (i = _height - _height%8; i < _height; i++)
-    res.blocks[i] = ~blocks[i];
-
-  #if defined(_OPENMP) && defined(TARGET)
-    res.to(_height - _height%8, _height%8);
   #endif
 
   return res;
@@ -185,31 +175,25 @@ Matrix Matrix::operator-(const bool bit) const {
 
 Vector Vector::operator^(Vector const& other) const {
   ARITHMETIC_VECTOR_BITWISE_HEADER;
+  ARITHMETIC_VARIABLE_HEADER;
 
   int16_t i;
   #if defined(_OPENMP) && defined(TARGET)
     if(_height > GPU_LIMIT) {
       #pragma omp target teams distribute parallel for
-      for (i = 0; i < _height/8; i++)
+      for (i = 0; i < _height; i++)
         res_blocks[i] = this_blocks[i] ^ other_blocks[i];
       res.from();
     } else {
   #endif
 
   _OPENMP_PRAGMA("omp parallel for schedule(static) if(_height > CPU_LIMIT)")
-  for (i = 0; i < _height/8; i++)
+  for (i = 0; i < _height; i++)
     res_blocks[i] = this_blocks[i] ^ other_blocks[i];
 
   #if defined(_OPENMP) && defined(TARGET)
-      res.to(0, _height - _height%8);
+      res.to();
     }
-  #endif
-
-  for (i = _height - _height%8; i < _height; i++)
-    res.blocks[i] = blocks[i] ^ other.blocks[i];
-
-  #if defined(_OPENMP) && defined(TARGET)
-    res.to(_height - _height%8, _height%8);
   #endif
 
   return res;
@@ -273,31 +257,25 @@ Matrix Matrix::operator&(const bool bit) const {
 
 Vector Vector::operator&(Vector const& other) const {
   ARITHMETIC_VECTOR_BITWISE_HEADER;
+  ARITHMETIC_VARIABLE_HEADER;
 
   int16_t i;
   #if defined(_OPENMP) && defined(TARGET)
     if(_height > GPU_LIMIT) {
       #pragma omp target teams distribute parallel for
-      for (i = 0; i < _height/8; i++)
+      for (i = 0; i < _height; i++)
         res_blocks[i] = this_blocks[i] & other_blocks[i];
       res.from();
     } else {
   #endif
 
   _OPENMP_PRAGMA("omp parallel for schedule(static) if(_height > CPU_LIMIT)")
-  for (i = 0; i < _height/8; i++)
+  for (i = 0; i < _height; i++)
     res_blocks[i] = this_blocks[i] & other_blocks[i];
 
   #if defined(_OPENMP) && defined(TARGET)
-      res.to(0, _height - _height%8);
+      res.to();
     }
-  #endif
-
-  for (i = _height - _height%8; i < _height; i++)
-    res.blocks[i] = blocks[i] & other.blocks[i];
-
-  #if defined(_OPENMP) && defined(TARGET)
-    res.to(_height - _height%8, _height%8);
   #endif
 
   return res;
@@ -379,12 +357,12 @@ Vector Matrix::operator*(Vector const& other) const {
             this_blocks[k + (8*i + 4)*_width], this_blocks[k + (8*i + 5)*_width], this_blocks[k + (8*i + 6)*_width], this_blocks[k + (8*i + 7)*_width], \
             other_blocks[k]);
         }
-      res.from(0, _height - _height%8);
+      res.from();
 
       for (k = 0; k < _width; k++)
         for (i = _height - _height%8; i < _height; i++)
           res.blocks[i] ^= multiply_block_byte(blocks[k + i*_width], other.blocks[k]);
-      res.to(_height - _height%8, _height%8);
+      res.to(); //_height - _height%8, _height%8);
 
     } else {
   #endif
