@@ -156,19 +156,15 @@ int Matrix::difference(Matrix const& other) const {
 
     int diff = 0;
 
+    int16_t n;
     #if defined(_OPENMP) && defined(TARGET)
       if(_size > GPU_LIMIT) {
-        int16_t i, j;
         #pragma omp target teams distribute parallel for reduction(+ : diff) map(tofrom:diff) map(to:this_blocks[:_size], other_blocks[:_size])
-        for (i = 0; i < _height; i++) {
-          #pragma omp parallel for reduction(+ : diff)
-          for (j = 0; j < _width; j++)
-            diff +=  utils->count_ones_64(this_blocks[j + i*_width]) - utils->count_ones_64(other_blocks[j + i*_width]);
-        }
+        for (n = 0; n < _size; n++)
+          diff +=  utils->count_ones_64(this_blocks[n]) - utils->count_ones_64(other_blocks[n]);
       } else {
     #endif
 
-    int16_t n;
     _OPENMP_PRAGMA("omp parallel for reduction(+ : diff) schedule(static) if(_size > CPU_LIMIT)")
     for (n = 0; n < _size; n++)
       diff +=  utils->count_ones_64(this_blocks[n]) - utils->count_ones_64(other_blocks[n]);

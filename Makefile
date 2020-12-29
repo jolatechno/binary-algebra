@@ -1,9 +1,9 @@
-CXX=g++-10 -std=c++0x
-LINKER=ar
+U_CXX=g++-10 -std=c++0x
 U_LDLIBS=$(LDLIBS)
 U_CCFLAGS=$(CCFLAGS)
 CRUN=
 AMDGPU=
+LINKER=ar
 
 .PHONY: all test clean
 
@@ -14,7 +14,7 @@ all: unit_testing.out example.out performance_testing.out
 
 mpi:
 	$(eval U_CCFLAGS+=-DMPIENABLED=1)
-	$(eval CXX=mpic++ -std=c++0x)
+	$(eval U_CXX=mpic++ -std=c++0x)
 	$(eval CRUN=mpirun)
 
 openmp:
@@ -52,13 +52,13 @@ performance_testing: performance_testing.out
 
 
 unit_testing.out: lib.a
-	$(CXX) $(U_CCFLAGS) unit_testing/test.cpp lib/lib.a -o unit_testing/test.out $(U_LDLIBS)
+	$(U_CXX) $(U_CCFLAGS) unit_testing/test.cpp lib/lib.a -o unit_testing/test.out $(U_LDLIBS)
 
 performance_testing.out: lib.a
-	$(CXX) $(U_CCFLAGS) performance_testing/test.cpp lib/lib.a -o performance_testing/test.out $(U_LDLIBS)
+	$(U_CXX) $(U_CCFLAGS) performance_testing/test.cpp lib/lib.a -o performance_testing/test.out $(U_LDLIBS)
 
 example.out: lib.a
-	$(CXX) $(U_CCFLAGS) examples/example.cpp lib/lib.a -o examples/example.out $(U_LDLIBS)
+	$(U_CXX) $(U_CCFLAGS) examples/example.cpp lib/lib.a -o examples/example.out $(U_LDLIBS)
 
 
 #linker
@@ -72,13 +72,13 @@ lib.a: binary_arithmetic.o utils.o reference_arithmetic.o
 
 
 binary_arithmetic.o:
-	$(CXX) $(U_CCFLAGS) -c src/binary_arithmetic.cpp -o lib/binary_arithmetic.o $(U_LDLIBS)
+	$(U_CXX) $(U_CCFLAGS) -c src/binary_arithmetic.cpp -o lib/binary_arithmetic.o $(U_LDLIBS)
 
 utils.o:
-	$(CXX) $(U_CCFLAGS) -c src/utils/utils.cpp -o lib/utils.o $(U_LDLIBS)
+	$(U_CXX) $(U_CCFLAGS) -c src/utils/utils.cpp -o lib/utils.o $(U_LDLIBS)
 
 reference_arithmetic.o:
-	$(CXX) $(U_CCFLAGS) -c src/reference_arithmetic/reference_arithmetic.cpp -o lib/reference_arithmetic.o $(U_LDLIBS)
+	$(U_CXX) $(U_CCFLAGS) -c src/reference_arithmetic/reference_arithmetic.cpp -o lib/reference_arithmetic.o $(U_LDLIBS)
 
 
 #clean

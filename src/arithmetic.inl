@@ -445,19 +445,15 @@ bool Matrix::operator%(Matrix const& other) const {
 
   long unsigned int sum = 0;
 
+  int16_t n;
   #if defined(_OPENMP) && defined(TARGET)
     if(_size > GPU_LIMIT) {
-      int16_t i, j;
       #pragma omp target teams distribute parallel for reduction(^ : sum) map(tofrom:sum) map(to:this_blocks[:_size], other_blocks[:_size])
-      for (i = 0; i < _height; i++) {
-        #pragma omp parallel for reduction(^ : sum)
-        for (j = 0; j < _width; j++)
-          sum ^= this_blocks[i + j*_height] & other_blocks[i + j*_height];
-      }
+      for (n = 0; n < _size; n++)
+        sum ^= this_blocks[n] & other_blocks[n];
     } else {
   #endif
 
-  int16_t n;
   _OPENMP_PRAGMA("omp parallel for reduction(^ : sum) schedule(static) if(_size > CPU_LIMIT)")
   for (n = 0; n < _size; n++)
     sum ^= this_blocks[n] & other_blocks[n];
@@ -501,19 +497,15 @@ int Matrix::operator/(Matrix const& other) const {
 
   int sum = 0;
 
+  int16_t n;
   #if defined(_OPENMP) && defined(TARGET)
     if(_size > GPU_LIMIT) {
-      int16_t i, j;
       #pragma omp target teams distribute parallel for reduction(+ : sum) map(tofrom:sum) map(to:this_blocks[:_size], other_blocks[:_size])
-      for (i = 0; i < _height; i++) {
-        #pragma omp parallel for reduction(+ : sum)
-        for (j = 0; j < _width; j++)
-          sum += utils->count_ones_64(this_blocks[i + j*_height] & other_blocks[i + j*_height]);
-      }
+      for (n = 0; n < _size; n++)
+        sum += utils->count_ones_64(this_blocks[n] & other_blocks[n]);
     } else {
   #endif
 
-  int16_t n;
   _OPENMP_PRAGMA("omp parallel for reduction(+ : sum) schedule(static) if(_size > CPU_LIMIT)")
   for (n = 0; n < _size; n++)
     sum += utils->count_ones_64(this_blocks[n] & other_blocks[n]);
