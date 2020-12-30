@@ -19,9 +19,9 @@ void Matrix::randomize() {
   #endif
   uint8_t *block_8 = (uint8_t *)blocks;
 
-  uint16_t _size = height * width * 8;
+  int _size = height * width * 8;
 
-  int16_t i;
+  int i;
   _OPENMP_PRAGMA("omp parallel for shared(block_8)")
   for (i = 0; i < _size; i++)
     block_8[i] = rand();
@@ -45,7 +45,7 @@ void Vector::randomize() {
   #endif
   INITIALIZER_VECTOR_HEADER;
 
-  int16_t i;
+  int i;
   _OPENMP_PRAGMA("omp parallel for shared(this_blocks)")
   for (i = 0; i < _height; i++)
     this_blocks[i] = rand();
@@ -104,7 +104,7 @@ diagonal initializers
 void Matrix::diag() {
   INITIALIZER_SQUARE_MATRIX_HEADER;
 
-  int16_t i, j;
+  int i, j;
   _OPENMP_PRAGMA("omp parallel for collapse(2) shared(this_blocks)")
   for (i = 0; i < _height; i++)
     for (j = 0; j < _width; j++)
@@ -122,7 +122,7 @@ void Matrix::diag() {
 void Matrix::diag(Vector const& diagonal) {
   INITIALIZER_SQUARE_MATRIX_HEADER;
 
-  int16_t i, j;
+  int i, j;
   _OPENMP_PRAGMA("omp parallel for collapse(2) shared(this_blocks)")
   for (i = 0; i < _height; i++)
     for (j = 0; j < _width; j++)
@@ -130,7 +130,7 @@ void Matrix::diag(Vector const& diagonal) {
         uint8_t block = diagonal.blocks[i];
         uint64_t res = 0;
 
-        for (int16_t k = 7; k >= 0; k--)
+        for (int k = 7; k >= 0; k--)
           res = (res << 9) | ((block >> k) & 0x01);
 
           blocks[i + j*_height] = res;

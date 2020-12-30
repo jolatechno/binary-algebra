@@ -17,10 +17,10 @@ slice struct
 
 struct vector_slice {
   Vector *vect;
-  uint16_t start, length;
+  int start, length;
 
   //constructor
-  vector_slice(uint16_t _start, uint16_t _length, Vector *_vect) : start(_start), length(_length), vect(_vect) {}
+  vector_slice(int _start, int _length, Vector *_vect) : start(_start), length(_length), vect(_vect) {}
 
   operator Vector() const; //implicite comvertion
   vector_slice& operator=(Vector const& other); //assignment operators
@@ -29,10 +29,10 @@ struct vector_slice {
 
 struct matrix_slice {
   Matrix *mat;
-  uint16_t start_i, start_j, length_i, length_j;
+  int start_i, start_j, length_i, length_j;
 
   //constructor
-  matrix_slice(uint16_t _start_i, uint16_t _start_j, uint16_t _length_i, uint16_t _length_j, Matrix *_mat) : start_i(_start_i), start_j(_start_j), length_i(_length_i), length_j(_length_j), mat(_mat) {}
+  matrix_slice(int _start_i, int _start_j, int _length_i, int _length_j, Matrix *_mat) : start_i(_start_i), start_j(_start_j), length_i(_length_i), length_j(_length_j), mat(_mat) {}
 
   operator Matrix() const; //implicite comvertion
   matrix_slice& operator=(Matrix const& other); //assignment operators
@@ -47,13 +47,13 @@ assignment struct
 
 struct bool_from_byte {
   uint8_t *byte;
-  uint16_t i;
+  int i;
 
   //util operations
   Utils* utils;
 
   //constructor
-  bool_from_byte(int16_t _i, uint8_t *_byte) : i(_i), byte(_byte) {}
+  bool_from_byte(int _i, uint8_t *_byte) : i(_i), byte(_byte) {}
 
   operator bool() const; //implicite comvertion
   bool_from_byte& operator=(bool value); //assignment operators
@@ -65,13 +65,13 @@ struct bool_from_byte {
 
 struct bool_from_word {
   uint64_t *word;
-  uint16_t i, j;
+  int i, j;
 
   //util operations
   Utils* utils;
 
   //constructor
-  bool_from_word(int16_t _i, int16_t _j, uint64_t *_word) : i(_i), j(_j), word(_word) {}
+  bool_from_word(int _i, int _j, uint64_t *_word) : i(_i), j(_j), word(_word) {}
 
   operator bool() const; //implicite comvertion
   bool_from_word& operator=(bool value); //assignment operators
@@ -121,15 +121,15 @@ class Matrix {
     uint64_t *blocks;
 
     //Stupid way of accessing Matrix elements, only for testing or debugging !
-    bool_from_word operator()(uint16_t i, uint16_t j) const;
+    bool_from_word operator()(int i, int j) const;
 
     //size
-    const uint16_t height;
-    const uint16_t width;
+    const int height;
+    const int width;
 
     //constructors
-    Matrix(uint16_t mat_height, uint16_t mat_width);
-    Matrix(uint16_t size);
+    Matrix(int mat_height, int mat_width);
+    Matrix(int size);
 
     //destructor
     ~Matrix();
@@ -234,13 +234,13 @@ class Vector {
     uint8_t *blocks;
 
     //Stupid way of accessing vector elements, only for testing or debugging !
-    bool_from_byte operator[](uint16_t i) const;
+    bool_from_byte operator[](int i) const;
 
     //size
-    const uint16_t height;
+    const int height;
 
     //constructor
-    Vector(uint16_t size);
+    Vector(int size);
 
     //destructor
     ~Vector();

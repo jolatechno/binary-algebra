@@ -7,7 +7,7 @@ void Matrix::operator^=(Matrix const& other) {
   COMPARAISON_MATRIX_BITWISE_HEADER;
   COMPARAISON_VARIABLE_HEADER;
 
-  int16_t n;
+  int n;
   #if defined(_OPENMP) && defined(TARGET)
     if(_size > GPU_LIMIT) {
       #pragma omp target teams distribute parallel for map(tofrom:this_blocks[:_size]) map(to:other_blocks[:_size])
@@ -39,9 +39,9 @@ void Matrix::operator^=(const bool bit) {
   if (bit) {
     uint64_t *this_blocks = blocks;
 
-    uint16_t _size = height * width;
+    int _size = height * width;
 
-    int16_t n;
+    int n;
     #if defined(_OPENMP) && defined(TARGET)
       if(_size > GPU_LIMIT) {
         #pragma omp target teams distribute parallel for map(tofrom:this_blocks[:_size])
@@ -74,7 +74,7 @@ void Vector::operator^=(Vector const& other) {
   COMPARAISON_VECTOR_BITWISE_HEADER;
   COMPARAISON_VARIABLE_HEADER;
 
-  int16_t i;
+  int i;
   #if defined(_OPENMP) && defined(TARGET)
     if(_height > GPU_LIMIT) {
       #pragma omp target teams distribute parallel for map(tofrom:this_blocks[:_height]) map(to:other_blocks[:_height])
@@ -106,9 +106,9 @@ void Vector::operator^=(const bool bit) {
   if (bit) {
     uint8_t *this_blocks = blocks;
 
-    uint16_t _height = height;
+    int _height = height;
 
-    int16_t i;
+    int i;
     #if defined(_OPENMP) && defined(TARGET)
       if(_height > GPU_LIMIT) {
         #pragma omp target teams distribute parallel for map(tofrom:this_blocks[:_height])
@@ -147,7 +147,7 @@ void Matrix::operator&=(Matrix const& other) {
   COMPARAISON_MATRIX_BITWISE_HEADER;
   COMPARAISON_VARIABLE_HEADER;
 
-  int16_t n;
+  int n;
   #if defined(_OPENMP) && defined(TARGET)
     if(_size > GPU_LIMIT) {
       #pragma omp target teams distribute parallel for map(tofrom:this_blocks[:_size]) map(to:other_blocks[:_size])
@@ -176,7 +176,7 @@ void Vector::operator&=(Vector const& other) {
   COMPARAISON_VECTOR_BITWISE_HEADER;
   COMPARAISON_VARIABLE_HEADER;
 
-  int16_t i;
+  int i;
   #if defined(_OPENMP) && defined(TARGET)
     if(_height > GPU_LIMIT) {
       #pragma omp target teams distribute parallel for map(tofrom:this_blocks[:_height]) map(to:other_blocks[:_height])

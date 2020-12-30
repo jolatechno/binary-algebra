@@ -1,13 +1,13 @@
 //gpu operations
 #if defined(_OPENMP) && defined(TARGET)
   void Matrix::to() {
-    uint16_t _size = height * width;
+    int _size = height * width;
     uint64_t *this_blocks = blocks;
     #pragma omp target update to(this_blocks[:_size])
   }
 
   void Vector::to() {
-    uint16_t _height = height;
+    int _height = height;
     uint8_t *this_blocks = blocks;
     #pragma omp target update to(this_blocks[:_height])
   }
@@ -23,13 +23,13 @@
   }
 
   void Matrix::from() {
-    uint16_t _size = height * width;
+    int _size = height * width;
     uint64_t *this_blocks = blocks;
     #pragma omp target update from(this_blocks[:_size])
   }
 
   void Vector::from() {
-    uint16_t _height = height;
+    int _height = height;
     uint8_t *this_blocks = blocks;
     #pragma omp target update from(this_blocks[:_height])
   }

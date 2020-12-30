@@ -26,7 +26,7 @@ bool Matrix::operator==(Matrix const& other) const {
 
     bool equal_ = true;
 
-    int16_t n;
+    int n;
     _OPENMP_PRAGMA("omp parralel shared(this_blocks, other_blocks, _equal)")
     _OPENMP_PRAGMA("omp for")
     for (n = 0; n < _height * _width; n++) {
@@ -58,7 +58,7 @@ bool Vector::operator==(Vector const& other) const {
 
     bool equal_ = true;
 
-    int16_t i;
+    int i;
     _OPENMP_PRAGMA("omp parralel shared(this_blocks, other_blocks, _equal)")
     _OPENMP_PRAGMA("omp for")
     for (i = 0; i < _height; i++) {
@@ -96,7 +96,7 @@ bool Matrix::operator==(const bool bit) const {
   auto *this_blocks = blocks;
   auto _size = height * width;
 
-  int16_t n;
+  int n;
   _OPENMP_PRAGMA("omp parralel shared(this_blocks, _equal)")
   _OPENMP_PRAGMA("omp for")
   for (n = 0; n < _size; n++) {
@@ -123,7 +123,7 @@ bool Vector::operator==(const bool bit) const {
   auto *this_blocks = blocks;
   auto _height = height;
 
-  int16_t i;
+  int i;
   _OPENMP_PRAGMA("omp parralel shared(this_blocks, _equal)")
   _OPENMP_PRAGMA("omp for")
   for (i = 0; i < _height; i++) {
@@ -156,7 +156,7 @@ int Matrix::difference(Matrix const& other) const {
 
     int diff = 0;
 
-    int16_t n;
+    int n;
     #if defined(_OPENMP) && defined(TARGET)
       if(_size > GPU_LIMIT) {
         #pragma omp target teams distribute parallel for reduction(+ : diff) map(tofrom:diff)
@@ -186,7 +186,7 @@ int Vector::difference(Vector const& other) const {
 
     int diff = 0;
 
-    int16_t i;
+    int i;
     #if defined(_OPENMP) && defined(TARGET)
       if(_height > GPU_LIMIT) {
         #pragma omp target teams distribute parallel for reduction(+ : diff) map(tofrom:diff)

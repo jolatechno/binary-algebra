@@ -20,7 +20,7 @@ slice cast operator
 matrix_slice::operator Matrix() const {
   Matrix res(length_i, length_j);
 
-  for (int16_t i = 0; i < length_i; i++)
+  for (int i = 0; i < length_i; i++)
     memcpy(&res.blocks[i*length_j], &mat->blocks[start_j + (i + start_i)*mat->width], length_j * sizeof(uint64_t)); //copy blocks
 
   #if defined(_OPENMP) && defined(TARGET)
@@ -52,7 +52,7 @@ matrix_slice& matrix_slice::operator=(Matrix const& other) {
   assert(length_i == other.height);
   assert(length_j == other.width);
 
-  for (int16_t i = 0; i < length_i; i++) {
+  for (int i = 0; i < length_i; i++) {
     memcpy(&mat->blocks[start_j + (i + start_i)*mat->width], &other.blocks[i*length_j], length_j * sizeof(uint64_t)); //copy blocks
 
     #if defined(_OPENMP) && defined(TARGET)
@@ -79,7 +79,7 @@ matrix_slice& matrix_slice::operator=(matrix_slice const& other) {
   assert(length_i == other.length_i);
   assert(length_j == other.length_j);
 
-  for (int16_t i = 0; i < length_i; i++) {
+  for (int i = 0; i < length_i; i++) {
     memcpy(&mat->blocks[start_j + (i + start_i)*mat->width], &other.mat->blocks[other.start_j + (i + other.start_i)*other.mat->width], length_j * sizeof(uint64_t)); //copy blocks
 
     #if defined(_OPENMP) && defined(TARGET)

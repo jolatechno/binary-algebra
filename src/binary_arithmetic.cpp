@@ -25,7 +25,7 @@ constructors
 */
 
 
-Matrix::Matrix(uint16_t _height, uint16_t _width) : height(_height), width(_width) {
+Matrix::Matrix(int _height, int _width) : height(_height), width(_width) {
   blocks = (uint64_t *) calloc(height * width, sizeof(uint64_t));
   if (blocks == NULL) throw std::bad_alloc();
   #ifdef MPIENABLED
@@ -38,7 +38,7 @@ Matrix::Matrix(uint16_t _height, uint16_t _width) : height(_height), width(_widt
   #endif
 }
 
-Matrix::Matrix(uint16_t _size) : height(_size), width(_size) {
+Matrix::Matrix(int _size) : height(_size), width(_size) {
   blocks = (uint64_t *) calloc(_size * _size, sizeof(uint64_t));
   if (blocks == NULL) throw std::bad_alloc();
   #ifdef MPIENABLED
@@ -51,7 +51,7 @@ Matrix::Matrix(uint16_t _size) : height(_size), width(_size) {
   #endif
 }
 
-Vector::Vector(uint16_t _size): height(_size) {
+Vector::Vector(int _size): height(_size) {
   blocks = (uint8_t *) calloc(height, sizeof(uint64_t));
   if (blocks == NULL) throw std::bad_alloc();
   #ifdef MPIENABLED
@@ -81,7 +81,7 @@ Matrix::Matrix(Matrix const& other) : height(other.height), width(other.width) {
   memcpy(blocks, other.blocks, height * width * sizeof(uint64_t)); //copy blocks
 
   #if defined(_OPENMP) && defined(TARGET)
-    uint16_t _size = height * width;
+    int _size = height * width;
     uint64_t *this_blocks = blocks;
     #pragma omp target enter data map(to:this_blocks[:_size])
   #endif
@@ -98,7 +98,7 @@ Vector::Vector(Vector const& other) : height(other.height) {
   memcpy(blocks, other.blocks, height * sizeof(uint8_t)); //copy blocks
 
   #if defined(_OPENMP) && defined(TARGET)
-    uint16_t _height = height;
+    int _height = height;
     uint8_t *this_blocks = blocks;
     #pragma omp target enter data map(to:this_blocks[:_height])
   #endif
@@ -112,7 +112,7 @@ destructors
 
 Matrix::~Matrix(){
   #if defined(_OPENMP) && defined(TARGET)
-    uint16_t _size = height * width;
+    int _size = height * width;
     uint64_t *this_blocks = blocks;
     #pragma omp target exit data map(delete:this_blocks[:_size])
   #endif
@@ -121,7 +121,7 @@ Matrix::~Matrix(){
 
 Vector::~Vector(){
   #if defined(_OPENMP) && defined(TARGET)
-    uint16_t _height = height;
+    int _height = height;
     uint8_t *this_blocks = blocks;
     #pragma omp target exit data map(delete:this_blocks[:_height])
   #endif

@@ -46,7 +46,7 @@ read operators
 */
 
 
-bool_from_word Matrix::operator()(uint16_t i, uint16_t j) const { //changed to acomodate the switch in block indices, check the readme
+bool_from_word Matrix::operator()(int i, int j) const { //changed to acomodate the switch in block indices, check the readme
   assert(i < height * 8);  //check if indices are in range
   assert(j < width * 8);
 
@@ -54,7 +54,7 @@ bool_from_word Matrix::operator()(uint16_t i, uint16_t j) const { //changed to a
   return bool_from_word(i%8, j%8, block);
 }
 
-bool_from_byte Vector::operator[](uint16_t i) const {
+bool_from_byte Vector::operator[](int i) const {
   assert(i < height * 8);  //check if indices are in range
 
   return bool_from_byte(i%8, &blocks[i/8]);

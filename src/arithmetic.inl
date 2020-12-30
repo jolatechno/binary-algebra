@@ -28,8 +28,8 @@ Matrix Matrix::T() const {
   uint64_t *this_blocks = blocks;
   uint64_t *res_blocks = res.blocks;
 
-  uint16_t _width = width;
-  uint16_t _height = height;
+  int _width = width;
+  int _height = height;
 
   int16_t i, j;
   #if defined(_OPENMP) && defined(TARGET)
@@ -67,7 +67,7 @@ Matrix Matrix::operator~() const {
   uint64_t *this_blocks = blocks;
   uint64_t *res_blocks = res.blocks;
 
-  uint16_t _size = width * height;
+  int _size = width * height;
 
   int16_t n;
   #if defined(_OPENMP) && defined(TARGET)
@@ -97,7 +97,7 @@ Vector Vector::operator~() const {
   uint8_t *this_blocks = blocks;
   uint8_t *res_blocks = res.blocks;
 
-  uint16_t _height = height;
+  int _height = height;
 
   int16_t i;
   #if defined(_OPENMP) && defined(TARGET)
