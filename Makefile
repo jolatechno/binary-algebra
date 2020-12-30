@@ -21,7 +21,8 @@ openmp:
 	$(eval U_LDLIBS+=-fopenmp)
 
 gpu-nvidia: openmp
-	$(eval U_CXX=g++-10 -std=c++0x) 
+	$(eval U_CXX=g++-10 -std=c++0x)
+	$(eval U_CCFLAGS+=-DTARGET=1)
 	$(eval U_LDLIBS+=-fno-stack-protector -foffload=nvptx-none)
 
 gpu-amd:	openmp

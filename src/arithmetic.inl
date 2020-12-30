@@ -334,6 +334,7 @@ Matrix Matrix::operator*(Matrix const& other) const {
   return res;
 }
 
+#include <stdio.h> //for testing
 Vector Matrix::operator*(Vector const& other) const {
   assert(width == other.height); //check if dimensions are compatible
 
@@ -342,18 +343,22 @@ Vector Matrix::operator*(Vector const& other) const {
   auto _width = width;
   auto _height = height;
 
+  uint8_t *res_blocks = res.blocks;
+  uint8_t *other_blocks = other.blocks;
+  uint64_t *this_blocks = blocks;
+
+  printf("!! adress : %p\n", this_blocks); //for testing
+
   int16_t i, k;
   #if defined(_OPENMP) && defined(TARGET)
     if(_height*_width > GPU_LIMIT) {
-      long unsigned int *res_blocks = (long unsigned int*)&res.blocks[0];
-      uint8_t *other_blocks = other.blocks;
-      uint64_t *this_blocks = blocks;
+      long unsigned int *res_blocks_long = (long unsigned int*)&res.blocks[0];
 
       #pragma omp target teams distribute parallel for collapse(2)
       for (i = 0; i < _height/8 - 1; i++)
         for (k = 0; k < _width; k++) {
-          #pragma omp atomic acquire
-          res_blocks[i] ^= multiply_block_word(this_blocks[k + 8*i*_width], this_blocks[k + (8*i + 1)*_width], this_blocks[k + (8*i + 2)*_width], this_blocks[k + (8*i + 3)*_width], \
+          #pragma omp atomic
+          res_blocks_long[i] ^= multiply_block_word(this_blocks[k + 8*i*_width], this_blocks[k + (8*i + 1)*_width], this_blocks[k + (8*i + 2)*_width], this_blocks[k + (8*i + 3)*_width], \
             this_blocks[k + (8*i + 4)*_width], this_blocks[k + (8*i + 5)*_width], this_blocks[k + (8*i + 6)*_width], this_blocks[k + (8*i + 7)*_width], \
             other_blocks[k]);
         }
@@ -364,17 +369,13 @@ Vector Matrix::operator*(Vector const& other) const {
       #pragma omp parallel for collapse(2) schedule(static) if(8*_width > CPU_LIMIT)
       for (k = 0; k < _width; k++)
         for (i = start; i < _height; i++) {
-          #pragma omp atomic if(8*_width > CPU_LIMIT)
-          res.blocks[i] ^= multiply_block_byte(blocks[k + i*_width], other.blocks[k]);
+          #pragma omp atomic
+          res_blocks[i] ^= multiply_block_byte(this_blocks[k + i*_width], other_blocks[k]);
         }
       res.to(start, length);
 
     } else {
   #endif
-
-  uint8_t *res_blocks = res.blocks;
-  uint8_t *other_blocks = other.blocks;
-  uint64_t *this_blocks = blocks;
 
   _OPENMP_PRAGMA("omp parallel for collapse(2) schedule(static) if(_height*_width > CPU_LIMIT)")
   for (k = 0; k < _width; k++)
