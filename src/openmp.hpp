@@ -1,6 +1,6 @@
 #pragma once
 
-#if defined(_OPENMP)
+#ifdef _OPENMP
   #define _OPENMP_PRAGMA(all) _Pragma(all)
 
   #include <omp.h>

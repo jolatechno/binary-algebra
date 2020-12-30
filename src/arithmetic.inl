@@ -334,7 +334,6 @@ Matrix Matrix::operator*(Matrix const& other) const {
   return res;
 }
 
-#include <stdio.h> //for testing
 Vector Matrix::operator*(Vector const& other) const {
   assert(width == other.height); //check if dimensions are compatible
 
@@ -346,8 +345,6 @@ Vector Matrix::operator*(Vector const& other) const {
   uint8_t *res_blocks = res.blocks;
   uint8_t *other_blocks = other.blocks;
   uint64_t *this_blocks = blocks;
-
-  printf("!! adress : %p\n", this_blocks); //for testing
 
   int16_t i, k;
   #if defined(_OPENMP) && defined(TARGET)

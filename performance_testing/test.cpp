@@ -17,10 +17,16 @@ int main(int argc, char** argv){
   #endif
 
   const int n_iter = 100;
-  #if defined(_OPENMP)
-    const int sizes[] = {
-      10, 100, 500,
-    };
+  #ifdef _OPENMP
+    #ifdef TARGET
+      const int sizes[] = {
+        100, 500, 1000,
+      };
+    #else
+      const int sizes[] = {
+        10, 100, 500,
+      };
+    #endif
   #else
     const int sizes[] = {
       10, 50, 100,

@@ -1,8 +1,6 @@
 #include "../src/binary_arithmetic.hpp"
 
-#include <stdio.h> //for testing
 void multiplication_mat_vect(Matrix mat, Vector vect) {
-  printf("!! height : %d\n", mat.height); //for testing
   mat * vect;
 }
 

@@ -2,11 +2,11 @@
 
 ## Requirements
 
-This library is design for Linux only _for now_, it require `g++-10` for compilation.
+This library is design for Linux only _for now_, it require `g++` (or `g++-10` for __AMD__ GPU offloading) for compilation.
 
  For the best result, you should install __Openmp__ (`libomp5-xx`), and compile the library using it.
 
-For GPU offloading you will also need the correct GPU drivers, and either `gcc-10-offload-nvptx` for __NVIDIA__ cards, or `gcc-10-offload-amdgcn` for __AMD__ GPUs.
+For GPU offloading you will also need the correct GPU drivers, and either `gcc-offload-nvptx` (or `gcc-10-offload-nvptx` if you want to use `g++-10`) for __NVIDIA__ cards, or `gcc-10-offload-amdgcn` for __AMD__ GPUs.
 
 To take advantage of MPI, you need to install `mpic++`.
 
@@ -28,7 +28,7 @@ The function that are defined when using mpi are `.send()` and `.receive()` for 
 
 To compile it with __Openmp__, you need to use the `"openmp"` directive before all other targets, which will modify the `LDLIBS` variable in the [Makefile](./Makefile).
 
-If compiled with __Openmp__, loops of more than 500 iterations will automatically use a `pragma omp parralel`. You can change this threshold by adding `-DCPU_LIMIT=xxx` to `CCFLAGS` by using `CCFLAGS="CPU_LIMIT=xxx"` with `make`.
+If compiled with __Openmp__, loops of more than 500 iterations will automatically use a `pragma omp parralel`. You can change this threshold by adding `-DCPU_LIMIT=xxx` to `CCFLAGS` by using `CCFLAGS="-DCPU_LIMIT=xxx"` with `make`.
 
 ### Offloading to GPUs
 
@@ -40,7 +40,7 @@ If you encounter some errors you might want to also pass the flag  `"CCFLAGS=-fc
 
 All arithmetic operations, self-operators, and comparisons excluding `==, !=` (for performance reasons) are now supported on GPUs.
 
-Loops of more than 10000 iterations will automatically be offloaded to GPUs. You can change this threshold by adding `-DCPU_LIMIT=xxx` to `CCFLAGS` by using `CCFLAGS="GPU_LIMIT=yyy"` with `make`. If you want to modify both the GPU offloading threshold and the __Openmp__ threshold, you need to use `CCFLAGS="-DCPU_LIMIT=yyy -DGPU_LIMIT=xxx"` with `make`.
+Loops of more than 10000 iterations will automatically be offloaded to GPUs. You can change this threshold by adding `-DCPU_LIMIT=xxx` to `CCFLAGS` by using `CCFLAGS="-DGPU_LIMIT=yyy"` with `make`. If you want to modify both the GPU offloading threshold and the __Openmp__ threshold, you need to use `CCFLAGS="-DCPU_LIMIT=yyy -DGPU_LIMIT=xxx"` with `make`.
 
 Atomic operations for type `uint8_t` are not supported by __Openmp__ on GPU (see [issue #1](https://github.com/jolatechno/binary_algebra/issues/1)). I finally found a work around for every operation, either by converting types, or by grouping operations together to only apply atomic operations on `long unsigned int`.
 
