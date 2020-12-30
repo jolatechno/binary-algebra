@@ -39,20 +39,6 @@ inline  uint8_t Matrix::multiply_block_byte(uint64_t const& block, uint8_t const
   return sum;
 }
 
-inline uint64_t Matrix::multiply_block_word(uint64_t const& block0, uint64_t const& block1, uint64_t const& block2, uint64_t const& block3, \
-  uint64_t const& block4, uint64_t const& block5, uint64_t const& block6, uint64_t const& block7, \
-  uint8_t const& vect) const {
-  uint64_t res = multiply_block_byte(block7, vect);
-  res = (res << 8) | multiply_block_byte(block6, vect);
-  res = (res << 8) | multiply_block_byte(block5, vect);
-  res = (res << 8) | multiply_block_byte(block4, vect);
-  res = (res << 8) | multiply_block_byte(block3, vect);
-  res = (res << 8) | multiply_block_byte(block2, vect);
-  res = (res << 8) | multiply_block_byte(block1, vect);
-
-  return (res << 8) | multiply_block_byte(block0, vect);
-}
-
 inline  uint64_t Matrix::multiply_block_block(uint64_t const& block_left, uint64_t const& block_right) const { //changed to acomodate the switch in block indices, check the readme
   uint64_t res = 0;
   //uint64_t block_right_t = transpose_block(block_right);
@@ -72,3 +58,19 @@ inline  uint64_t Vector::multiply_byte_byte(uint8_t const& vect_left, uint8_t co
 
   return res;
 }
+
+#if defined(_OPENMP) && defined(TARGET)
+  inline uint64_t Matrix::multiply_block_word(uint64_t const& block0, uint64_t const& block1, uint64_t const& block2, uint64_t const& block3, \
+    uint64_t const& block4, uint64_t const& block5, uint64_t const& block6, uint64_t const& block7, \
+    uint8_t const& vect) const {
+    uint64_t res = multiply_block_byte(block7, vect);
+    res = (res << 8) | multiply_block_byte(block6, vect);
+    res = (res << 8) | multiply_block_byte(block5, vect);
+    res = (res << 8) | multiply_block_byte(block4, vect);
+    res = (res << 8) | multiply_block_byte(block3, vect);
+    res = (res << 8) | multiply_block_byte(block2, vect);
+    res = (res << 8) | multiply_block_byte(block1, vect);
+
+    return (res << 8) | multiply_block_byte(block0, vect);
+  }
+#endif

@@ -104,10 +104,13 @@ class Matrix {
     _OPENMP_GPU_PRAGMA("omp declare target")
     inline uint64_t transpose_block(uint64_t const& block) const;
     inline uint8_t multiply_block_byte(uint64_t const& block, uint8_t const& vect) const;
-    inline uint64_t multiply_block_word(uint64_t const& block0, uint64_t const& block1, uint64_t const& block2, uint64_t const& block3, \
-      uint64_t const& block4, uint64_t const& block5, uint64_t const& block6, uint64_t const& block7, \
-      uint8_t const& vect) const;
     inline uint64_t multiply_block_block(uint64_t const& block_left, uint64_t const& block_right) const;
+
+    #if defined(_OPENMP) && defined(TARGET)
+      inline uint64_t multiply_block_word(uint64_t const& block0, uint64_t const& block1, uint64_t const& block2, uint64_t const& block3, \
+        uint64_t const& block4, uint64_t const& block5, uint64_t const& block6, uint64_t const& block7, \
+        uint8_t const& vect) const;
+    #endif
     _OPENMP_GPU_PRAGMA("omp end declare target")
 
     //for comparaisons

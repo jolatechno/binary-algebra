@@ -1,4 +1,4 @@
-U_CXX=g++-10 -std=c++0x
+U_CXX=$(CXX) -std=c++0x
 U_LDLIBS=$(LDLIBS)
 U_CCFLAGS=$(CCFLAGS)
 CRUN=
@@ -21,10 +21,11 @@ openmp:
 	$(eval U_LDLIBS+=-fopenmp)
 
 gpu-nvidia: openmp
-	$(eval U_CCFLAGS+=-DTARGET=1)
+	$(eval U_CXX=g++-10 -std=c++0x) 
 	$(eval U_LDLIBS+=-fno-stack-protector -foffload=nvptx-none)
 
 gpu-amd:	openmp
+	$(eval U_CXX=g++-10 -std=c++0x)
 	$(eval U_CCFLAGS+=-DTARGET=1)
 	$(eval U_LDLIBS+=-fno-stack-protector -foffload=amdgcn-amdhsa="-march=$(AMDGPU)")
 

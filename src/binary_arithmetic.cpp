@@ -33,7 +33,7 @@ Matrix::Matrix(uint16_t _height, uint16_t _width) : height(_height), width(_widt
     MPI_Comm_size(MPI_COMM_WORLD, &size);
   #endif
   #if defined(_OPENMP) && defined(TARGET)
-    auto *this_blocks = blocks;
+    uint64_t *this_blocks = blocks;
     #pragma omp target enter data map(alloc:this_blocks[:_height * _width])
   #endif
 }
@@ -46,7 +46,7 @@ Matrix::Matrix(uint16_t _size) : height(_size), width(_size) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
   #endif
   #if defined(_OPENMP) && defined(TARGET)
-    auto *this_blocks = blocks;
+    uint64_t *this_blocks = blocks;
     #pragma omp target enter data map(alloc:this_blocks[:_size * _size])
   #endif
 }
@@ -59,7 +59,7 @@ Vector::Vector(uint16_t _size): height(_size) {
     MPI_Comm_size(MPI_COMM_WORLD, &size);
   #endif
   #if defined(_OPENMP) && defined(TARGET)
-    auto *this_blocks = blocks;
+    uint8_t *this_blocks = blocks;
     #pragma omp target enter data map(alloc:this_blocks[:_size])
   #endif
 }
@@ -82,7 +82,7 @@ Matrix::Matrix(Matrix const& other) : height(other.height), width(other.width) {
 
   #if defined(_OPENMP) && defined(TARGET)
     uint16_t _size = height * width;
-    auto *this_blocks = blocks;
+    uint64_t *this_blocks = blocks;
     #pragma omp target enter data map(to:this_blocks[:_size])
   #endif
 }
@@ -99,7 +99,7 @@ Vector::Vector(Vector const& other) : height(other.height) {
 
   #if defined(_OPENMP) && defined(TARGET)
     uint16_t _height = height;
-    auto *this_blocks = blocks;
+    uint8_t *this_blocks = blocks;
     #pragma omp target enter data map(to:this_blocks[:_height])
   #endif
 }
@@ -113,7 +113,7 @@ destructors
 Matrix::~Matrix(){
   #if defined(_OPENMP) && defined(TARGET)
     uint16_t _size = height * width;
-    auto *this_blocks = blocks;
+    uint64_t *this_blocks = blocks;
     #pragma omp target exit data map(delete:this_blocks[:_size])
   #endif
   free(blocks);
@@ -122,7 +122,7 @@ Matrix::~Matrix(){
 Vector::~Vector(){
   #if defined(_OPENMP) && defined(TARGET)
     uint16_t _height = height;
-    auto *this_blocks = blocks;
+    uint8_t *this_blocks = blocks;
     #pragma omp target exit data map(delete:this_blocks[:_height])
   #endif
   free(blocks);
