@@ -345,12 +345,12 @@ Vector Matrix::operator*(Vector const& other) const {
   int16_t i, k;
   #if defined(_OPENMP) && defined(TARGET)
     if(_height*_width > GPU_LIMIT) {
-      long unsigned int *res_blocks = (long unsigned int*)res.blocks;
+      long unsigned int *res_blocks = (long unsigned int*)&res.blocks[0];
       uint8_t *other_blocks = other.blocks;
       uint64_t *this_blocks = blocks;
 
       #pragma omp target teams distribute parallel for collapse(2)
-      for (i = 0; i < _height/8; i++)
+      for (i = 0; i < _height/8 - 1; i++)
         for (k = 0; k < _width; k++) {
           #pragma omp atomic
           res_blocks[i] ^= multiply_block_word(this_blocks[k + 8*i*_width], this_blocks[k + (8*i + 1)*_width], this_blocks[k + (8*i + 2)*_width], this_blocks[k + (8*i + 3)*_width], \
@@ -359,10 +359,11 @@ Vector Matrix::operator*(Vector const& other) const {
         }
       res.from();
 
+      _OPENMP_PRAGMA("omp parallel for collapse(2) schedule(static) if(8*_width > CPU_LIMIT)")
       for (k = 0; k < _width; k++)
-        for (i = _height - _height%8; i < _height; i++)
+        for (i = _height - _height%8 - 8; i < _height; i++)
           res.blocks[i] ^= multiply_block_byte(blocks[k + i*_width], other.blocks[k]);
-      res.to(_height - _height%8, _height%8);
+      res.to(_height - _height%8 - 8, _height%8 + 8);
 
     } else {
   #endif
