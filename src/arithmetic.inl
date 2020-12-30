@@ -359,11 +359,13 @@ Vector Matrix::operator*(Vector const& other) const {
         }
       res.from();
 
+      auto start = std::max(0, _height - _height%8 - 8);
+      auto length = _height - start;
       _OPENMP_PRAGMA("omp parallel for collapse(2) schedule(static) if(8*_width > CPU_LIMIT)")
       for (k = 0; k < _width; k++)
-        for (i = _height - _height%8 - 8; i < _height; i++)
+        for (i = start; i < _height; i++)
           res.blocks[i] ^= multiply_block_byte(blocks[k + i*_width], other.blocks[k]);
-      res.to(_height - _height%8 - 8, _height%8 + 8);
+      res.to(start, length);
 
     } else {
   #endif

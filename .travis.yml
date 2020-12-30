@@ -8,6 +8,7 @@ addons:
   apt:
     update: true
     packages:
+      - g++-10
       - libomp-dev
       - mpic++
 

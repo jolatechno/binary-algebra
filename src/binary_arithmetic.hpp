@@ -102,12 +102,12 @@ class Matrix {
 
     //block operations
     _OPENMP_GPU_PRAGMA("omp declare target")
-    inline uint64_t transpose_block(uint64_t block) const;
-    inline uint8_t multiply_block_byte(uint64_t block, uint8_t vect) const;
-    inline uint64_t multiply_block_word(uint64_t block0, uint64_t block1, uint64_t block2, uint64_t block3, \
-      uint64_t block4, uint64_t block5, uint64_t block6, uint64_t block7, \
-      uint8_t vect) const;
-    inline uint64_t multiply_block_block(uint64_t block_left, uint64_t block_right) const;
+    inline uint64_t transpose_block(uint64_t const& block) const;
+    inline uint8_t multiply_block_byte(uint64_t const& block, uint8_t const& vect) const;
+    inline uint64_t multiply_block_word(uint64_t const& block0, uint64_t const& block1, uint64_t const& block2, uint64_t const& block3, \
+      uint64_t const& block4, uint64_t const& block5, uint64_t const& block6, uint64_t const& block7, \
+      uint8_t const& vect) const;
+    inline uint64_t multiply_block_block(uint64_t const& block_left, uint64_t const& block_right) const;
     _OPENMP_GPU_PRAGMA("omp end declare target")
 
     //for comparaisons
@@ -220,7 +220,7 @@ class Vector {
 
     //block operations
     _OPENMP_GPU_PRAGMA("omp declare target")
-    inline uint64_t multiply_byte_byte(uint8_t vect_left, uint8_t vect_right) const;
+    inline uint64_t multiply_byte_byte(uint8_t const& vect_left, uint8_t const& vect_right) const;
     _OPENMP_GPU_PRAGMA("omp end declare target")
 
     //for comparaisons
