@@ -349,23 +349,34 @@ Vector Matrix::operator*(Vector const& other) const {
       uint8_t *other_blocks = other.blocks;
       uint64_t *this_blocks = blocks;
 
-      #pragma omp target teams distribute parallel for collapse(2)
-      for (i = 0; i < _height/8 - 1; i++)
-        for (k = 0; k < _width; k++) {
-          #pragma omp atomic
-          res_blocks[i] ^= multiply_block_word(this_blocks[k + 8*i*_width], this_blocks[k + (8*i + 1)*_width], this_blocks[k + (8*i + 2)*_width], this_blocks[k + (8*i + 3)*_width], \
-            this_blocks[k + (8*i + 4)*_width], this_blocks[k + (8*i + 5)*_width], this_blocks[k + (8*i + 6)*_width], this_blocks[k + (8*i + 7)*_width], \
-            other_blocks[k]);
-        }
-      res.from();
-
       auto start = std::max(0, _height - _height%8 - 8);
       auto length = _height - start;
-      _OPENMP_PRAGMA("omp parallel for collapse(2) schedule(static) if(8*_width > CPU_LIMIT)")
-      for (k = 0; k < _width; k++)
-        for (i = start; i < _height; i++)
-          res.blocks[i] ^= multiply_block_byte(blocks[k + i*_width], other.blocks[k]);
-      res.to(start, length);
+      uint8_t *res_blocks_8 = res.blocks;
+
+      #pragma omp target
+      {
+        #pragma omp task
+        #pragma omp target teams distribute parallel for collapse(2)
+        for (i = 0; i < _height/8 - 1; i++)
+          for (k = 0; k < _width; k++) {
+            #pragma omp atomic
+            res_blocks[i] ^= multiply_block_word(this_blocks[k + 8*i*_width], this_blocks[k + (8*i + 1)*_width], this_blocks[k + (8*i + 2)*_width], this_blocks[k + (8*i + 3)*_width], \
+              this_blocks[k + (8*i + 4)*_width], this_blocks[k + (8*i + 5)*_width], this_blocks[k + (8*i + 6)*_width], this_blocks[k + (8*i + 7)*_width], \
+              other_blocks[k]);
+          }
+
+        #pragma omp task
+        #pragma omp target teams distribute parallel for collapse(2)
+        for (k = 0; k < _width; k++)
+          for (i = start; i < _height; i++) {
+            #pragma omp atomic
+            res_blocks_8[i] ^= multiply_block_byte(this_blocks[k + i*_width], other_blocks[k]);
+          }
+
+        #pragma omp taskwait
+      }
+      res.from();
+
 
     } else {
   #endif
@@ -385,9 +396,6 @@ Vector Matrix::operator*(Vector const& other) const {
       res.to();
     }
   #endif
-
-
-
 
   return res;
 }
