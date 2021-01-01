@@ -6,7 +6,7 @@ This library is design for Linux only _for now_, it require `g++` (or `g++-10` f
 
  For the best result, you should install __Openmp__ (`libomp5-xx`), and compile the library using it.
 
-For GPU offloading you will also need the correct GPU drivers, and either `gcc-offload-nvptx` (or `gcc-10-offload-nvptx` if you want to use `g++-10`) for __NVIDIA__ cards, or `gcc-10-offload-amdgcn` for __AMD__ GPUs.
+For GPU offloading you will also need the correct GPU drivers, and either `gcc-offload-nvptx` (or `gcc-10-offload-nvptx` if you want to use `g++-10`, which you can do using the `"g++-10"` target) for __NVIDIA__ cards, or `gcc-10-offload-amdgcn` for __AMD__ GPUs.
 
 To take advantage of MPI, you need to install `mpic++`.
 
@@ -36,7 +36,7 @@ To compile it with __Openmp__ and enable offloading to GPUs, you will need to us
 
 For __AMD__ GPUs you should first specify the type of card (either `"fiji"`, `"vega10"` or `"vega20"`).
 
-If you encounter some errors you might want to also pass the flag  `"CCFLAGS=-fcf-protection=none"`.
+If you encounter some errors you might want to also pass the flag `"protection-none"` to disable `fcf` protection.
 
 All arithmetic operations, self-operators, and comparisons excluding `==, !=` (for performance reasons) are now supported on GPUs.
 

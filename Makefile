@@ -21,14 +21,18 @@ openmp:
 	$(eval U_LDLIBS+=-fopenmp)
 
 gpu-nvidia: openmp
-	$(eval U_CXX=g++-10 -std=c++0x)
 	$(eval U_CCFLAGS+=-DTARGET=1)
-	$(eval U_LDLIBS+=-fno-stack-protector -foffload=nvptx-none)
+	$(eval U_CCFLAGS+=-fno-stack-protector -foffload=nvptx-none)
 
-gpu-amd:	openmp
-	$(eval U_CXX=g++-10 -std=c++0x)
+gpu-amd:	openmp g++-10
 	$(eval U_CCFLAGS+=-DTARGET=1)
-	$(eval U_LDLIBS+=-fno-stack-protector -foffload=amdgcn-amdhsa="-march=$(AMDGPU)")
+	$(eval U_CCFLAGS+=-fno-stack-protector -foffload=amdgcn-amdhsa="-march=$(AMDGPU)")
+
+g++-10:
+	$(eval U_CXX=g++-10 -std=c++0x)
+
+protection-none:
+	$(eval U_CCFLAGS+=-fcf-protection=none)
 
 fiji:
 	$(eval AMDGPU=fiji)
