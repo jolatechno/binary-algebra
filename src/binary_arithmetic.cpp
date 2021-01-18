@@ -114,7 +114,7 @@ Matrix::~Matrix(){
   #if defined(_OPENMP) && defined(TARGET)
     int _size = height * width;
     uint64_t *this_blocks = blocks;
-    #pragma omp target exit data map(delete:this_blocks[:_size])
+    #pragma omp target exit data map(release:this_blocks[:_size])
   #endif
   free(blocks);
 }
@@ -123,7 +123,7 @@ Vector::~Vector(){
   #if defined(_OPENMP) && defined(TARGET)
     int _height = height;
     uint8_t *this_blocks = blocks;
-    #pragma omp target exit data map(delete:this_blocks[:_height])
+    #pragma omp target exit data map(release:this_blocks[:_height])
   #endif
   free(blocks);
 }
