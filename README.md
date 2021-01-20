@@ -30,6 +30,7 @@ To compile it with __Openmp__, you need to use the `"openmp"` directive before a
 
 If compiled with __Openmp__, loops of more than 500 iterations will automatically use a `pragma omp parralel`. You can change this threshold by adding `-DCPU_LIMIT=xxx` to `CCFLAGS` by using `CCFLAGS="-DCPU_LIMIT=xxx"` with `make`.
 
+If you encounter some errors while compiling with __Openmp__ but withour GPUs, you might want to add the target `no-gpu` to `make`.
 ### Offloading to GPUs
 
 To compile it with __Openmp__ and enable offloading to GPUs, you will need to use the `"gpu-nvidia"` or `"gpu-amd"` directive before all other targets, which will modify the `CCFLAGS` and `LDLIBS` variable in the [Makefile](./Makefile).

@@ -17,16 +17,17 @@ mpi:
 	$(eval U_CXX=mpic++ -std=c++0x)
 	$(eval CRUN=mpirun)
 
+no-gpu:
+	$(eval U_CCFLAGS+=-foffload=disable)
+
 openmp:
-	$(eval U_LDLIBS+=-fopenmp)
+	$(eval U_LDLIBS+=-fopenmp -fno-stack-protector)
 
 gpu-nvidia: openmp
-	$(eval U_CCFLAGS+=-DTARGET=1)
-	$(eval U_CCFLAGS+=-fno-stack-protector -foffload=nvptx-none)
+	$(eval U_CCFLAGS+=-foffload=nvptx-none)
 
-gpu-amd:	openmp g++-10
-	$(eval U_CCFLAGS+=-DTARGET=1)
-	$(eval U_CCFLAGS+=-fno-stack-protector -foffload=amdgcn-amdhsa="-march=$(AMDGPU)")
+gpu-amd: openmp g++-10
+	$(eval U_CCFLAGS+=-foffload=amdgcn-amdhsa="-march=$(AMDGPU)")
 
 g++-10:
 	$(eval U_CXX=g++-10 -std=c++0x)
